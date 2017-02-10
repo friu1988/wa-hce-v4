@@ -92,6 +92,12 @@ public class TPaciente implements Serializable {
     @Size(max = 300)
     @Column(name = "pac_direccion_residencial", length = 300)
     private String pacDireccionResidencial;
+    @Size(max = 200)
+    @Column(name = "pac_barrio", length = 200)
+    private String pacBarrio;
+    @Size(max = 50)
+    @Column(name = "pac_zona", length = 50)
+    private String pacZona;
     @Size(max = 300)
     @Column(name = "pac_telefono", length = 300)
     private String pacTelefono;
@@ -479,6 +485,22 @@ public class TPaciente implements Serializable {
 
     public void setFacSerial(TFacultad facSerial) {
         this.facSerial = facSerial;
+    }
+
+    public String getPacBarrio() {
+        return pacBarrio;
+    }
+
+    public void setPacBarrio(String pacBarrio) {
+        this.pacBarrio = pacBarrio;
+    }
+
+    public String getPacZona() {
+        return pacZona;
+    }
+
+    public void setPacZona(String pacZona) {
+        this.pacZona = pacZona;
     }
 
     @XmlTransient

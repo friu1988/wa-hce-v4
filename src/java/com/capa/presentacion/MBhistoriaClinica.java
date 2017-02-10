@@ -1,5 +1,6 @@
 package com.capa.presentacion;
 
+import com.capa.datos.TAdmisionista;
 import com.capa.datos.TFacultad;
 import com.capa.datos.TKardex;
 import com.capa.datos.TLugarGeografico;
@@ -66,10 +67,10 @@ public class MBhistoriaClinica implements Serializable {
         //Personal Admision
         TUsuario user = (TUsuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLogin");
         System.out.println(user);
-//
-//        TAdmisionista admisionista = new TAdmisionista();
-//        admisionista.setPerSerial(user.getPerSerial().getPerSerial());
-//        System.out.println(admisionista);
+
+        TAdmisionista admisionista = new TAdmisionista();
+        admisionista.setPerSerial(user.getPerSerial().getPerSerial());
+        System.out.println(admisionista);
 
         //Paciente 
 //        paciente.setPerSerial(admisionista);

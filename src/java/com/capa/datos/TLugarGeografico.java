@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TLugarGeografico.findAll", query = "SELECT t FROM TLugarGeografico t"),
     @NamedQuery(name = "TLugarGeografico.findByLgCodigo", query = "SELECT t FROM TLugarGeografico t WHERE t.lgCodigo = :lgCodigo"),
+    @NamedQuery(name = "TLugarGeografico.findByPadreLgCodigo", query = "SELECT t FROM TLugarGeografico t WHERE t.padreLgCodigo = :padreLgCodigo"),
     @NamedQuery(name = "TLugarGeografico.findByLgNombre", query = "SELECT t FROM TLugarGeografico t WHERE t.lgNombre = :lgNombre")})
 public class TLugarGeografico implements Serializable {
 
@@ -111,21 +112,21 @@ public class TLugarGeografico implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TLugarGeografico)) {
+    public boolean equals(Object obj) {
+        if (obj instanceof TLugarGeografico) {
+            TLugarGeografico ubicacion = (TLugarGeografico) obj;
+            if (ubicacion.getPadreLgCodigo().equals(this.padreLgCodigo)) {
+                return true;
+            }
+        } else {
             return false;
         }
-        TLugarGeografico other = (TLugarGeografico) object;
-        if ((this.lgCodigo == null && other.lgCodigo != null) || (this.lgCodigo != null && !this.lgCodigo.equals(other.lgCodigo))) {
-            return false;
-        }
-        return true;
+        return super.equals(obj);
     }
 
     @Override
     public String toString() {
         return "com.capa.datos.TLugarGeografico[ lgCodigo=" + lgCodigo + " ]";
     }
-    
+
 }

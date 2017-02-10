@@ -83,7 +83,6 @@
                             <p:selectOneRadio style="width:95%" columns="1" layout="grid">
                                 <f:selectItem itemLabel="Particular" itemValue="PARTICULAR" />
                                 <f:selectItem   itemLabel="Estudiante" itemValue="ESTUDIANTE" />
-                                <!--<f:ajax render="facultad carrera semestre" />-->
                             </p:selectOneRadio>
                         </p:column>
                         <p:column colspan="2">
@@ -163,17 +162,17 @@
                             <p:outputLabel value="Dirección de Residencia Habitual"/>
                         </p:column>
                         <p:column>
-                            <p:outputLabel value="Barrio"/>
-                        </p:column>   
-                        <p:column>
-                            <p:outputLabel value="Parroquia"/>
+                            <p:outputLabel value="Provincia"/>
                         </p:column>
                         <p:column>
                             <p:outputLabel value="Cantón"/>
                         </p:column>
                         <p:column>
-                            <p:outputLabel value="Provicia"/>
+                            <p:outputLabel value="Parroquia"/>
                         </p:column>
+                        <p:column>
+                            <p:outputLabel value="Barrio"/>
+                        </p:column> 
                         <p:column>
                             <p:outputLabel value="Zona"/>
                         </p:column>
@@ -184,29 +183,40 @@
 
                     <p:row>
                         <p:column colspan="2">
-                            <p:inputTextarea style="width: 95%"/>    
+                            <p:inputTextarea style="width: 95%" value="#{mBhistoriaClinica.paciente.pacDireccionResidencial}"/>    
                         </p:column>
                         <p:column>
-                            <p:inputText style="width:95%"/>    
+                            <p:selectOneMenu id="provincia" value="#{mBlugarGeo.provincia.lgCodigo}">
+                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{mBlugarGeo.provincias}" var="prov" itemLabel="#{prov.lgNombre}" itemValue="#{prov.lgCodigo}"/>
+                                <p:ajax event="change" listener="#{mBlugarGeo.onChangeCantones}" update="canton"/>
+                            </p:selectOneMenu>
                         </p:column>
                         <p:column>
-                            <p:inputText style="width:95%"/>    
+                            <p:selectOneMenu id="canton" value="#{mBlugarGeo.canton.lgCodigo}">
+                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{mBlugarGeo.cantones}" var="can" itemLabel="#{can.lgNombre}" itemValue="#{can.lgCodigo}"/>
+                                <p:ajax event="change" listener="#{mBlugarGeo.onChangeParroquias}" update="parroquia"/>
+                            </p:selectOneMenu>
                         </p:column>
                         <p:column>
-                            <p:inputText style="width:95%"/>    
+                            <p:selectOneMenu id="parroquia">
+                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{mBlugarGeo.parroquias}" var="parr" itemLabel="#{parr.lgNombre}" itemValue="#{parr.lgCodigo}"/>
+                            </p:selectOneMenu>
                         </p:column>
                         <p:column>
-                            <p:inputText style="width:95%"/>    
+                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacBarrio}"/>    
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu>
-                                <f:selectItem itemLabel=""/>
+                            <p:selectOneMenu value="#{mBhistoriaClinica.paciente.pacZona}">
+                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
                                 <f:selectItem itemLabel="Urbano" itemValue="U"/>
                                 <f:selectItem itemLabel="Rural" itemValue="R"/> 
                             </p:selectOneMenu> 
-                        </p:column>
+                        </p:column>S
                         <p:column>
-                            <p:inputText style="width:95%"/>    
+                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacTelefono}"/>    
                         </p:column>
                     </p:row>
                     <p:row>
@@ -243,24 +253,33 @@
                             <p:inputText style="width:95%"/>
                         </p:column>   
                         <p:column>
-                            <p:inputText style="width:95%"/>
-                        </p:column>   
+                            <p:selectOneMenu id="nacionalidad">
+                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{mBlugarGeo.nacionalidades}"/>
+                            </p:selectOneMenu>
+                        </p:column>  
                         <p:column>
-                            <p:inputText style="width:95%"/>
-                        </p:column>   
+                            <p:selectOneMenu>
+                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
+                                <f:selectItem itemLabel="Negro" itemValue="N"/>
+                                <f:selectItem itemLabel="Blanco" itemValue="B"/>
+                                <f:selectItem itemLabel="Mestizo" itemValue="M"/>
+                                <f:selectItem itemLabel="Indigena" itemValue="I"/>
+                            </p:selectOneMenu>
+                        </p:column>      
                         <p:column>
                             <p:inputText style="width:95%"/>
                         </p:column>   
                         <p:column>
                             <p:selectOneMenu>
-                                <f:selectItem itemLabel=""/>
+                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
                                 <f:selectItem itemLabel="Masculino" itemValue="M"/>
                                 <f:selectItem itemLabel="Femenino" itemValue="F"/> 
                             </p:selectOneMenu>
                         </p:column>   
                         <p:column>
                             <p:selectOneMenu>
-                                <f:selectItem itemLabel=""/>
+                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
                                 <f:selectItem itemLabel="Soltero" itemValue="Sol"/>
                                 <f:selectItem itemLabel="Casado" itemValue="Cas"/>
                                 <f:selectItem itemLabel="Divorciado" itemValue="Div"/>
@@ -340,7 +359,7 @@
                     <f:facet name="header">
                         <p:row>
                             <p:column style="align-content: center">
-                                <p:commandButton value="Guardar" actionListener="#{mBhistoriaClinica.crearHCU()}" update="frm_hcu_crear"/>
+                                <p:commandButton value="Guardar" action="#{mBhistoriaClinica.crearHCU()}" update="frm_hcu_crear"/>
                             </p:column>
                         </p:row>
                     </f:facet>
