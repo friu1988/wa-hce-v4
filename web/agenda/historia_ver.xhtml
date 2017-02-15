@@ -52,25 +52,25 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:inputText placeholder="UCE" style="width: 95%" disabled="true"/>
+                            <p:outputLabel value="UCE" style="width: 95%" />
                         </p:column>
                         <p:column colspan="2">
-                            <p:inputText placeholder="Archivo" style="width: 95%" disabled="true"/>
+                            <p:outputLabel value="Archivo" style="width: 95%"/>
                         </p:column>
                         <p:column>
-                            <p:inputText placeholder="OU" style="width: 95%" disabled="true"/>
+                            <p:outputLabel value="OU" style="width: 95%" />
                         </p:column>
                         <p:column>
-                            <p:inputText placeholder="Belisario Quevedo" style="width: 95%" disabled="true"/>
+                            <p:outputLabel value="Belisario Quevedo" style="width: 95%" />
                         </p:column>
                         <p:column>
-                            <p:inputText placeholder="Quito" style="width: 95%" disabled="true"/>
+                            <p:outputLabel value="Quito" style="width: 95%" />
                         </p:column>
                         <p:column>
-                            <p:inputText placeholder="Pichincha" style="width: 95%" disabled="true"/>
+                            <p:outputLabel value="Pichincha" style="width: 95%" />
                         </p:column>
                         <p:column>
-                            <p:outputLabel style="width: 95%" value="#{mBhistoriaClinica.numeroHCU}" />
+                            <p:outputLabel style="width: 95%" value="#{mBhistoriaClinica.paciente.hclNumeroHistoria}" />
                         </p:column>
                     </p:row>
 
@@ -80,42 +80,27 @@
                             <p:outputLabel value="Tipo de Paciente"/>
                         </p:column>
                         <p:column rowspan="2"  colspan="1">
-                            <p:selectOneRadio style="width:95%" columns="1" layout="grid" value="#{mBhistoriaClinica.paciente.hclTipoPaciente}">
-                                <f:selectItem itemLabel="Particular" itemValue="P" />
-                                <f:selectItem   itemLabel="Estudiante" itemValue="E" />
-                            </p:selectOneRadio>
+                            <p:outputLabel value="#{mBhistoriaClinica.paciente.hclTipoPaciente}"/>
                         </p:column>
                         <p:column colspan="2">
-                            <p:outputLabel value="Facultad" for="facultad"/>
+                            <p:outputLabel value="Facultad"/>
                         </p:column>
                         <p:column colspan="2">
-                            <p:outputLabel value="Carrera" for="carrera"/>
+                            <p:outputLabel value="Carrera"/>
                         </p:column>
                         <p:column colspan="2">
-                            <p:outputLabel value="Semestre" for="semestre"/>
+                            <p:outputLabel value="Semestre"/>
                         </p:column>
                     </p:row>
                     <p:row>
                         <p:column colspan="2">
-                            <p:selectOneMenu id="facultad" value="#{mBhistoriaClinica.facultad.facSerial}">
-                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{mBhistoriaClinica.facultades}" var="fac" itemLabel="#{fac.facNombre}" itemValue="#{fac.facSerial}"/>
-                                <p:ajax event="change" listener="#{mBhistoriaClinica.onChangeFac}" update="carrera"/>
-                            </p:selectOneMenu>
+                            <p:outputLabel/>
                         </p:column>
                         <p:column colspan="2">
-                            <p:selectOneMenu id="carrera" value="#{mBhistoriaClinica.carrera.facSerial}">
-                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{mBhistoriaClinica.carreras}" var="car" itemLabel="#{car.facNombre}" itemValue="#{car.facSerial}"/>
-                                <p:ajax update="@this"/>
-                            </p:selectOneMenu>
+                            <p:outputLabel value="#{mBhistoriaClinica.carrera.facSerial}"/>
                         </p:column>
                         <p:column colspan="2">
-                            <p:selectOneMenu id="semestre" value="#{mBhistoriaClinica.paciente.hclSemestre}">
-                                <f:selectItem itemLabel="Seleccionar" itemValue="" noSelectionOption="true"/>
-                                <f:selectItems value="#{mBhistoriaClinica.semestres}"/>
-                                <p:ajax update="@this"/>
-                            </p:selectOneMenu>
+                            <p:outputLabel value="#{mBhistoriaClinica.paciente.hclSemestre}"/>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -144,19 +129,19 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacApellidoPaterno}"/>
+                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.paciente.pacApellidoPaterno}"/>
                         </p:column>
                         <p:column colspan="2">
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacApellidoMaterno}"/>
+                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.paciente.pacApellidoMaterno}"/>
                         </p:column>
                         <p:column  colspan="2">
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacPrimerNombre}"/>
+                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.paciente.pacPrimerNombre}"/>
                         </p:column>
                         <p:column>
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacSegundoNombre}"/>
+                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.paciente.pacSegundoNombre}"/>
                         </p:column>
                         <p:column colspan="2">
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacCedula}" required="true"/>
+                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.paciente.pacCedula}"/>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -185,41 +170,25 @@
 
                     <p:row>
                         <p:column colspan="2">
-                            <p:inputTextarea style="width: 95%" value="#{mBhistoriaClinica.paciente.pacDireccionResidencial}"/>    
+                            <p:inputTextarea style="width: 95%" value="#{mBhistoriaClinica.paciente.pacDireccionResidencial}" disabled="true"/>    
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="provincia" value="#{mBhistoriaClinica.provincia.lgCodigo}">
-                                <f:selectItem itemLabel="Seleccionar" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{mBhistoriaClinica.provincias}" var="prov" itemLabel="#{prov.lgNombre}" itemValue="#{prov.lgCodigo}"/>
-                                <p:ajax event="valueChange" listener="#{mBhistoriaClinica.onChangeProvincias}" update="canton parroquia"/>
-                            </p:selectOneMenu>
+                            <p:outputLabel/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="canton" value="#{mBhistoriaClinica.canton.lgCodigo}">
-                                <f:selectItem itemLabel="Seleccionar" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{mBhistoriaClinica.cantones}" var="can" itemLabel="#{can.lgNombre}" itemValue="#{can.lgCodigo}"/>
-                                <p:ajax event="valueChange" listener="#{mBhistoriaClinica.onChangeCantones}" update="parroquia"/>
-                            </p:selectOneMenu>
+                            <p:outputLabel/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="parroquia" value="#{mBhistoriaClinica.parroquia.lgCodigo}">
-                                <f:selectItem itemLabel="Seleccionar" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{mBhistoriaClinica.parroquias}" var="parr" itemLabel="#{parr.lgNombre}" itemValue="#{parr.lgCodigo}"/>
-                                <p:ajax update="@this"/>
-                            </p:selectOneMenu>
+                            <p:outputLabel id="parroquia" value="#{mBhistoriaClinica.parroquia.lgCodigo}"/>
                         </p:column>
                         <p:column>
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacBarrio}"/>    
+                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.paciente.pacBarrio}"/>    
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu value="#{mBhistoriaClinica.paciente.pacZona}">
-                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
-                                <f:selectItem itemLabel="Urbano" itemValue="U"/>
-                                <f:selectItem itemLabel="Rural" itemValue="R"/> 
-                            </p:selectOneMenu> 
+                            <p:outputLabel value="#{mBhistoriaClinica.paciente.pacZona}"/>
                         </p:column>
                         <p:column>
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacTelefono}"/>    
+                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.paciente.pacTelefono}"/>    
                         </p:column>
                     </p:row>
                     <p:row>
@@ -250,56 +219,28 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:calendar  locale="es" navigator="true" value="#{mBhistoriaClinica.paciente.pacFechaNacimiento}"/>
+                            <p:outputLabel value="#{mBhistoriaClinica.paciente.pacFechaNacimiento}"/>
                         </p:column>                        
                         <p:column>
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacLugarNacimiento}"/>
+                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.paciente.pacLugarNacimiento}"/>
                         </p:column>   
                         <p:column>
-                            <p:selectOneMenu id="nacionalidad" value="#{mBhistoriaClinica.paciente.pacNacionalidad}">
-                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
-                                <f:selectItems value="#{mBhistoriaClinica.nacionalidades}"/>
-                            </p:selectOneMenu>
+                            <p:outputLabel value="#{mBhistoriaClinica.paciente.pacNacionalidad}"/>
                         </p:column>  
                         <p:column>
-                            <p:selectOneMenu value="#{mBhistoriaClinica.paciente.pacGrupoCultural}">
-                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
-                                <f:selectItem itemLabel="Blanco" itemValue="BL"/>
-                                <f:selectItem itemLabel="Indigena" itemValue="IN"/>
-                                <f:selectItem itemLabel="Mestizo" itemValue="ME"/>
-                                <f:selectItem itemLabel="Mulato" itemValue="MU"/>
-                                <f:selectItem itemLabel="Negro" itemValue="NE"/>
-                            </p:selectOneMenu>
+                            <p:outputLabel value="#{mBhistoriaClinica.paciente.pacGrupoCultural}"/>
                         </p:column>      
                         <p:column>
                             <p:outputLabel />
                         </p:column>   
                         <p:column>
-                            <p:selectOneMenu value="#{mBhistoriaClinica.paciente.pacSexo}">
-                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
-                                <f:selectItem itemLabel="Femenino" itemValue="F"/> 
-                                <f:selectItem itemLabel="Masculino" itemValue="M"/>
-                            </p:selectOneMenu>
+                            <p:outputLabel value="#{mBhistoriaClinica.paciente.pacSexo}"/>
                         </p:column>   
                         <p:column>
-                            <p:selectOneMenu value="#{mBhistoriaClinica.paciente.pacEstadoCivil}">
-                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
-                                <f:selectItem itemLabel="Casado" itemValue="CA"/>
-                                <f:selectItem itemLabel="Divorciado" itemValue="DI"/>
-                                <f:selectItem itemLabel="Soltero" itemValue="SO"/>
-                                <f:selectItem itemLabel="Unión Libre" itemValue="UL"/>
-                                <f:selectItem itemLabel="Viudo" itemValue="VI"/>
-                            </p:selectOneMenu>
+                            <p:outputLabel value="#{mBhistoriaClinica.paciente.pacEstadoCivil}"/>
                         </p:column>   
                         <p:column>
-                            <p:selectOneMenu value="#{mBhistoriaClinica.paciente.pacInstruccion}">
-                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
-                                <f:selectItem itemLabel="Primaria" itemValue="PN"/>
-                                <f:selectItem itemLabel="Secundaria" itemValue="SN"/>
-                                <f:selectItem itemLabel="Tercer nivel" itemValue="TN"/>
-                                <f:selectItem itemLabel="Cuarto nivel" itemValue="CN"/>
-                                <f:selectItem itemLabel="Ninguno" itemValue="NN"/>
-                            </p:selectOneMenu> 
+                            <p:outputLabel value="#{mBhistoriaClinica.paciente.pacInstruccion}"/>
                         </p:column>   
                     </p:row>
                     <p:row>
@@ -321,19 +262,19 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.fechaAdmision}"/>
+                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.paciente.hclFechaAdmision}"/>
                         </p:column>
                         <p:column colspan="2">
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacOcupacion}"/>
+                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.paciente.pacOcupacion}"/>
                         </p:column>
                         <p:column colspan="2">
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacEmpresaLabora}"/>
+                            <p:outputLabel  style="width:95%" value="#{mBhistoriaClinica.paciente.pacEmpresaLabora}"/>
                         </p:column>
                         <p:column colspan="2">
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacSeguroSalud}"/>
+                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.paciente.pacSeguroSalud}"/>
                         </p:column>
                         <p:column>
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacReferidoDe}"/>
+                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.paciente.pacReferidoDe}"/>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -352,29 +293,19 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacFamiliar}"/>
+                            <p:outputLabel  style="width:95%" value="#{mBhistoriaClinica.paciente.pacFamiliar}"/>
                         </p:column>
                         <p:column colspan="2">
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacParentesco}"/>
+                            <p:outputLabel  style="width:95%" value="#{mBhistoriaClinica.paciente.pacParentesco}"/>
                         </p:column>
                         <p:column colspan="2">
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacDireccionPariente}"/>
+                            <p:outputLabel  style="width:95%" value="#{mBhistoriaClinica.paciente.pacDireccionPariente}"/>
                         </p:column>
                         <p:column colspan="3">
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacTelefonoFamiliar}"/>
+                            <p:outputLabel  style="width:95%" value="#{mBhistoriaClinica.paciente.pacTelefonoFamiliar}"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
-                <p:separator/>
-                <p:panelGrid  style="width: 100%">
-                    <f:facet name="header">
-                        <p:row>
-                            <p:column style="align-content: center">
-                                <p:commandButton icon="ui-icon-plus" value="Guardar"  action="#{mBhistoriaClinica.crearHCU()}" update=":frm_hcu_crear"/>
-                            </p:column>
-                        </p:row>
-                    </f:facet>
-                </p:panelGrid>  
             </p:panel>
         </h:form>
     </ui:define>

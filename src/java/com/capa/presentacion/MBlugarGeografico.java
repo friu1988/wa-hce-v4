@@ -9,39 +9,53 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 
 /**
  *
  * @author FREDDY
  */
 @Named(value = "mBlugarGeo")
-@RequestScoped
+//@RequestScoped
+@SessionScoped
 public class MBlugarGeografico implements Serializable {
-    
+
     private List<TLugarGeografico> provincias;
     private List<TLugarGeografico> cantones;
     private List<TLugarGeografico> parroquias;
     private List<String> nacionalidades;
-    
+
     private TLugarGeografico provincia;
     private TLugarGeografico canton;
     private TLugarGeografico parroquia;
-    
+
     @EJB
     private TLugarGeograficoFacade servicioGeo;
-    
+
     public MBlugarGeografico() {
+        provincia = new TLugarGeografico();
+        canton = new TLugarGeografico();
+        parroquia = new TLugarGeografico();
     }
-    
+
+    public void onChangeProvincias() {
+        System.out.println("Provincia ..." + provincia);
+        if (provincia != null && !provincia.getLgCodigo().equals("")) {
+            cantones = null;
+            parroquias = null;
+            getCantones();
+        }
+
+    }
+
     public void onChangeCantones() {
-        getCantones();
-//        getParroquias();
+        System.out.println("Cantones ..." + canton);
+        if (canton != null && !canton.getLgCodigo().equals("")) {
+            parroquias = null;
+            getParroquias();
+        }
     }
-    
-    public void onChangeParroquias() {
-        getParroquias();
-    }
-    
+
     public List<TLugarGeografico> getProvincias() {
         if (provincias == null) {
             provincias = new LinkedList<>();
@@ -53,74 +67,62 @@ public class MBlugarGeografico implements Serializable {
         }
         return provincias;
     }
-    
-    public void setProvincias(List<TLugarGeografico> provincias) {
-        this.provincias = provincias;
-    }
-    
+
     public List<TLugarGeografico> getCantones() {
         if (cantones == null) {
             cantones = new LinkedList<>();
             for (TLugarGeografico can : servicioGeo.buscarHijosGeo(provincia)) {
-                System.out.println("Cantones " + can);
                 cantones.add(can);
             }
         }
         return cantones;
     }
-    
-    public void setCantones(List<TLugarGeografico> cantones) {
-        this.cantones = cantones;
-    }
-    
+
     public List<TLugarGeografico> getParroquias() {
         if (parroquias == null) {
             parroquias = new LinkedList<>();
             for (TLugarGeografico parr : servicioGeo.buscarHijosGeo(canton)) {
-                System.out.println("Parroquias " + parr);
                 parroquias.add(parr);
             }
         }
         return parroquias;
     }
-    
-    public void setParroquias(List<TLugarGeografico> parroquias) {
-        this.parroquias = parroquias;
-    }
-    
+
     public TLugarGeografico getProvincia() {
-        if (provincia == null) {
-            provincia = new TLugarGeografico();
-        }
+//        if (provincia == null) {
+//            provincia = new TLugarGeografico();
+//        }
         return provincia;
     }
-    
+
     public void setProvincia(TLugarGeografico provincia) {
         this.provincia = provincia;
     }
-    
+
     public TLugarGeografico getCanton() {
-        if (canton == null) {
-            canton = new TLugarGeografico();
-        }
+//        if (canton == null) {
+//            canton = new TLugarGeografico();
+//        }
         return canton;
     }
-    
+
     public void setCanton(TLugarGeografico canton) {
         this.canton = canton;
     }
-    
+
     public TLugarGeografico getParroquia() {
-        if (parroquia == null) {
-            parroquia = new TLugarGeografico();
-        }
+//        if (parroquia == null) {
+//            parroquia = new TLugarGeografico();
+//        }
+        System.out.println("Parroqia>>" + parroquia);
         return parroquia;
     }
-    
+
     public void setParroquia(TLugarGeografico parroquia) {
+        System.out.println("Parroqia>>" + parroquia);
         this.parroquia = parroquia;
     }
-    
+
     public List<String> getNacionalidades() {
         if (nacionalidades == null) {
             nacionalidades = new LinkedList<>();
@@ -162,9 +164,5 @@ public class MBlugarGeografico implements Serializable {
         Collections.sort(nacionalidades);
         return nacionalidades;
     }
-    
-    public void setNacionalidades(List<String> nacionalidades) {
-        this.nacionalidades = nacionalidades;
-    }
-    
+
 }

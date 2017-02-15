@@ -6,34 +6,52 @@ import com.capa.datos.TKardex;
 import com.capa.datos.TLugarGeografico;
 import com.capa.datos.TPaciente;
 import com.capa.datos.TUsuario;
+import com.capa.negocios.TFacultadFacade;
+import com.capa.negocios.TLugarGeograficoFacade;
 import com.capa.negocios.TPacienteFacade;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-/**
- *
- * @author FREDDY
- */
 @Named(value = "mBhistoriaClinica")
 @SessionScoped
 public class MBhistoriaClinica implements Serializable {
 
-    private TLugarGeografico lugarGeografico;
-    private TPaciente paciente;
-    private TKardex kardex;
+    private TFacultad facultad;
     private TFacultad carrera;
+    private TLugarGeografico provincia;
+    private TLugarGeografico canton;
+    private TLugarGeografico parroquia;
+    private TPaciente paciente;
+    private TPaciente selected;
+    private TKardex kardex;
+    private String fechaAdmision;
+    private Integer numeroHCU;
 
-    private boolean tipoPaciente;
-    private String numeroHCU;
-
+    private List<TFacultad> facultades;
+    private List<TFacultad> carreras;
+    private List<TLugarGeografico> provincias;
+    private List<TLugarGeografico> cantones;
+    private List<TLugarGeografico> parroquias;
     private List<String> semestres;
+    private List<String> nacionalidades;
+    private List<TPaciente> pacientes = null;
 
+    @EJB
+    private TLugarGeograficoFacade servicioGeo;
+    @EJB
+    private TFacultadFacade servicioFacultad;
     @EJB
     private TPacienteFacade servicioPaciente;
 
@@ -46,47 +64,207 @@ public class MBhistoriaClinica implements Serializable {
     }
 
     public String crearHistoria() {
-        System.out.println("Crear paciente>>>>>>>>>>>>>");
+        System.out.println("Crear historia clinica>>>>>>>>>>>>>");
+        paciente = new TPaciente();
+        numeroHCU = null;
         return "historia_crear.xhtml";
     }
 
     public String verHistoria() {
         System.out.println("Ver>>>>>>>>>>>>>");
+
         return "historia_ver.xhtml";
     }
 
     public String editarHistoria() {
         System.out.println("Editar>>>>>>>>>>>>>");
-        return "historia_editar.xhtml";
+        return "historia_crear.xhtml";
     }
 
     public void click() {
     }
 
-    public void crearHCU() {
-        //Personal Admision
+    public String crearHCU() {
+        System.out.println("Crear paciente >>>>>>>>");
+        //Personal
         TUsuario user = (TUsuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLogin");
-        System.out.println(user);
-
         TAdmisionista admisionista = new TAdmisionista();
         admisionista.setPerSerial(user.getPerSerial().getPerSerial());
+        System.out.println(user);
         System.out.println(admisionista);
 
-        //Paciente 
-//        paciente.setPerSerial(admisionista);
-//        paciente.setPacCedula(paciente.getPacCedula());
         //Facultad
-//        paciente.setFacSerial(carrera);
+        paciente.setFacSerial(carrera);
+        //Lugar GEO
+        paciente.setLgCodigo(parroquia);
+        //Admisionista
+        paciente.setPerSerial(admisionista);
         //HCU
-//        paciente.setHclInstitucion("UCE");
-//        paciente.setHclUnidadOperativa("Archivo");
-//        paciente.setHclCodigoOu("OU");
-//        paciente.setHclClParroquia("Belisario Quevedo");
-//        paciente.setHclClCanton("Quito");
-//        paciente.setHclClProvincia("Pichincha");
-//        paciente.setHclNumeroHistoria("");
-//
-//        System.out.println(paciente);
+        paciente.setHclInstitucion("UCE");
+        paciente.setHclUnidadOperativa("Archivo");
+        paciente.setHclCodigoOu("OU");
+        paciente.setHclClParroquia("Belisario Quevedo");
+        paciente.setHclClCanton("Quito");
+        paciente.setHclClProvincia("Pichincha");
+
+        //Por implementar N-HCU
+        paciente.setHclNumeroHistoria(String.valueOf(getNumeroHCU()));
+//        paciente.setHclTipoPaciente(this.paciente.getHclTipoPaciente());
+        paciente.setHclSemestre(this.paciente.getHclSemestre());
+        paciente.setPacApellidoPaterno(this.paciente.getPacApellidoPaterno());
+        paciente.setPacApellidoMaterno(this.paciente.getPacApellidoMaterno());
+        paciente.setPacPrimerNombre(this.paciente.getPacPrimerNombre());
+        paciente.setPacSegundoNombre(this.paciente.getPacSegundoNombre());
+        paciente.setPacCedula(this.paciente.getPacCedula());
+        paciente.setPacDireccionResidencial(this.paciente.getPacDireccionResidencial());
+        paciente.setPacBarrio(this.paciente.getPacBarrio());
+        paciente.setPacZona(this.paciente.getPacZona());
+        paciente.setPacTelefono(this.paciente.getPacTelefono());
+        paciente.setPacFechaNacimiento(this.paciente.getPacFechaNacimiento());
+        paciente.setPacLugarNacimiento(this.paciente.getPacLugarNacimiento());
+        paciente.setPacNacionalidad(this.paciente.getPacNacionalidad());
+        paciente.setPacGrupoCultural(this.paciente.getPacGrupoCultural());
+        paciente.setPacSexo(this.paciente.getPacSexo());
+        paciente.setPacEstadoCivil(this.paciente.getPacEstadoCivil());
+        paciente.setPacInstruccion(this.paciente.getPacInstruccion());
+        Calendar cal = Calendar.getInstance();
+        paciente.setHclFechaAdmision(cal.getTime());
+        paciente.setPacOcupacion(this.paciente.getPacOcupacion());
+        paciente.setPacEmpresaLabora(this.paciente.getPacEmpresaLabora());
+        paciente.setPacSeguroSalud(this.paciente.getPacSeguroSalud());
+        paciente.setPacReferidoDe(this.paciente.getPacReferidoDe());
+        paciente.setPacTelefonoFamiliar(this.paciente.getPacTelefonoFamiliar());
+        paciente.setPacParentesco(this.paciente.getPacParentesco());
+        paciente.setPacDireccionPariente(this.paciente.getPacDireccionPariente());
+        paciente.setPacTelefonoFamiliar(this.paciente.getPacTelefonoFamiliar());
+
+        try {
+            servicioPaciente.create(paciente);
+            pacientes = null;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Historia Clínica Ingresda! " + paciente, null));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al Ingresar" + e.getMessage(), null));
+        }
+
+        System.out.println(paciente);
+        return "pacientes.xhtml";
+    }
+
+    public void onChangeFac() {
+        getCarreras();
+        carreras = null;
+    }
+
+    public List<TFacultad> getFacultades() {
+        if (facultades == null) {
+            facultades = new LinkedList<>();
+            for (TFacultad fac : servicioFacultad.findAll()) {
+                if (fac.getTFFacSerial() == null) {
+                    facultades.add(fac);
+                }
+            }
+        }
+        return facultades;
+    }
+
+    public List<TFacultad> getCarreras() {
+        if (carreras == null) {
+            carreras = new LinkedList<>();
+            for (TFacultad car : servicioFacultad.buscarCarreras(facultad)) {
+                carreras.add(car);
+            }
+        }
+        return carreras;
+    }
+
+    public void onChangeProvincias() {
+        if (provincia != null && !provincia.getLgCodigo().equals("")) {
+            cantones = null;
+            parroquias = null;
+            getCantones();
+        }
+
+    }
+
+    public void onChangeCantones() {
+        if (canton != null && !canton.getLgCodigo().equals("")) {
+            parroquias = null;
+            getParroquias();
+        }
+    }
+
+    public List<TLugarGeografico> getProvincias() {
+        if (provincias == null) {
+            provincias = new LinkedList<>();
+            for (TLugarGeografico prov : servicioGeo.findAll()) {
+                if (prov.getPadreLgCodigo() == null) {
+                    provincias.add(prov);
+                }
+            }
+        }
+        return provincias;
+    }
+
+    public List<TLugarGeografico> getCantones() {
+        if (cantones == null) {
+            cantones = new LinkedList<>();
+            for (TLugarGeografico can : servicioGeo.buscarHijosGeo(provincia)) {
+                cantones.add(can);
+            }
+        }
+        return cantones;
+    }
+
+    public List<TLugarGeografico> getParroquias() {
+        if (parroquias == null) {
+            parroquias = new LinkedList<>();
+            for (TLugarGeografico parr : servicioGeo.buscarHijosGeo(canton)) {
+                parroquias.add(parr);
+            }
+        }
+        return parroquias;
+    }
+
+    public List<String> getNacionalidades() {
+        if (nacionalidades == null) {
+            nacionalidades = new LinkedList<>();
+            nacionalidades.add("Canadiense");
+            nacionalidades.add("Estadounidense");
+            nacionalidades.add("Mexicana");
+            nacionalidades.add("Beliceña");
+            nacionalidades.add("Costarricense");
+            nacionalidades.add("Guatemalteca");
+            nacionalidades.add("Hondureña");
+            nacionalidades.add("Nicaragüense");
+            nacionalidades.add("Panameña");
+            nacionalidades.add("Salvadoreña");
+            nacionalidades.add("Cubana");
+            nacionalidades.add("Arubana");
+            nacionalidades.add("Bahameña");
+            nacionalidades.add("Barbadense");
+            nacionalidades.add("Dominiquesa");
+            nacionalidades.add("Dominicana");
+            nacionalidades.add("Haitiana");
+            nacionalidades.add("Jamaiquina");
+            nacionalidades.add("Puertorriqueña");
+            nacionalidades.add("Sancristobaleña");
+            nacionalidades.add("Santaluciana");
+            nacionalidades.add("Sanvicentina");
+            nacionalidades.add("Argentina");
+            nacionalidades.add("Boliviana");
+            nacionalidades.add("Brasileña");
+            nacionalidades.add("Chilena");
+            nacionalidades.add("Colombiana");
+            nacionalidades.add("Ecuatoriana");
+            nacionalidades.add("Guyanesa");
+            nacionalidades.add("Paraguaya");
+            nacionalidades.add("Peruana");
+            nacionalidades.add("Surinamesa");
+            nacionalidades.add("Uruguaya");
+            nacionalidades.add("Venezolana");
+        }
+        Collections.sort(nacionalidades);
+        return nacionalidades;
     }
 
 //    public List<TFacultad> filtrarFacultades() {
@@ -124,21 +302,7 @@ public class MBhistoriaClinica implements Serializable {
         return temporal;
     }
 
-    public TLugarGeografico getLugarGeografico() {
-        if (lugarGeografico == null) {
-            lugarGeografico = new TLugarGeografico();
-        }
-        return lugarGeografico;
-    }
-
-    public void setLugarGeografico(TLugarGeografico lugarGeografico) {
-        this.lugarGeografico = lugarGeografico;
-    }
-
     public TPaciente getPaciente() {
-        if (paciente == null) {
-            paciente = new TPaciente();
-        }
         return paciente;
     }
 
@@ -155,14 +319,6 @@ public class MBhistoriaClinica implements Serializable {
 
     public void setKardex(TKardex kardex) {
         this.kardex = kardex;
-    }
-
-    public String getNumeroHCU() {
-        return numeroHCU;
-    }
-
-    public void setNumeroHCU(String numeroHCU) {
-        this.numeroHCU = numeroHCU;
     }
 
     public TFacultad getCarrera() {
@@ -187,12 +343,81 @@ public class MBhistoriaClinica implements Serializable {
         this.semestres = semestres;
     }
 
-    public boolean isTipoPaciente() {
-        return tipoPaciente;
+    public TFacultad getFacultad() {
+        if (facultad == null) {
+            facultad = new TFacultad();
+        }
+        return facultad;
     }
 
-    public void setTipoPaciente(boolean tipoPaciente) {
-        this.tipoPaciente = tipoPaciente;
+    public void setFacultad(TFacultad facultad) {
+        this.facultad = facultad;
+    }
+
+    public TLugarGeografico getProvincia() {
+        if (provincia == null) {
+            provincia = new TLugarGeografico();
+        }
+        return provincia;
+    }
+
+    public void setProvincia(TLugarGeografico provincia) {
+        this.provincia = provincia;
+    }
+
+    public TLugarGeografico getCanton() {
+        if (canton == null) {
+            canton = new TLugarGeografico();
+        }
+        return canton;
+    }
+
+    public void setCanton(TLugarGeografico canton) {
+        this.canton = canton;
+    }
+
+    public TLugarGeografico getParroquia() {
+        if (parroquia == null) {
+            parroquia = new TLugarGeografico();
+        }
+        return parroquia;
+    }
+
+    public void setParroquia(TLugarGeografico parroquia) {
+        this.parroquia = parroquia;
+    }
+
+    public String getFechaAdmision() {
+        return getFechaFormato(new SimpleDateFormat("dd'/'MMMM'/'yyyy HH:mm:ss", new Locale("es", "EC")));
+    }
+
+    public String getFechaFormato(SimpleDateFormat formateador) {
+        return formateador.format(new Date());
+    }
+
+    public TPaciente getSelected() {
+        return selected;
+    }
+
+    public void setSelected(TPaciente selected) {
+        this.selected = selected;
+    }
+
+    public List<TPaciente> getPacientes() {
+        if (pacientes == null) {
+            pacientes = servicioPaciente.findAll();
+        }
+        return pacientes;
+    }
+
+    public void setPacientes(List<TPaciente> pacientes) {
+        this.pacientes = pacientes;
+    }
+
+    public Integer getNumeroHCU() {
+        numeroHCU = servicioPaciente.findMaxHCU();
+        numeroHCU = numeroHCU + 1;
+        return numeroHCU;
     }
 
 }

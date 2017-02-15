@@ -8,9 +8,12 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 
 @Named(value = "mBfacultad")
-@RequestScoped
+//@ViewScoped
+@SessionScoped
 public class MBfacultad implements Serializable {
 
     private TFacultad facultad;
@@ -26,6 +29,7 @@ public class MBfacultad implements Serializable {
 
     public void onChangeFac() {
         getCarreras();
+        carreras = null;
     }
 
     public TFacultad getFacultad() {

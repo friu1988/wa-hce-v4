@@ -15,8 +15,8 @@
         <ui:define name="body">
             <h:form id="TPacienteListForm">
                 <p:panel header="Pacientes Registrados">
-                    <p:dataTable id="datalist" value="#{mBpacientes.items}" var="item"
-                                 selectionMode="single" selection="#{mBpacientes.selected}"
+                    <p:dataTable id="datalist" value="#{mBhistoriaClinica.pacientes}" var="item"
+                                 selectionMode="single" selection="#{mBhistoriaClinica.paciente}"
                                  paginator="true"
                                  rowKey="#{item.pacCedula}"
                                  rows="10"
@@ -28,18 +28,18 @@
 
                         <f:facet name="header">
                             <p:commandButton id="createButton1" icon="ui-icon-plus"   value="Registrar" action="#{mBhistoriaClinica.crearHistoria()}"/>
-                            <p:commandButton id="viewButton1"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.verHistoria()}" disabled="#{empty mBpacientes.selected}" />
-                            <p:commandButton id="editButton1"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.editarHistoria()}" disabled="#{empty mBpacientes.selected}" />
-                            <p:commandButton id="deleteButton1" icon="ui-icon-trash"  value="Eliminar" actionListener="#{mBpacientes.destroy}" update=":growl,datalist" disabled="#{empty mBpacientes.selected}"/>
+                            <p:commandButton id="viewButton1"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.verHistoria()}" disabled="#{empty mBhistoriaClinica.paciente}" />
+                            <p:commandButton id="editButton1"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.editarHistoria()}" disabled="#{empty mBhistoriaClinica.paciente}" />
+                            <p:commandButton id="deleteButton1" icon="ui-icon-trash"  value="Eliminar" actionListener="#{mBpacientes.destroy}" update=":growl,datalist" disabled="#{empty mBhistoriaClinica.paciente}"/>
                         </f:facet>
 
-                        <p:column headerText="Cédula"  filterBy="#{item.pacCedula}" filterMatchMode="contains">
+                        <p:column headerText="Cédula"  filterBy="#{item.pacCedula}" filterMatchMode="exact">
                             <h:outputText value="#{item.pacCedula}"/>
                         </p:column>
                         <p:column headerText="HCU" filterBy="#{item.pacApellidoPaterno}" filterMatchMode="contains">
-                            <h:outputText value=""/>
+                            <h:outputText value="#{item.hclNumeroHistoria}"/>
                         </p:column>
-                        <p:column headerText="Apellidos">
+                        <p:column headerText="Apellidos" filterBy="#{item.pacApellidoPaterno}" filterMatchMode="contains">
                             <h:outputText value="#{item.pacApellidoPaterno} #{item.pacApellidoMaterno}"/>
                         </p:column>
                         <p:column headerText="Nombres">
@@ -53,9 +53,9 @@
                         </p:column> 
                         <f:facet name="footer">
                             <p:commandButton id="createButton2" icon="ui-icon-plus"   value="Registrar" action="#{mBhistoriaClinica.crearHistoria()}"/>
-                            <p:commandButton id="viewButton2"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.verHistoria()}" disabled="#{empty mBpacientes.selected}"/>
-                            <p:commandButton id="editButton2"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.editarHistoria()}" disabled="#{empty mBpacientes.selected}"/>
-                            <p:commandButton id="deleteButton2" icon="ui-icon-trash"  value="Eliminar" actionListener="#{mBpacientes.destroy}" update=":growl,datalist" disabled="#{empty mBpacientes.selected}"/>
+                            <p:commandButton id="viewButton2"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.verHistoria()}" disabled="#{empty mBhistoriaClinica.paciente}"/>
+                            <p:commandButton id="editButton2"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.editarHistoria()}" disabled="#{empty mBhistoriaClinica.paciente}"/>
+                            <p:commandButton id="deleteButton2" icon="ui-icon-trash"  value="Eliminar" actionListener="#{mBpacientes.destroy}" update=":growl,datalist" disabled="#{empty mBhistoriaClinica.paciente}"/>
                         </f:facet>
                     </p:dataTable>
                 </p:panel>

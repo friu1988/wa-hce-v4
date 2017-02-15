@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TPaciente.findAll", query = "SELECT t FROM TPaciente t"),
+    @NamedQuery(name = "TPaciente.findMaxHCU", query = "SELECT MAX(t.hclNumeroHistoria) FROM TPaciente t"),
     @NamedQuery(name = "TPaciente.findByPacCedula", query = "SELECT t FROM TPaciente t WHERE t.pacCedula = :pacCedula"),
     @NamedQuery(name = "TPaciente.findByPacApellidoPaterno", query = "SELECT t FROM TPaciente t WHERE t.pacApellidoPaterno = :pacApellidoPaterno"),
     @NamedQuery(name = "TPaciente.findByPacApellidoMaterno", query = "SELECT t FROM TPaciente t WHERE t.pacApellidoMaterno = :pacApellidoMaterno"),
@@ -55,7 +56,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TPaciente.findByPacReferidoDe", query = "SELECT t FROM TPaciente t WHERE t.pacReferidoDe = :pacReferidoDe"),
     @NamedQuery(name = "TPaciente.findByPacFamiliar", query = "SELECT t FROM TPaciente t WHERE t.pacFamiliar = :pacFamiliar"),
     @NamedQuery(name = "TPaciente.findByPacParentesco", query = "SELECT t FROM TPaciente t WHERE t.pacParentesco = :pacParentesco"),
-    @NamedQuery(name = "TPaciente.findByPacDireccion", query = "SELECT t FROM TPaciente t WHERE t.pacDireccion = :pacDireccion"),
+    @NamedQuery(name = "TPaciente.findByPacDireccion", query = "SELECT t FROM TPaciente t WHERE t.pacDireccionPariente = :pacDireccionPariente"),
     @NamedQuery(name = "TPaciente.findByPacTelefonoFamiliar", query = "SELECT t FROM TPaciente t WHERE t.pacTelefonoFamiliar = :pacTelefonoFamiliar"),
     @NamedQuery(name = "TPaciente.findByHclInstitucion", query = "SELECT t FROM TPaciente t WHERE t.hclInstitucion = :hclInstitucion"),
     @NamedQuery(name = "TPaciente.findByHclUnidadOperativa", query = "SELECT t FROM TPaciente t WHERE t.hclUnidadOperativa = :hclUnidadOperativa"),
@@ -95,8 +96,8 @@ public class TPaciente implements Serializable {
     @Size(max = 200)
     @Column(name = "pac_barrio", length = 200)
     private String pacBarrio;
-    @Size(max = 50)
-    @Column(name = "pac_zona", length = 50)
+    @Size(max = 1)
+    @Column(name = "pac_zona", length = 1)
     private String pacZona;
     @Size(max = 300)
     @Column(name = "pac_telefono", length = 300)
@@ -110,17 +111,17 @@ public class TPaciente implements Serializable {
     @Size(max = 300)
     @Column(name = "pac_nacionalidad", length = 300)
     private String pacNacionalidad;
-    @Size(max = 300)
-    @Column(name = "pac_grupo_cultural", length = 300)
-    private String pacGrupoCultural;
     @Size(max = 2)
-    @Column(name = "pac_sexo", length = 2)
+    @Column(name = "pac_grupo_cultural", length = 2)
+    private String pacGrupoCultural;
+    @Size(max = 1)
+    @Column(name = "pac_sexo", length = 1)
     private String pacSexo;
-    @Size(max = 300)
-    @Column(name = "pac_estado_civil", length = 300)
+    @Size(max = 2)
+    @Column(name = "pac_estado_civil", length = 2)
     private String pacEstadoCivil;
-    @Size(max = 300)
-    @Column(name = "pac_instruccion", length = 300)
+    @Size(max = 2)
+    @Column(name = "pac_instruccion", length = 2)
     private String pacInstruccion;
     @Size(max = 300)
     @Column(name = "pac_ocupacion", length = 300)
@@ -141,8 +142,8 @@ public class TPaciente implements Serializable {
     @Column(name = "pac_parentesco", length = 300)
     private String pacParentesco;
     @Size(max = 300)
-    @Column(name = "pac_direccion", length = 300)
-    private String pacDireccion;
+    @Column(name = "pac_direccion_pariente", length = 300)
+    private String pacDireccionPariente;
     @Size(max = 10)
     @Column(name = "pac_telefono_familiar", length = 10)
     private String pacTelefonoFamiliar;
@@ -167,8 +168,8 @@ public class TPaciente implements Serializable {
     @Size(max = 10)
     @Column(name = "hcl_numero_historia", length = 10)
     private String hclNumeroHistoria;
-    @Size(max = 11)
-    @Column(name = "hcl_tipo_paciente", length = 11)
+    @Size(max = 1)
+    @Column(name = "hcl_tipo_paciente", length = 1)
     private String hclTipoPaciente;
     @Size(max = 200)
     @Column(name = "hcl_semestre", length = 200)
@@ -359,12 +360,12 @@ public class TPaciente implements Serializable {
         this.pacParentesco = pacParentesco;
     }
 
-    public String getPacDireccion() {
-        return pacDireccion;
+    public String getPacDireccionPariente() {
+        return pacDireccionPariente;
     }
 
-    public void setPacDireccion(String pacDireccion) {
-        this.pacDireccion = pacDireccion;
+    public void setPacDireccionPariente(String pacDireccionPariente) {
+        this.pacDireccionPariente = pacDireccionPariente;
     }
 
     public String getPacTelefonoFamiliar() {
@@ -543,7 +544,7 @@ public class TPaciente implements Serializable {
 
     @Override
     public String toString() {
-        return "TPaciente{" + "pacCedula=" + pacCedula + ", pacApellidoPaterno=" + pacApellidoPaterno + ", pacPrimerNombre=" + pacPrimerNombre + ", lgCodigo=" + lgCodigo + ", perSerial=" + perSerial + '}';
+        return "TPaciente{" + "pacCedula=" + pacCedula + ", pacApellidoPaterno=" + pacApellidoPaterno + ", pacApellidoMaterno=" + pacApellidoMaterno + ", pacPrimerNombre=" + pacPrimerNombre + ", pacSegundoNombre=" + pacSegundoNombre + ", pacDireccionResidencial=" + pacDireccionResidencial + ", pacBarrio=" + pacBarrio + ", pacZona=" + pacZona + ", pacTelefono=" + pacTelefono + ", pacFechaNacimiento=" + pacFechaNacimiento + ", pacLugarNacimiento=" + pacLugarNacimiento + ", pacNacionalidad=" + pacNacionalidad + ", pacGrupoCultural=" + pacGrupoCultural + ", pacSexo=" + pacSexo + ", pacEstadoCivil=" + pacEstadoCivil + ", pacInstruccion=" + pacInstruccion + ", pacOcupacion=" + pacOcupacion + ", pacEmpresaLabora=" + pacEmpresaLabora + ", pacSeguroSalud=" + pacSeguroSalud + ", pacReferidoDe=" + pacReferidoDe + ", pacFamiliar=" + pacFamiliar + ", pacParentesco=" + pacParentesco + ", pacDireccionPariente=" + pacDireccionPariente + ", pacTelefonoFamiliar=" + pacTelefonoFamiliar + ", hclInstitucion=" + hclInstitucion + ", hclUnidadOperativa=" + hclUnidadOperativa + ", hclCodigoOu=" + hclCodigoOu + ", hclClParroquia=" + hclClParroquia + ", hclClCanton=" + hclClCanton + ", hclClProvincia=" + hclClProvincia + ", hclNumeroHistoria=" + hclNumeroHistoria + ", hclTipoPaciente=" + hclTipoPaciente + ", hclSemestre=" + hclSemestre + ", hclFechaAdmision=" + hclFechaAdmision + ", hclEstado=" + hclEstado + ", lgCodigo=" + lgCodigo + ", perSerial=" + perSerial + ", facSerial=" + facSerial + '}';
     }
 
 }

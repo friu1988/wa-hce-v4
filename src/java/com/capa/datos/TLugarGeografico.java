@@ -126,7 +126,7 @@ public class TLugarGeografico implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TLugarGeografico[ lgCodigo=" + lgCodigo + " ]";
+        return "TLugarGeografico{" + "lgCodigo=" + lgCodigo + ", lgNombre=" + lgNombre + ", padreLgCodigo=" + padreLgCodigo + '}';
     }
 
 }

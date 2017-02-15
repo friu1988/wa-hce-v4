@@ -6,9 +6,11 @@
 package com.capa.negocios;
 
 import com.capa.datos.TPaciente;
+import com.capa.datos.TUsuario;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +30,11 @@ public class TPacienteFacade extends AbstractFacade<TPaciente> {
     public TPacienteFacade() {
         super(TPaciente.class);
     }
-    
+
+    public Integer findMaxHCU() {
+        Query sql = em.createNamedQuery("TPaciente.findMaxHCU");
+        String numeroHCU = (String) sql.getSingleResult();
+        return Integer.parseInt(numeroHCU);
+    }
+
 }
