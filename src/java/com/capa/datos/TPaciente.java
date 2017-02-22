@@ -6,8 +6,10 @@
 package com.capa.datos;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,7 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "t_paciente", catalog = "db_hospital_dia_v4", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TPaciente.findAll", query = "SELECT t FROM TPaciente t"),
+    @NamedQuery(name = "TPaciente.findAll", query = "SELECT t FROM TPaciente t ORDER BY t.hclNumeroHistoria DESC"),
     @NamedQuery(name = "TPaciente.findMaxHCU", query = "SELECT MAX(t.hclNumeroHistoria) FROM TPaciente t"),
     @NamedQuery(name = "TPaciente.findByPacCedula", query = "SELECT t FROM TPaciente t WHERE t.pacCedula = :pacCedula"),
     @NamedQuery(name = "TPaciente.findByPacApellidoPaterno", query = "SELECT t FROM TPaciente t WHERE t.pacApellidoPaterno = :pacApellidoPaterno"),

@@ -10,7 +10,7 @@
 
     <ui:define name="body">
         <p:growl id="msg" showDetail="true"/>
-        <h:form id="frm_hcu_crear">
+        <h:form id="frm_hcu_editar">
             <p:panel>
                 <p:panelGrid style="width: 100%">
                     <f:facet name="header">
@@ -70,7 +70,7 @@
                             <p:inputText placeholder="Pichincha" style="width: 95%" disabled="true"/>
                         </p:column>
                         <p:column>
-                            <p:outputLabel style="width: 95%" value="#{mBhistoriaClinica.numeroHCU}" />
+                            <p:inputText style="width: 95%" value="#{mBhistoriaClinica.paciente.hclNumeroHistoria}" />
                         </p:column>
                     </p:row>
 
@@ -121,9 +121,7 @@
                     </p:row>
                     <p:row>
                         <p:column colspan="8">
-                            <p:outputLabel style="font-weight:bold">
-                                <font color="blue">1.- REGISTRO DE PRIMERA ADMISIÓN</font>
-                            </p:outputLabel>
+                            <p:outputLabel style="font-weight:bold ; color: blue">1.- REGISTRO DE PRIMERA ADMISIÓN</p:outputLabel>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -371,7 +369,7 @@
                     <f:facet name="header">
                         <p:row>
                             <p:column style="align-content: center">
-                                <p:commandButton icon="ui-icon-plus" value="Guardar"  action="#{mBhistoriaClinica.crearHCU()}" update=":frm_hcu_crear"/>
+                                <p:commandButton icon="ui-icon-plus" value="Guardar"  action="#{mBhistoriaClinica.editarHCU()}" update=":frm_hcu_editar"/>
                             </p:column>
                         </p:row>
                     </f:facet>

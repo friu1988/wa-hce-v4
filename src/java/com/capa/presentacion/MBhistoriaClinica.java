@@ -13,6 +13,10 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -25,6 +29,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 @Named(value = "mBhistoriaClinica")
+//@ViewScoped
 @SessionScoped
 public class MBhistoriaClinica implements Serializable {
 
@@ -38,6 +43,9 @@ public class MBhistoriaClinica implements Serializable {
     private TKardex kardex;
     private String fechaAdmision;
     private Integer numeroHCU;
+    private Long edad;
+    private String fechaNacimiento;
+    private boolean tipo = false;
 
     private List<TFacultad> facultades;
     private List<TFacultad> carreras;
@@ -63,94 +71,192 @@ public class MBhistoriaClinica implements Serializable {
     public void init() {
     }
 
+    public void tipoPaciente() {
+        facultades = carreras = null;
+        facultad = carrera = null;
+        semestres = null;
+        paciente.setHclSemestre(null);
+
+        if (paciente.getHclTipoPaciente().equals("P")) {
+            tipo = true;
+        } else {
+            tipo = false;
+        }
+    }
+
     public String crearHistoria() {
         System.out.println("Crear historia clinica>>>>>>>>>>>>>");
         paciente = new TPaciente();
+        paciente.setHclTipoPaciente("E");
+
+        facultades = carreras = null;
+        provincias = cantones = parroquias = null;
+        semestres = null;
+
+        facultad = carrera = null;
+        provincia = canton = parroquia = null;
+
         numeroHCU = null;
+        fechaAdmision = Utilidades.getFechaHora();
         return "historia_crear.xhtml";
     }
 
     public String verHistoria() {
-        System.out.println("Ver>>>>>>>>>>>>>");
-
+        System.out.println("Ver>>>>>>>>>>>>>" + paciente);
+        edad = Utilidades.calcularAños(paciente);
+        fechaNacimiento = Utilidades.getFechaNacimiento(paciente);
+        fechaAdmision = Utilidades.getFechaHoraFormato(paciente);
         return "historia_ver.xhtml";
     }
 
     public String editarHistoria() {
-        System.out.println("Editar>>>>>>>>>>>>>");
-        return "historia_crear.xhtml";
+        System.out.println("Editar>>>>>>>>>>>>>" + paciente);
+        return "historia_editar.xhtml";
     }
 
     public void click() {
     }
 
+    public String editarHCU() {
+        System.out.println("Editar paciente >>>>>>>>");
+        try {
+            //Personal
+            TUsuario user = (TUsuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLogin");
+            TAdmisionista admisionista = new TAdmisionista();
+            admisionista.setPerSerial(user.getPerSerial().getPerSerial());
+            //Facultad
+            paciente.setFacSerial(carrera);
+            //Lugar GEO
+            paciente.setLgCodigo(parroquia);
+            //Admisionista
+            paciente.setPerSerial(admisionista);
+            //HCU
+            paciente.setHclInstitucion("UCE");
+            paciente.setHclUnidadOperativa("Archivo");
+            paciente.setHclCodigoOu("OU");
+            paciente.setHclClParroquia("Belisario Quevedo");
+            paciente.setHclClCanton("Quito");
+            paciente.setHclClProvincia("Pichincha");
+            paciente.setHclNumeroHistoria(this.paciente.getHclNumeroHistoria());
+            paciente.setHclTipoPaciente(this.paciente.getHclTipoPaciente());
+            paciente.setHclSemestre(this.paciente.getHclSemestre());
+            paciente.setPacApellidoPaterno(this.paciente.getPacApellidoPaterno());
+            paciente.setPacApellidoMaterno(this.paciente.getPacApellidoMaterno());
+            paciente.setPacPrimerNombre(this.paciente.getPacPrimerNombre());
+            paciente.setPacSegundoNombre(this.paciente.getPacSegundoNombre());
+            paciente.setPacCedula(this.paciente.getPacCedula());
+            paciente.setPacDireccionResidencial(this.paciente.getPacDireccionResidencial());
+            paciente.setPacBarrio(this.paciente.getPacBarrio());
+            paciente.setPacZona(this.paciente.getPacZona());
+            paciente.setPacTelefono(this.paciente.getPacTelefono());
+            paciente.setPacFechaNacimiento(this.paciente.getPacFechaNacimiento());
+            paciente.setPacLugarNacimiento(this.paciente.getPacLugarNacimiento());
+            paciente.setPacNacionalidad(this.paciente.getPacNacionalidad());
+            paciente.setPacGrupoCultural(this.paciente.getPacGrupoCultural());
+            paciente.setPacSexo(this.paciente.getPacSexo());
+            paciente.setPacEstadoCivil(this.paciente.getPacEstadoCivil());
+            paciente.setPacInstruccion(this.paciente.getPacInstruccion());
+            Calendar cal = Calendar.getInstance();
+            paciente.setHclFechaAdmision(cal.getTime());
+            paciente.setPacOcupacion(this.paciente.getPacOcupacion());
+            paciente.setPacEmpresaLabora(this.paciente.getPacEmpresaLabora());
+            paciente.setPacSeguroSalud(this.paciente.getPacSeguroSalud());
+            paciente.setPacReferidoDe(this.paciente.getPacReferidoDe());
+            paciente.setPacTelefonoFamiliar(this.paciente.getPacTelefonoFamiliar());
+            paciente.setPacParentesco(this.paciente.getPacParentesco());
+            paciente.setPacDireccionPariente(this.paciente.getPacDireccionPariente());
+            paciente.setPacTelefonoFamiliar(this.paciente.getPacTelefonoFamiliar());
+
+            servicioPaciente.edit(paciente);
+
+            pacientes = null;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Historia Clínica Actualizada! " + paciente, null));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al Actualizar" + e.getMessage(), null));
+        }
+        return "pacientes.xhtml";
+    }
+
     public String crearHCU() {
         System.out.println("Crear paciente >>>>>>>>");
-        //Personal
-        TUsuario user = (TUsuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLogin");
-        TAdmisionista admisionista = new TAdmisionista();
-        admisionista.setPerSerial(user.getPerSerial().getPerSerial());
-        System.out.println(user);
-        System.out.println(admisionista);
-
-        //Facultad
-        paciente.setFacSerial(carrera);
-        //Lugar GEO
-        paciente.setLgCodigo(parroquia);
-        //Admisionista
-        paciente.setPerSerial(admisionista);
-        //HCU
-        paciente.setHclInstitucion("UCE");
-        paciente.setHclUnidadOperativa("Archivo");
-        paciente.setHclCodigoOu("OU");
-        paciente.setHclClParroquia("Belisario Quevedo");
-        paciente.setHclClCanton("Quito");
-        paciente.setHclClProvincia("Pichincha");
-
-        //Por implementar N-HCU
-        paciente.setHclNumeroHistoria(String.valueOf(getNumeroHCU()));
-//        paciente.setHclTipoPaciente(this.paciente.getHclTipoPaciente());
-        paciente.setHclSemestre(this.paciente.getHclSemestre());
-        paciente.setPacApellidoPaterno(this.paciente.getPacApellidoPaterno());
-        paciente.setPacApellidoMaterno(this.paciente.getPacApellidoMaterno());
-        paciente.setPacPrimerNombre(this.paciente.getPacPrimerNombre());
-        paciente.setPacSegundoNombre(this.paciente.getPacSegundoNombre());
-        paciente.setPacCedula(this.paciente.getPacCedula());
-        paciente.setPacDireccionResidencial(this.paciente.getPacDireccionResidencial());
-        paciente.setPacBarrio(this.paciente.getPacBarrio());
-        paciente.setPacZona(this.paciente.getPacZona());
-        paciente.setPacTelefono(this.paciente.getPacTelefono());
-        paciente.setPacFechaNacimiento(this.paciente.getPacFechaNacimiento());
-        paciente.setPacLugarNacimiento(this.paciente.getPacLugarNacimiento());
-        paciente.setPacNacionalidad(this.paciente.getPacNacionalidad());
-        paciente.setPacGrupoCultural(this.paciente.getPacGrupoCultural());
-        paciente.setPacSexo(this.paciente.getPacSexo());
-        paciente.setPacEstadoCivil(this.paciente.getPacEstadoCivil());
-        paciente.setPacInstruccion(this.paciente.getPacInstruccion());
-        Calendar cal = Calendar.getInstance();
-        paciente.setHclFechaAdmision(cal.getTime());
-        paciente.setPacOcupacion(this.paciente.getPacOcupacion());
-        paciente.setPacEmpresaLabora(this.paciente.getPacEmpresaLabora());
-        paciente.setPacSeguroSalud(this.paciente.getPacSeguroSalud());
-        paciente.setPacReferidoDe(this.paciente.getPacReferidoDe());
-        paciente.setPacTelefonoFamiliar(this.paciente.getPacTelefonoFamiliar());
-        paciente.setPacParentesco(this.paciente.getPacParentesco());
-        paciente.setPacDireccionPariente(this.paciente.getPacDireccionPariente());
-        paciente.setPacTelefonoFamiliar(this.paciente.getPacTelefonoFamiliar());
-
         try {
+            //Personal
+            TUsuario user = (TUsuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLogin");
+            TAdmisionista admisionista = new TAdmisionista();
+            admisionista.setPerSerial(user.getPerSerial().getPerSerial());
+            System.out.println(user);
+            System.out.println(admisionista);
+
+            //Facultad
+            paciente.setFacSerial(carrera);
+            //Lugar GEO
+            paciente.setLgCodigo(parroquia);
+            //Admisionista
+            paciente.setPerSerial(admisionista);
+            //HCU
+            paciente.setHclInstitucion("UCE");
+            paciente.setHclUnidadOperativa("Archivo");
+            paciente.setHclCodigoOu("OU");
+            paciente.setHclClParroquia("Belisario Quevedo");
+            paciente.setHclClCanton("Quito");
+            paciente.setHclClProvincia("Pichincha");
+
+            //Por implementar N-HCU
+            paciente.setHclNumeroHistoria(String.valueOf(getNumeroHCU()));
+            paciente.setHclTipoPaciente(this.paciente.getHclTipoPaciente());
+            paciente.setHclSemestre(this.paciente.getHclSemestre());
+            paciente.setPacApellidoPaterno(this.paciente.getPacApellidoPaterno());
+            paciente.setPacApellidoMaterno(this.paciente.getPacApellidoMaterno());
+            paciente.setPacPrimerNombre(this.paciente.getPacPrimerNombre());
+            paciente.setPacSegundoNombre(this.paciente.getPacSegundoNombre());
+            paciente.setPacCedula(this.paciente.getPacCedula());
+            paciente.setPacDireccionResidencial(this.paciente.getPacDireccionResidencial());
+            paciente.setPacBarrio(this.paciente.getPacBarrio());
+            paciente.setPacZona(this.paciente.getPacZona());
+            paciente.setPacTelefono(this.paciente.getPacTelefono());
+            paciente.setPacFechaNacimiento(this.paciente.getPacFechaNacimiento());
+            paciente.setPacLugarNacimiento(this.paciente.getPacLugarNacimiento());
+            paciente.setPacNacionalidad(this.paciente.getPacNacionalidad());
+            paciente.setPacGrupoCultural(this.paciente.getPacGrupoCultural());
+            paciente.setPacSexo(this.paciente.getPacSexo());
+            paciente.setPacEstadoCivil(this.paciente.getPacEstadoCivil());
+            paciente.setPacInstruccion(this.paciente.getPacInstruccion());
+            Calendar cal = Calendar.getInstance();
+            paciente.setHclFechaAdmision(cal.getTime());
+            paciente.setPacOcupacion(this.paciente.getPacOcupacion());
+            paciente.setPacEmpresaLabora(this.paciente.getPacEmpresaLabora());
+            paciente.setPacSeguroSalud(this.paciente.getPacSeguroSalud());
+            paciente.setPacReferidoDe(this.paciente.getPacReferidoDe());
+            paciente.setPacTelefonoFamiliar(this.paciente.getPacTelefonoFamiliar());
+            paciente.setPacParentesco(this.paciente.getPacParentesco());
+            paciente.setPacDireccionPariente(this.paciente.getPacDireccionPariente());
+            paciente.setPacTelefonoFamiliar(this.paciente.getPacTelefonoFamiliar());
+
             servicioPaciente.create(paciente);
+
             pacientes = null;
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Historia Clínica Ingresda! " + paciente, null));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al Ingresar" + e.getMessage(), null));
         }
 
-        System.out.println(paciente);
         return "pacientes.xhtml";
     }
 
-    public void onChangeFac() {
+    public void eliminarHCU() {
+
+        try {
+            servicioPaciente.remove(paciente);
+            paciente = null;
+            pacientes = null;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Historia Clínica Eliminada! " + paciente, null));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al Eliminar" + e.getMessage(), null));
+        }
+    }
+
+    public void onChangeFacultades() {
         getCarreras();
         carreras = null;
     }
@@ -179,8 +285,8 @@ public class MBhistoriaClinica implements Serializable {
 
     public void onChangeProvincias() {
         if (provincia != null && !provincia.getLgCodigo().equals("")) {
-            cantones = null;
-            parroquias = null;
+            provincias = cantones = parroquias = null;
+            canton = parroquia = null;
             getCantones();
         }
 
@@ -333,10 +439,7 @@ public class MBhistoriaClinica implements Serializable {
     }
 
     public List<String> getSemestres() {
-        if (semestres == null) {
-            semestres = cargarSemestres();
-        }
-        return semestres;
+        return cargarSemestres();
     }
 
     public void setSemestres(List<String> semestres) {
@@ -388,11 +491,11 @@ public class MBhistoriaClinica implements Serializable {
     }
 
     public String getFechaAdmision() {
-        return getFechaFormato(new SimpleDateFormat("dd'/'MMMM'/'yyyy HH:mm:ss", new Locale("es", "EC")));
+        return fechaAdmision;
     }
 
-    public String getFechaFormato(SimpleDateFormat formateador) {
-        return formateador.format(new Date());
+    public void setFechaAdmision(String fechaAdmision) {
+        this.fechaAdmision = fechaAdmision;
     }
 
     public TPaciente getSelected() {
@@ -418,6 +521,30 @@ public class MBhistoriaClinica implements Serializable {
         numeroHCU = servicioPaciente.findMaxHCU();
         numeroHCU = numeroHCU + 1;
         return numeroHCU;
+    }
+
+    public boolean isTipo() {
+        return tipo;
+    }
+
+    public void setTipo(boolean tipo) {
+        this.tipo = tipo;
+    }
+
+    public Long getEdad() {
+        return edad;
+    }
+
+    public void setEdad(Long edad) {
+        this.edad = edad;
+    }
+
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
 }

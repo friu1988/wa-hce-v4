@@ -13,7 +13,7 @@
         </ui:define>
 
         <ui:define name="body">
-            <h:form id="TPacienteListForm">
+            <h:form id="frm_pacientes">
                 <p:panel header="Pacientes Registrados">
                     <p:dataTable id="datalist" value="#{mBhistoriaClinica.pacientes}" var="item"
                                  selectionMode="single" selection="#{mBhistoriaClinica.paciente}"
@@ -30,13 +30,13 @@
                             <p:commandButton id="createButton1" icon="ui-icon-plus"   value="Registrar" action="#{mBhistoriaClinica.crearHistoria()}"/>
                             <p:commandButton id="viewButton1"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.verHistoria()}" disabled="#{empty mBhistoriaClinica.paciente}" />
                             <p:commandButton id="editButton1"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.editarHistoria()}" disabled="#{empty mBhistoriaClinica.paciente}" />
-                            <p:commandButton id="deleteButton1" icon="ui-icon-trash"  value="Eliminar" actionListener="#{mBpacientes.destroy}" update=":growl,datalist" disabled="#{empty mBhistoriaClinica.paciente}"/>
+                            <p:commandButton id="deleteButton1" icon="ui-icon-trash"  value="Eliminar" update=":frm_eliminar"  oncomplete="PF('dlg_eliminar_pac').show();" disabled="#{empty mBhistoriaClinica.paciente}"/>
                         </f:facet>
 
                         <p:column headerText="Cédula"  filterBy="#{item.pacCedula}" filterMatchMode="exact">
                             <h:outputText value="#{item.pacCedula}"/>
                         </p:column>
-                        <p:column headerText="HCU" filterBy="#{item.pacApellidoPaterno}" filterMatchMode="contains">
+                        <p:column headerText="HCU" filterBy="#{item.hclNumeroHistoria}" filterMatchMode="contains" sortBy="#{item.hclNumeroHistoria}">
                             <h:outputText value="#{item.hclNumeroHistoria}"/>
                         </p:column>
                         <p:column headerText="Apellidos" filterBy="#{item.pacApellidoPaterno}" filterMatchMode="contains">
@@ -55,12 +55,33 @@
                             <p:commandButton id="createButton2" icon="ui-icon-plus"   value="Registrar" action="#{mBhistoriaClinica.crearHistoria()}"/>
                             <p:commandButton id="viewButton2"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.verHistoria()}" disabled="#{empty mBhistoriaClinica.paciente}"/>
                             <p:commandButton id="editButton2"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.editarHistoria()}" disabled="#{empty mBhistoriaClinica.paciente}"/>
-                            <p:commandButton id="deleteButton2" icon="ui-icon-trash"  value="Eliminar" actionListener="#{mBpacientes.destroy}" update=":growl,datalist" disabled="#{empty mBhistoriaClinica.paciente}"/>
+                            <p:commandButton id="deleteButton2" icon="ui-icon-trash"  value="Eliminar" update=":frm_eliminar"  oncomplete="PF('dlg_eliminar_pac').show();" disabled="#{empty mBhistoriaClinica.paciente}"/>
                         </f:facet>
                     </p:dataTable>
                 </p:panel>
             </h:form>
+            <h:form id="frm_eliminar">
+                <p:dialog id="dlgEliminarCarrera" header="Eliminar Registro!" widgetVar="dlg_eliminar_pac" resizable="false" 
+                          showEffect="explode" hideEffect="explode" modal="true">
+                    <p:panelGrid style="width: 100%" >
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="¿Está seguro de eliminar este paciente?"/>
+                            </p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column>
+                                    <p:commandButton value="Si" actionListener="#{mBhistoriaClinica.eliminarHCU()}"
+                                                     update=":frm_pacientes :growl" 
+                                                     oncomplete="PF('dlg_eliminar_pac').hide();"/>
+                                    <p:commandButton value="No" oncomplete="PF('dlg_eliminar_pac').hide();"/>
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
         </ui:define>
     </ui:composition>
-
 </html>
