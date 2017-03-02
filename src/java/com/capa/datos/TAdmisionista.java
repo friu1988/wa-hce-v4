@@ -111,7 +111,7 @@ public class TAdmisionista implements Serializable {
 
     @Override
     public String toString() {
-        return "TAdmisionista{" + "perSerial=" + perSerial + '}';
+        return "TAdmisionista{" + "perSerial=" + perSerial + ", tPersonal=" + tPersonal + '}';
     }
 
 }

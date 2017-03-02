@@ -12,24 +12,16 @@ import com.capa.negocios.TPacienteFacade;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 @Named(value = "mBhistoriaClinica")
-//@ViewScoped
 @SessionScoped
 public class MBhistoriaClinica implements Serializable {
 
@@ -67,8 +59,8 @@ public class MBhistoriaClinica implements Serializable {
 
     }
 
-    @PostConstruct
-    public void init() {
+    public String crearTurno() {
+        return "turno_crear.xhtml";
     }
 
     public void tipoPaciente() {

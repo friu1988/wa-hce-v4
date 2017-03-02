@@ -72,6 +72,10 @@ public class TPersonal implements Serializable {
     @Size(max = 150)
     @Column(name = "per_email", length = 150)
     private String perEmail;
+    @Size(max = 1)
+    @Column(name = "per_tipo", length = 1)
+    private String perTipo;
+
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tPersonal")
     private TMedico tMedico;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "perSerial")
@@ -158,6 +162,14 @@ public class TPersonal implements Serializable {
         this.tMedico = tMedico;
     }
 
+    public String getPerTipo() {
+        return perTipo;
+    }
+
+    public void setPerTipo(String perTipo) {
+        this.perTipo = perTipo;
+    }
+
     @XmlTransient
     public List<TUsuario> getTUsuarioList() {
         return tUsuarioList;
@@ -199,5 +211,5 @@ public class TPersonal implements Serializable {
     public String toString() {
         return "com.capa.datos.TPersonal[ perSerial=" + perSerial + " ]";
     }
-    
+
 }

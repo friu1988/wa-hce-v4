@@ -55,15 +55,15 @@ public class TTurno implements Serializable {
     private Date turHora;
     @Column(name = "tur_estado")
     private Boolean turEstado;
-    @JoinColumn(name = "pac_cedula", referencedColumnName = "pac_cedula", nullable = false)
-    @ManyToOne(optional = false)
-    private TPaciente pacCedula;
     @JoinColumn(name = "t_m_per_serial", referencedColumnName = "per_serial", nullable = false)
     @ManyToOne(optional = false)
     private TMedico tMPerSerial;
     @JoinColumn(name = "per_serial", referencedColumnName = "per_serial", nullable = false)
     @ManyToOne(optional = false)
     private TAdmisionista perSerial;
+    @JoinColumn(name = "pac_cedula", referencedColumnName = "pac_cedula", nullable = false)
+    @ManyToOne(optional = false)
+    private TPaciente pacCedula;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "turSerial")
     private List<TConsultaExterna> tConsultaExternaList;
 
@@ -106,14 +106,6 @@ public class TTurno implements Serializable {
         this.turEstado = turEstado;
     }
 
-    public TPaciente getPacCedula() {
-        return pacCedula;
-    }
-
-    public void setPacCedula(TPaciente pacCedula) {
-        this.pacCedula = pacCedula;
-    }
-
     public TMedico getTMPerSerial() {
         return tMPerSerial;
     }
@@ -128,6 +120,14 @@ public class TTurno implements Serializable {
 
     public void setPerSerial(TAdmisionista perSerial) {
         this.perSerial = perSerial;
+    }
+
+    public TPaciente getPacCedula() {
+        return pacCedula;
+    }
+
+    public void setPacCedula(TPaciente pacCedula) {
+        this.pacCedula = pacCedula;
     }
 
     @XmlTransient
@@ -161,7 +161,7 @@ public class TTurno implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TTurno[ turSerial=" + turSerial + " ]";
+        return "TTurno{" + "turSerial=" + turSerial + ", turFecha=" + turFecha + ", turHora=" + turHora + ", turEstado=" + turEstado + ", tMPerSerial=" + tMPerSerial + ", perSerial=" + perSerial + ", pacCedula=" + pacCedula + ", tConsultaExternaList=" + tConsultaExternaList + '}';
     }
-    
+
 }

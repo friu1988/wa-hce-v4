@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dialog id="TPersonalCreateDlg" widgetVar="TPersonalCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Profesional">
+        <h:form id="TPersonalCreateForm">
+            <h:panelGroup id="display">
+                <p:panelGrid columns="2" rendered="#{mBpersonal.persona != null}">
+                    <p:outputLabel value="Nombres" for="per_nombres" />
+                    <p:inputText id="per_nombres" value="#{mBpersonal.persona.perNombres}" />
+                    <p:outputLabel value="Apellidos" for="per_apellidos" />
+                    <p:inputText id="per_apellidos" value="#{mBpersonal.persona.perApellidos}" />
+                    <p:outputLabel value="Fecha de Nacimiento" for="per_fecha_nacimiento" />
+                    <p:calendar id="per_fecha_nacimiento" pattern="dd-MMMM-yyyy"  locale="es" value="#{mBpersonal.persona.perFechaNacimiento}"/>
+                    <p:outputLabel value="Cédula" for="per_cedula" />
+                    <p:inputText id="per_cedula" value="#{mBpersonal.persona.perCedula}" />
+                    <p:outputLabel value="Direccion" for="per_direccion" />
+                    <p:inputText id="per_direccion" value="#{mBpersonal.persona.perDireccion}" />
+                    <p:outputLabel value="Teléfono" for="per_telefono" />
+                    <p:inputText id="per_telefono" value="#{mBpersonal.persona.perTelefono}" />
+                    <p:outputLabel value="E-mail" for="per_email" />
+                    <p:inputText id="per_email" value="#{mBpersonal.persona.perEmail}" />
+                    <p:outputLabel value="Tipo" />
+                    <p:selectOneMenu value="#{mBpersonal.persona.perTipo}">
+                        <f:selectItem itemLabel="-Seleccione-" itemValue=""/>
+                        <f:selectItem itemLabel="Administrador" itemValue="A"/>
+                        <f:selectItem itemLabel="Admisionista" itemValue="D"/>
+                        <f:selectItem itemLabel="Médico" itemValue="M"/>
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                <p:commandButton actionListener="#{mBpersonal.crearEmpleado()}" value="Guardar" update="display :frm_personal:datalist :growl" oncomplete="handleSubmit(args,'TPersonalCreateDialog');"/>
+                <p:commandButton value="Cancelar" onclick="TPersonalCreateDialog.hide()"/>
+            </h:panelGroup>
+        </h:form>
+    </p:dialog>
+</ui:composition>
+

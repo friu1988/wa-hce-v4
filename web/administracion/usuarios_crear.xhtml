@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dialog id="dlg_crear_user" header="Usuario" showEffect="fade" widgetVar="wv_crear_user" modal="true" resizable="false">
+        <h:form id="frm_usuario_crear">     
+            <p:outputPanel>
+                <p:panelGrid  columns="2" columnClasses="label,value">
+                    <h:outputText value="Cédula"/>
+                    <h:outputText value="#{mBusuarios.personal.perCedula}"/>
+
+                    <h:outputText value="ROL"/>
+                    <h:outputText value="#{mBusuarios.personal.perTipo}"/>
+
+                    <h:outputText value="Usuario"/>
+                    <h:inputText value="#{mBusuarios.usuario.UNick}"/>
+
+                    <h:outputText value="Contraseña"/>
+                    <h:inputText value="#{mBusuarios.usuario.UClave}"/>
+
+                    <h:outputText value="Estado"/>
+                    <p:selectBooleanCheckbox value="#{mBusuarios.usuario.UEstado}" />
+                    <f:facet name="footer">
+                        <p:commandButton value="Activar"/>
+                    </f:facet>
+                </p:panelGrid>
+            </p:outputPanel>
+        </h:form>
+
+    </p:dialog>
+</ui:composition>
