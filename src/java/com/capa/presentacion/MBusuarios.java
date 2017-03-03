@@ -8,11 +8,9 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
-/**
- *
- * @author FREDDY
- */
 @Named(value = "mBusuarios")
 @SessionScoped
 public class MBusuarios implements Serializable {
@@ -26,10 +24,36 @@ public class MBusuarios implements Serializable {
     public MBusuarios() {
     }
 
-    public void activarUsuario(){
-        
+    public void actualizar() {
+
     }
-    
+
+    public void eliminarUser() {
+        try {
+            servicioUsuarios.remove(usuario);
+            usuario = null;
+            usuarios = null;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro eliminado! " + usuario, null));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al Eliminar" + e.getMessage(), null));
+        }
+    }
+
+    public String activarUsuario() {
+        usuario.setPerSerial(personal);
+        usuario.setUEstado(Boolean.TRUE);
+
+        try {
+            servicioUsuarios.create(usuario);
+            usuario = null;
+            usuarios = null;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Accesos autorizados! " + usuario, null));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al ingresar" + e.getMessage(), null));
+        }
+        return "accesos.xhtml";
+    }
+
     public TPersonal getPersonal() {
         if (personal == null) {
             personal = new TPersonal();
@@ -42,6 +66,9 @@ public class MBusuarios implements Serializable {
     }
 
     public TUsuario getUsuario() {
+        if (usuario == null) {
+            usuario = new TUsuario();
+        }
         return usuario;
     }
 

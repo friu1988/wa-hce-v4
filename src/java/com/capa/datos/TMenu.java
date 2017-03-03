@@ -62,7 +62,7 @@ public class TMenu implements Serializable {
     @ManyToOne
     private TMenu padreMenSerial;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tMenu")
-    private List<TAcceso> tAccesoList;
+    private List<TAccesos> tAccesosList;
 
     public TMenu() {
     }
@@ -129,12 +129,12 @@ public class TMenu implements Serializable {
     }
 
     @XmlTransient
-    public List<TAcceso> getTAccesoList() {
-        return tAccesoList;
+    public List<TAccesos> getTAccesosList() {
+        return tAccesosList;
     }
 
-    public void setTAccesoList(List<TAcceso> tAccesoList) {
-        this.tAccesoList = tAccesoList;
+    public void setTAccesosList(List<TAccesos> tAccesosList) {
+        this.tAccesosList = tAccesosList;
     }
 
     @Override

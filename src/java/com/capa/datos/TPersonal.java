@@ -209,7 +209,7 @@ public class TPersonal implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TPersonal[ perSerial=" + perSerial + " ]";
+        return "TPersonal{" + "perSerial=" + perSerial + ", perNombres=" + perNombres + ", perApellidos=" + perApellidos + ", perFechaNacimiento=" + perFechaNacimiento + ", perCedula=" + perCedula + ", perDireccion=" + perDireccion + ", perTelefono=" + perTelefono + ", perEmail=" + perEmail + ", perTipo=" + perTipo + '}';
     }
 
 }

@@ -1,59 +1,74 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <ui:composition template="/template.xhtml">
+    <ui:define name="title">Usuarios</ui:define>
 
+    <ui:define name="body">
+        <h:form id="frm_accesos">
+            <p:panel header="Usuarios y Accesos">
+                <p:dataTable id="datalist" value="#{mBusuarios.usuarios}" var="item"
+                             selectionMode="single" selection="#{mBusuarios.usuario}"
+                             paginator="true"
+                             rowKey="#{item.USerial}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             >
 
-        <ui:define name="title">Usuarios</ui:define>
+                    <p:ajax event="rowSelect"   update="viewButton editButton deleteButton"/>
+                    <p:ajax event="rowUnselect" update="viewButton editButton deleteButton"/>
 
-        <ui:define name="body">
-            <h:form id="TUsuarioListForm">
-                <p:panel header="Usuarios y Accesos">
-                    <p:dataTable id="datalist" value="#{mBusuarios.usuarios}" var="item"
-                                 selectionMode="single" selection="#{mBusuarios.usuario}"
-                                 paginator="true"
-                                 rowKey="#{item.USerial}"
-                                 rows="10"
-                                 rowsPerPageTemplate="10,20,30,40,50"
-                                 >
+                    <p:column headerText="Cédula">
+                        <h:outputText value="#{item.perSerial.perCedula}"/>
+                    </p:column>
+                    <p:column headerText="ROL">
+                        <h:outputText value="#{item.perSerial.perTipo}"/>
+                    </p:column>
+                    <p:column headerText="Usuario">
+                        <h:outputText value="#{item.UNick}"/>
+                    </p:column>
+                    <p:column headerText="Contraseña">
+                        <h:outputText value="#{item.UClave}"/>
+                    </p:column>
+                    <p:column headerText="Estado">
+                        <p:selectBooleanCheckbox value="#{item.UEstado}"/>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:commandButton id="viewButton"   icon="ui-icon-search" value="Visualizar" update=":TUsuarioViewForm" oncomplete="PF('TUsuarioViewDialog').show()" disabled="#{empty mBusuarios.usuario}"/>
+                        <p:commandButton id="editButton"   icon="ui-icon-pencil" value="Actualizar" update=":TUsuarioEditForm" oncomplete="PF('TUsuarioEditDialog').show()" disabled="#{empty mBusuarios.usuario}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="Eliminar"  update=":frm_eliminar_user" oncomplete="PF('dlg_eliminar_user').show();" disabled="#{empty mBusuarios.usuario}"/>
+                    </f:facet>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+        <ui:include src="usuarios_editar.xhtml"/>
+        <ui:include src="usuarios_ver.xhtml"/>
 
-                        <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton"/>
-                        <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton"/>
-
-                        <p:column headerText="Cédula">
-                            <h:outputText value="#{item.perSerial.perCedula}"/>
+        <h:form id="frm_eliminar_user">
+            <p:dialog id="dlgEliminarUsuario" header="Eliminar Registro!" widgetVar="dlg_eliminar_user" resizable="false" 
+                      showEffect="explode" hideEffect="explode" modal="true">
+                <p:panelGrid style="width: 100%" >
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="¿Está seguro de eliminar este usuario?"/>
                         </p:column>
-                        <p:column headerText="ROL">
-                            <h:outputText value="#{item.perSerial.perTipo}"/>
-                        </p:column>
-                        <p:column headerText="Usuario">
-                            <h:outputText value="#{item.UNick}"/>
-                        </p:column>
-                        <p:column headerText="Contraseña">
-                            <h:outputText value="#{item.UClave}"/>
-                        </p:column>
-                        <p:column headerText="Estado">
-                            <p:selectBooleanCheckbox value="#{item.UEstado}"/>
-                        </p:column>
-                        <f:facet name="footer">
-                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{tUsuarioController.prepareCreate}" update=":TUsuarioCreateForm" oncomplete="PF('TUsuarioCreateDialog').show()"/>
-                            <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{bundle.View}" update=":TUsuarioViewForm" oncomplete="PF('TUsuarioViewDialog').show()" disabled="#{empty tUsuarioController.selected}"/>
-                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":TUsuarioEditForm" oncomplete="PF('TUsuarioEditDialog').show()" disabled="#{empty tUsuarioController.selected}"/>
-                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{tUsuarioController.destroy}" update=":growl,datalist" disabled="#{empty tUsuarioController.selected}"/>
-                        </f:facet>
-                    </p:dataTable>
-                </p:panel>
-            </h:form>
-
-            <ui:include src="Create.xhtml"/>
-            <ui:include src="Edit.xhtml"/>
-            <ui:include src="View.xhtml"/>
-        </ui:define>
-    </ui:composition>
-
-</html>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="Si" actionListener="#{mBusuarios.eliminarUser()}"
+                                                 update=":frm_accesos" 
+                                                 oncomplete="PF('dlg_eliminar_user').hide();"/>
+                                <p:commandButton value="No" oncomplete="PF('dlg_eliminar_user').hide();"/>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1,9 +1,9 @@
 package com.capa.presentacion;
 
+import com.capa.datos.TAccesos;
 import com.capa.datos.TMenu;
 import com.capa.datos.TUsuario;
-import com.capa.datos.VPerfiles;
-import com.capa.negocios.VPerfilesFacade;
+import com.capa.negocios.TAccesosFacade;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -27,7 +27,7 @@ import org.primefaces.model.menu.MenuModel;
 public class MBcontrolAcceso implements Serializable {
 
     @EJB
-    private VPerfilesFacade servicioPerfiles;
+    private TAccesosFacade servicioPerfiles;
 
     private TUsuario usuario;
     private TUsuario us;
@@ -52,10 +52,12 @@ public class MBcontrolAcceso implements Serializable {
 
         us = new TUsuario();
         us = (TUsuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLogin");
-        us.getTuSerial().getTuSerial();
+        us.getPerSerial().getPerTipo();
+//        us.getTuSerial().getTuSerial();
 
-        for (VPerfiles itm : servicioPerfiles.accesos(us)) {
-            url = itm.getMenUrl();
+//        for (VPerfiles itm : servicioPerfiles.accesos(us)) {
+        for (TAccesos itm : servicioPerfiles.accesos(us)) {
+            url = itm.getTMenu().getMenUrl();
             String[] paths = url.split("/");
             String path = "";
             String pathPadre = "";
@@ -72,8 +74,9 @@ public class MBcontrolAcceso implements Serializable {
 
                             if (path.contains(".xhtml")) {
                                 DefaultMenuItem mi = new DefaultMenuItem();
-                                mi.setValue(itm.getMenNombre());
-                                mi.setUrl(itm.getMenUrl().replace(".xhtml", ".jsf"));
+//                                mi.setValue(itm.getMenNombre());
+                                mi.setValue(itm.getTMenu().getMenNombre());
+                                mi.setUrl(itm.getTMenu().getMenUrl().replace(".xhtml", ".jsf"));
                                 mi.setId(path.replace(".xhtml", ""));
                                 menu.addElement(mi);
                             } else {
@@ -90,8 +93,8 @@ public class MBcontrolAcceso implements Serializable {
 
                         if (path.contains(".xhtml")) {
                             DefaultMenuItem mi = new DefaultMenuItem();
-                            mi.setValue(itm.getMenNombre());
-                            mi.setUrl(itm.getMenUrl().replace(".xhtml", ".jsf"));
+                            mi.setValue(itm.getTMenu().getMenNombre());
+                            mi.setUrl(itm.getTMenu().getMenUrl().replace(".xhtml", ".jsf"));
                             mi.setId(path.replace(".xhtml", ""));
                             smPadre.addElement(mi);
 

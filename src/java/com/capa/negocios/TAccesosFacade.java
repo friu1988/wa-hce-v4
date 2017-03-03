@@ -5,17 +5,20 @@
  */
 package com.capa.negocios;
 
-import com.capa.datos.TTipoUsuario;
+import com.capa.datos.TAccesos;
+import com.capa.datos.TUsuario;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
  * @author FREDDY
  */
 @Stateless
-public class TTipoUsuarioFacade extends AbstractFacade<TTipoUsuario> {
+public class TAccesosFacade extends AbstractFacade<TAccesos> {
 
     @PersistenceContext(unitName = "wa-hce-v4.1PU")
     private EntityManager em;
@@ -25,8 +28,15 @@ public class TTipoUsuarioFacade extends AbstractFacade<TTipoUsuario> {
         return em;
     }
 
-    public TTipoUsuarioFacade() {
-        super(TTipoUsuario.class);
+    public TAccesosFacade() {
+        super(TAccesos.class);
     }
-    
+
+    public List<TAccesos> accesos(TUsuario rol) {
+        Query sql = em.createNamedQuery("TAccesos.findByUSerial");
+        sql.setParameter("uSerial", rol.getUSerial());
+        List<TAccesos> menus = sql.getResultList();
+        System.out.println("Lista>>>>>>" + menus);
+        return menus;
+    }
 }

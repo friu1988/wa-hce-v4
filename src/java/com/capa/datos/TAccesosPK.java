@@ -10,14 +10,13 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
  * @author FREDDY
  */
 @Embeddable
-public class TAccesoPK implements Serializable {
+public class TAccesosPK implements Serializable {
 
     @Basic(optional = false)
     @NotNull
@@ -25,16 +24,15 @@ public class TAccesoPK implements Serializable {
     private int menSerial;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2)
-    @Column(name = "tu_serial", nullable = false, length = 2)
-    private String tuSerial;
+    @Column(name = "u_serial", nullable = false)
+    private int uSerial;
 
-    public TAccesoPK() {
+    public TAccesosPK() {
     }
 
-    public TAccesoPK(int menSerial, String tuSerial) {
+    public TAccesosPK(int menSerial, int uSerial) {
         this.menSerial = menSerial;
-        this.tuSerial = tuSerial;
+        this.uSerial = uSerial;
     }
 
     public int getMenSerial() {
@@ -45,33 +43,33 @@ public class TAccesoPK implements Serializable {
         this.menSerial = menSerial;
     }
 
-    public String getTuSerial() {
-        return tuSerial;
+    public int getUSerial() {
+        return uSerial;
     }
 
-    public void setTuSerial(String tuSerial) {
-        this.tuSerial = tuSerial;
+    public void setUSerial(int uSerial) {
+        this.uSerial = uSerial;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) menSerial;
-        hash += (tuSerial != null ? tuSerial.hashCode() : 0);
+        hash += (int) uSerial;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TAccesoPK)) {
+        if (!(object instanceof TAccesosPK)) {
             return false;
         }
-        TAccesoPK other = (TAccesoPK) object;
+        TAccesosPK other = (TAccesosPK) object;
         if (this.menSerial != other.menSerial) {
             return false;
         }
-        if ((this.tuSerial == null && other.tuSerial != null) || (this.tuSerial != null && !this.tuSerial.equals(other.tuSerial))) {
+        if (this.uSerial != other.uSerial) {
             return false;
         }
         return true;
@@ -79,7 +77,7 @@ public class TAccesoPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TAccesoPK[ menSerial=" + menSerial + ", tuSerial=" + tuSerial + " ]";
+        return "com.capa.datos.TAccesosPK[ menSerial=" + menSerial + ", uSerial=" + uSerial + " ]";
     }
     
 }

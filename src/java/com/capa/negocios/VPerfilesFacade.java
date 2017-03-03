@@ -32,10 +32,10 @@ public class VPerfilesFacade extends AbstractFacade<VPerfiles> {
         super(VPerfiles.class);
     }
 
-    public List<VPerfiles> accesos(TUsuario rol) {
-        Query sql = em.createNamedQuery("VPerfiles.findByTuSerial");
-        sql.setParameter("tuSerial", rol.getTuSerial().getTuSerial());
-        List<VPerfiles> menus = sql.getResultList();
-        return menus;
-    }
+//    public List<VPerfiles> accesos(TUsuario rol) {
+//        Query sql = em.createNamedQuery("VPerfiles.findByTuSerial");
+//        sql.setParameter("tuSerial", rol.getTuSerial().getTuSerial());
+//        List<VPerfiles> menus = sql.getResultList();
+//        return menus;
+//    }
 }

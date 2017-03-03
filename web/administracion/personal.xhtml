@@ -40,7 +40,7 @@
                         <h:outputText value="#{item.perEmail}"/>
                     </p:column>
                     <p:column headerText="Usuarios">
-                        <p:commandLink id="createUserBtn" title="Permisos" styleClass="ui-icon-plus" value="Activar" update=":frm_usuario_crear" oncomplete="PF('wv_crear_user').show();" disabled="#{empty mBpersonal.persona}">
+                        <p:commandLink id="createUserBtn" title="Permisos" styleClass="ui-icon-plus" value="Activar" update=":frm_usuario_crear" oncomplete="PF('wv_crear_user').show();">
                             <f:setPropertyActionListener value="#{item}" target="#{mBusuarios.personal}" />
                         </p:commandLink>
                     </p:column>

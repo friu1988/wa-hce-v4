@@ -25,10 +25,13 @@ public class MBlogin implements Serializable {
     public void login() throws IOException {
 
         TUsuario usDB = servicio.buscar(usuario);
+        System.out.println("Opcion>>>>>>" + usDB);
+
         if (usDB.equals(usuario)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Existe este User: " + usuario.getUNick(), null));
             if (usDB.getUEstado()) {
-                String op = usDB.getTuSerial().getTuSerial();
+                String op = usDB.getPerSerial().getPerTipo();
+
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("userLogin", usDB);
                 switch (op) {
                     case "A":

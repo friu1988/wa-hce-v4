@@ -21,10 +21,8 @@
                     <h:outputText value="Contraseña"/>
                     <h:inputText value="#{mBusuarios.usuario.UClave}"/>
 
-                    <h:outputText value="Estado"/>
-                    <p:selectBooleanCheckbox value="#{mBusuarios.usuario.UEstado}" />
                     <f:facet name="footer">
-                        <p:commandButton value="Activar"/>
+                        <p:commandButton value="Activar" action="#{mBusuarios.activarUsuario()}" update=":growl" oncomplete="handleSubmit(args,'wv_crear_user');"/>
                     </f:facet>
                 </p:panelGrid>
             </p:outputPanel>

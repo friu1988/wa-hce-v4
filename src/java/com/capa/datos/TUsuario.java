@@ -6,7 +6,9 @@
 package com.capa.datos;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,16 +18,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author FREDDY
  */
 @Entity
-@Table(name = "t_usuario", catalog = "db_hospital_dia_v4", schema = "")
+@Table(name = "t_usuario", catalog = "db_hospital_dia_v4", schema = "", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"u_nick"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TUsuario.findAll", query = "SELECT t FROM TUsuario t"),
@@ -49,12 +55,11 @@ public class TUsuario implements Serializable {
     private String uClave;
     @Column(name = "u_estado")
     private Boolean uEstado;
-    @JoinColumn(name = "tu_serial", referencedColumnName = "tu_serial", nullable = false)
-    @ManyToOne(optional = false)
-    private TTipoUsuario tuSerial;
     @JoinColumn(name = "per_serial", referencedColumnName = "per_serial", nullable = false)
     @ManyToOne(optional = false)
     private TPersonal perSerial;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tUsuario")
+    private List<TAccesos> tAccesosList;
 
     public TUsuario() {
     }
@@ -95,20 +100,21 @@ public class TUsuario implements Serializable {
         this.uEstado = uEstado;
     }
 
-    public TTipoUsuario getTuSerial() {
-        return tuSerial;
-    }
-
-    public void setTuSerial(TTipoUsuario tuSerial) {
-        this.tuSerial = tuSerial;
-    }
-
     public TPersonal getPerSerial() {
         return perSerial;
     }
 
     public void setPerSerial(TPersonal perSerial) {
         this.perSerial = perSerial;
+    }
+
+    @XmlTransient
+    public List<TAccesos> getTAccesosList() {
+        return tAccesosList;
+    }
+
+    public void setTAccesosList(List<TAccesos> tAccesosList) {
+        this.tAccesosList = tAccesosList;
     }
 
     @Override
@@ -133,7 +139,7 @@ public class TUsuario implements Serializable {
 
     @Override
     public String toString() {
-        return "TUsuario{" + "uSerial=" + uSerial + ", uNick=" + uNick + ", uClave=" + uClave + ", uEstado=" + uEstado + '}';
+        return "TUsuario{" + "uSerial=" + uSerial + ", uNick=" + uNick + ", uClave=" + uClave + ", uEstado=" + uEstado + ", perSerial=" + perSerial + '}';
     }
 
 }

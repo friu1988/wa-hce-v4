@@ -26,9 +26,9 @@
                     <p:outputLabel value="Tipo de Usuario" for="per_tipo" />
                     <p:selectOneMenu id="per_tipo" value="#{mBpersonal.persona.perTipo}" >
                         <f:selectItem itemLabel="#{mBpersonal.persona.perTipo}" />
-                        <f:selectItems value="#{tMedicoController.itemsAvailableSelectOne}"
-                                       var="TMedicoItem"
-                                       itemValue="#{TMedicoItem}"/>
+                         <f:selectItem itemLabel="Administrador" itemValue="A"/>
+                        <f:selectItem itemLabel="Admisionista" itemValue="D"/>
+                        <f:selectItem itemLabel="Médico" itemValue="M"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
                 <p:commandButton actionListener="#{mBpersonal.editarEmpleado()}" value="Guardar" update="display :frm_personal:datalist" oncomplete="handleSubmit(args, 'TPersonalEditDialog');"/>

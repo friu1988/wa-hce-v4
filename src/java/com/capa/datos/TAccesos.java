@@ -21,21 +21,21 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author FREDDY
  */
 @Entity
-@Table(name = "t_acceso", catalog = "db_hospital_dia_v4", schema = "")
+@Table(name = "t_accesos", catalog = "db_hospital_dia_v4", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TAcceso.findAll", query = "SELECT t FROM TAcceso t"),
-    @NamedQuery(name = "TAcceso.findByMenSerial", query = "SELECT t FROM TAcceso t WHERE t.tAccesoPK.menSerial = :menSerial"),
-    @NamedQuery(name = "TAcceso.findByTuSerial", query = "SELECT t FROM TAcceso t WHERE t.tAccesoPK.tuSerial = :tuSerial"),
-    @NamedQuery(name = "TAcceso.findByAcCreate", query = "SELECT t FROM TAcceso t WHERE t.acCreate = :acCreate"),
-    @NamedQuery(name = "TAcceso.findByAcRead", query = "SELECT t FROM TAcceso t WHERE t.acRead = :acRead"),
-    @NamedQuery(name = "TAcceso.findByAcUpdate", query = "SELECT t FROM TAcceso t WHERE t.acUpdate = :acUpdate"),
-    @NamedQuery(name = "TAcceso.findByAcDelete", query = "SELECT t FROM TAcceso t WHERE t.acDelete = :acDelete")})
-public class TAcceso implements Serializable {
+    @NamedQuery(name = "TAccesos.findAll", query = "SELECT t FROM TAccesos t"),
+    @NamedQuery(name = "TAccesos.findByMenSerial", query = "SELECT t FROM TAccesos t WHERE t.tAccesosPK.menSerial = :menSerial"),
+    @NamedQuery(name = "TAccesos.findByUSerial", query = "SELECT t FROM TAccesos t WHERE t.tAccesosPK.uSerial = :uSerial"),
+    @NamedQuery(name = "TAccesos.findByAcCreate", query = "SELECT t FROM TAccesos t WHERE t.acCreate = :acCreate"),
+    @NamedQuery(name = "TAccesos.findByAcRead", query = "SELECT t FROM TAccesos t WHERE t.acRead = :acRead"),
+    @NamedQuery(name = "TAccesos.findByAcUpdate", query = "SELECT t FROM TAccesos t WHERE t.acUpdate = :acUpdate"),
+    @NamedQuery(name = "TAccesos.findByAcDelete", query = "SELECT t FROM TAccesos t WHERE t.acDelete = :acDelete")})
+public class TAccesos implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected TAccesoPK tAccesoPK;
+    protected TAccesosPK tAccesosPK;
     @Column(name = "ac_create")
     private Boolean acCreate;
     @Column(name = "ac_read")
@@ -44,30 +44,30 @@ public class TAcceso implements Serializable {
     private Boolean acUpdate;
     @Column(name = "ac_delete")
     private Boolean acDelete;
+    @JoinColumn(name = "u_serial", referencedColumnName = "u_serial", nullable = false, insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private TUsuario tUsuario;
     @JoinColumn(name = "men_serial", referencedColumnName = "men_serial", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private TMenu tMenu;
-    @JoinColumn(name = "tu_serial", referencedColumnName = "tu_serial", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private TTipoUsuario tTipoUsuario;
 
-    public TAcceso() {
+    public TAccesos() {
     }
 
-    public TAcceso(TAccesoPK tAccesoPK) {
-        this.tAccesoPK = tAccesoPK;
+    public TAccesos(TAccesosPK tAccesosPK) {
+        this.tAccesosPK = tAccesosPK;
     }
 
-    public TAcceso(int menSerial, String tuSerial) {
-        this.tAccesoPK = new TAccesoPK(menSerial, tuSerial);
+    public TAccesos(int menSerial, int uSerial) {
+        this.tAccesosPK = new TAccesosPK(menSerial, uSerial);
     }
 
-    public TAccesoPK getTAccesoPK() {
-        return tAccesoPK;
+    public TAccesosPK getTAccesosPK() {
+        return tAccesosPK;
     }
 
-    public void setTAccesoPK(TAccesoPK tAccesoPK) {
-        this.tAccesoPK = tAccesoPK;
+    public void setTAccesosPK(TAccesosPK tAccesosPK) {
+        this.tAccesosPK = tAccesosPK;
     }
 
     public Boolean getAcCreate() {
@@ -102,6 +102,14 @@ public class TAcceso implements Serializable {
         this.acDelete = acDelete;
     }
 
+    public TUsuario getTUsuario() {
+        return tUsuario;
+    }
+
+    public void setTUsuario(TUsuario tUsuario) {
+        this.tUsuario = tUsuario;
+    }
+
     public TMenu getTMenu() {
         return tMenu;
     }
@@ -110,29 +118,21 @@ public class TAcceso implements Serializable {
         this.tMenu = tMenu;
     }
 
-    public TTipoUsuario getTTipoUsuario() {
-        return tTipoUsuario;
-    }
-
-    public void setTTipoUsuario(TTipoUsuario tTipoUsuario) {
-        this.tTipoUsuario = tTipoUsuario;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (tAccesoPK != null ? tAccesoPK.hashCode() : 0);
+        hash += (tAccesosPK != null ? tAccesosPK.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TAcceso)) {
+        if (!(object instanceof TAccesos)) {
             return false;
         }
-        TAcceso other = (TAcceso) object;
-        if ((this.tAccesoPK == null && other.tAccesoPK != null) || (this.tAccesoPK != null && !this.tAccesoPK.equals(other.tAccesoPK))) {
+        TAccesos other = (TAccesos) object;
+        if ((this.tAccesosPK == null && other.tAccesosPK != null) || (this.tAccesosPK != null && !this.tAccesosPK.equals(other.tAccesosPK))) {
             return false;
         }
         return true;
@@ -140,7 +140,7 @@ public class TAcceso implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TAcceso[ tAccesoPK=" + tAccesoPK + " ]";
+        return "com.capa.datos.TAccesos[ tAccesosPK=" + tAccesosPK + " ]";
     }
     
 }

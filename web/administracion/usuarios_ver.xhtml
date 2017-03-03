@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dialog id="TUsuarioViewDlg" widgetVar="TUsuarioViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Usuario">
+        <h:form id="TUsuarioViewForm">
+            <h:panelGroup id="display">
+                <p:panelGrid columns="2" rendered="#{mBusuarios.usuario != null}">
+                    <h:outputText value="Usuario"/>
+                    <h:outputText value="#{mBusuarios.usuario.UNick}"/>
+                    <h:outputText value="Contraseña"/>
+                    <h:outputText value="#{mBusuarios.usuario.UClave}"/>
+                    <h:outputText value="Estado"/>
+                    <p:selectBooleanCheckbox value="#{mBusuarios.usuario.UEstado}" disabled="true"/>
+                    <h:outputText value="Tipo de usuario"/>
+                    <h:outputText value="#{mBusuarios.usuario.tuSerial.tuSerial}" />
+                    <h:outputText value="Empleado"/>
+                    <h:outputText value="#{mBusuarios.usuario.perSerial.perCedula}"/>
+                </p:panelGrid>
+            </h:panelGroup>
+        </h:form>
+    </p:dialog>
+
+</ui:composition>
