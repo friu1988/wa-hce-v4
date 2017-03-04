@@ -15,23 +15,11 @@
                     <p:inputText id="UClave" value="#{mBusuarios.usuario.UClave}"/>
                     <p:outputLabel value="Estado" for="UEstado" />
                     <p:selectBooleanCheckbox id="UEstado" value="#{mBusuarios.usuario.UEstado}" />
-                    <p:outputLabel value="Tipo de Usuario" for="tuSerial" />
-                    <p:selectOneMenu id="tuSerial" value="#{mBusuarios.usuario.tuSerial}" required="true">
-                        <f:selectItem itemLabel="#{mBusuarios.usuario.tuSerial.tuSerial}" />
-                        <f:selectItem itemLabel="Administrador" itemValue="A"/>
-                        <f:selectItem itemLabel="Admisionista" itemValue="D"/>
-                        <f:selectItem itemLabel="Médico" itemValue="M"/>
-                    </p:selectOneMenu>
-                    <p:outputLabel value="Empleado" for="perSerial" />
-                    <p:selectOneMenu id="perSerial" value="#{mBusuarios.usuario.perSerial}" required="true" >
-                        <f:selectItems value="#{mBpersonal.personas}" var="per"
-                                       itemValue="#{per.perSerial}" itemLabel="#{per.perCedula}"/>
-                    </p:selectOneMenu>
                 </p:panelGrid>
-                <p:commandButton actionListener="#{mBusuarios.actualizar}" value="Guardar" update="display,:frm_accesos:datalist,:growl" oncomplete="handleSubmit(args, 'TUsuarioEditDialog');"/>
+                <p:commandButton actionListener="#{mBusuarios.actualizar}" value="Guardar" update="display :frm_accesos:datalist :growl" oncomplete="handleSubmit(args, 'TUsuarioEditDialog');"/>
                 <p:commandButton value="Cancelar" onclick="TUsuarioEditDialog.hide()"/>
             </h:panelGroup>
         </h:form>
     </p:dialog>
 
-</ui:composition>
+ </ui:composition>

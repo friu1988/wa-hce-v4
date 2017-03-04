@@ -35,7 +35,7 @@
                         <h:outputText value="#{item.UClave}"/>
                     </p:column>
                     <p:column headerText="Estado">
-                        <p:selectBooleanCheckbox value="#{item.UEstado}"/>
+                        <h:outputText value="#{item.UEstado ? 'Activo':'Inactivo'}"/>
                     </p:column>
                     <f:facet name="footer">
                         <p:commandButton id="viewButton"   icon="ui-icon-search" value="Visualizar" update=":TUsuarioViewForm" oncomplete="PF('TUsuarioViewDialog').show()" disabled="#{empty mBusuarios.usuario}"/>
@@ -61,7 +61,7 @@
                         <p:row>
                             <p:column>
                                 <p:commandButton value="Si" actionListener="#{mBusuarios.eliminarUser()}"
-                                                 update=":frm_accesos" 
+                                                 update=":frm_accesos :growl" 
                                                  oncomplete="PF('dlg_eliminar_user').hide();"/>
                                 <p:commandButton value="No" oncomplete="PF('dlg_eliminar_user').hide();"/>
                             </p:column>

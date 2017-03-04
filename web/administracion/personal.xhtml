@@ -10,7 +10,6 @@
 
     <ui:define name="body">
 
-        <p:growl id="msg" showDetail="true"/>
         <h:form id="frm_personal">
             <p:panel header="Nómina de Empleados ">
                 <p:dataTable id="datalist" value="#{mBpersonal.personas}" var="item"
@@ -39,7 +38,7 @@
                     <p:column headerText="E-mail">
                         <h:outputText value="#{item.perEmail}"/>
                     </p:column>
-                    <p:column headerText="Usuarios">
+                    <p:column headerText="Cuentas">
                         <p:commandLink id="createUserBtn" title="Permisos" styleClass="ui-icon-plus" value="Activar" update=":frm_usuario_crear" oncomplete="PF('wv_crear_user').show();">
                             <f:setPropertyActionListener value="#{item}" target="#{mBusuarios.personal}" />
                         </p:commandLink>
@@ -72,7 +71,7 @@
                         <p:row>
                             <p:column>
                                 <p:commandButton value="Si" actionListener="#{mBpersonal.eliminarEmpleado()}"
-                                                 update=":frm_personal" 
+                                                 update=":frm_personal :growl" 
                                                  oncomplete="PF('dlg_eliminar_per').hide();"/>
                                 <p:commandButton value="No" oncomplete="PF('dlg_eliminar_per').hide();"/>
                             </p:column>

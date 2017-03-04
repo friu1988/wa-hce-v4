@@ -42,7 +42,6 @@ public class MBusuarios implements Serializable {
     public String activarUsuario() {
         usuario.setPerSerial(personal);
         usuario.setUEstado(Boolean.TRUE);
-
         try {
             servicioUsuarios.create(usuario);
             usuario = null;
