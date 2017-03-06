@@ -9,9 +9,9 @@
     <ui:define name="title">Historia Clinica</ui:define>
 
     <ui:define name="body">
-        
+
         <p:growl id="msg" showDetail="true"/>
-        
+
         <h:form id="frm_hcu_crear">
             <p:panel>
                 <p:panelGrid style="width: 100%">
@@ -324,7 +324,9 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:outputLabel style="width:95%" value="#{mBhistoriaClinica.fechaAdmision}"/>
+                            <p:outputLabel style="width:95%" value="#{currentDate}">
+                                <f:convertDateTime pattern="YYYY-MMM-dd HH:mm:ss"/>
+                            </p:outputLabel>
                         </p:column>
                         <p:column colspan="2">
                             <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacOcupacion}"/>
@@ -382,3 +384,6 @@
         </h:form>
     </ui:define>
 </ui:composition>
+
+
+

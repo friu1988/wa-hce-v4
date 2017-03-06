@@ -51,7 +51,7 @@ public class Utilidades {
         return edad;
     }
 
-    public static Long calcularAños(TPaciente paciente) {
+    public static Long calcularEdad(TPaciente paciente) {
         try {
             LocalDate nacimiento = paciente.getPacFechaNacimiento().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             Long edad = ChronoUnit.YEARS.between(nacimiento, LocalDate.now());

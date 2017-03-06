@@ -6,27 +6,254 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <p:dialog id="dlg_crear_user" header="Usuario" showEffect="fade" widgetVar="wv_crear_user" modal="true" resizable="false">
-        <h:form id="frm_usuario_crear">     
+        <h:form id="frm_usuario_crear">
             <p:outputPanel>
-                <p:panelGrid  columns="2" columnClasses="label,value">
-                    <h:outputText value="Cédula"/>
-                    <h:outputText value="#{mBusuarios.personal.perCedula}"/>
+                <p:panelGrid columnClasses="label,value">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="5">
+                                <p:outputLabel value="Autenticación"/>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="Usuario"/>
+                        </p:column>
+                        <p:column colspan="4">
+                            <p:inputText value="#{mBusuarios.usuario.UNick}"/>
+                        </p:column>
+                    </p:row>
 
-                    <h:outputText value="ROL"/>
-                    <h:outputText value="#{mBusuarios.personal.perTipo}"/>
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="Contraseña"/>
+                        </p:column>
+                        <p:column colspan="4">
+                            <p:password value="#{mBusuarios.usuario.UClave}"/>
+                        </p:column>
+                    </p:row>
 
-                    <h:outputText value="Usuario"/>
-                    <h:inputText value="#{mBusuarios.usuario.UNick}"/>
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="Cédula"/>                         
+                        </p:column>
+                        <p:column colspan="4">
+                            <h:outputText value="#{mBusuarios.personal.perCedula}"/>
+                        </p:column>
+                    </p:row>
 
-                    <h:outputText value="Contraseña"/>
-                    <h:inputText value="#{mBusuarios.usuario.UClave}"/>
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="ROL"/>
+                        </p:column>
+                        <p:column colspan="4">
+                            <h:outputText value="#{mBusuarios.personal.perTipo}"/>
+                        </p:column>
+                    </p:row>                   
+                </p:panelGrid>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column colspan="5" styleClass="ui-widget-header">
+                            <p:outputLabel value="Autorización"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="1" styleClass="ui-widget-header">Páginas</p:column>
+                        <p:column colspan="1" styleClass="ui-widget-header">C</p:column>
+                        <p:column colspan="1" styleClass="ui-widget-header">R</p:column>
+                        <p:column colspan="1" styleClass="ui-widget-header">U</p:column>
+                        <p:column colspan="1" styleClass="ui-widget-header">D</p:column>
+                    </p:row>
 
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Admistracion"/>                         
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Bienvenida"/>       
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Menú"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Accesos"/>       
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Consultorios"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Especialidades"/>       
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Horarios"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Turnos"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Especialidades"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Pacientes"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                        <p:column>
+                            <p:selectBooleanCheckbox/>
+                        </p:column>
+                    </p:row>
                     <f:facet name="footer">
-                        <p:commandButton value="Activar" action="#{mBusuarios.activarUsuario()}" update=":growl" oncomplete="handleSubmit(args,'wv_crear_user');"/>
+                        <p:row>
+                            <p:column colspan="5">
+                                <p:commandButton value="Activar" action="#{mBusuarios.activarUsuario()}" update=":growl" oncomplete="handleSubmit(args,'wv_crear_user');"/>                               
+                            </p:column>
+                        </p:row>
                     </f:facet>
                 </p:panelGrid>
             </p:outputPanel>
         </h:form>
-
     </p:dialog>
 </ui:composition>

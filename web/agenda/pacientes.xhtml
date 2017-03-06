@@ -27,9 +27,9 @@
                         <p:ajax event="rowUnselect" update="createButton1 viewButton1 editButton1 deleteButton1 createButton2 viewButton2 editButton2 deleteButton2"/>
 
                         <f:facet name="header">
-                            <p:commandButton id="createButton1" icon="ui-icon-plus"   value="Registrar" action="#{mBhistoriaClinica.crearHistoria()}"/>
-                            <p:commandButton id="viewButton1"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.verHistoria()}" disabled="#{empty mBhistoriaClinica.paciente}" />
-                            <p:commandButton id="editButton1"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.editarHistoria()}" disabled="#{empty mBhistoriaClinica.paciente}" />
+                            <p:commandButton id="createButton1" icon="ui-icon-plus"   value="Registrar" action="#{mBhistoriaClinica.goHistoriaCrear()}"/>
+                            <p:commandButton id="viewButton1"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.goHistoriaVer()}" disabled="#{empty mBhistoriaClinica.paciente}" />
+                            <p:commandButton id="editButton1"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.goHistoriaEditar()}" disabled="#{empty mBhistoriaClinica.paciente}" />
                             <p:commandButton id="deleteButton1" icon="ui-icon-trash"  value="Eliminar" update=":frm_eliminar_pac"  oncomplete="PF('dlg_eliminar_pac').show();" disabled="#{empty mBhistoriaClinica.paciente}"/>
                         </f:facet>
 
@@ -49,14 +49,14 @@
                             <h:outputText value="#{item.pacDireccionResidencial}"/>
                         </p:column>                   
                         <p:column headerText="Turno">
-                            <p:commandLink id="createUserBtn" value="Registrar" styleClass="ui-icon ui-icon-plus"  action="#{mBhistoriaClinica.crearTurno()}" disabled="#{empty mBhistoriaClinica.paciente}">
+                            <p:commandLink id="createUserBtn" value="Registrar"  action="#{mBhistoriaClinica.crearTurno()}">
                                 <f:setPropertyActionListener value="#{item}" target="#{mBturno.paciente}" />
                             </p:commandLink>
                         </p:column> 
                         <f:facet name="footer">
-                            <p:commandButton id="createButton2" icon="ui-icon-plus"   value="Registrar" action="#{mBhistoriaClinica.crearHistoria()}"/>
-                            <p:commandButton id="viewButton2"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.verHistoria()}" disabled="#{empty mBhistoriaClinica.paciente}"/>
-                            <p:commandButton id="editButton2"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.editarHistoria()}" disabled="#{empty mBhistoriaClinica.paciente}"/>
+                            <p:commandButton id="createButton2" icon="ui-icon-plus"   value="Registrar" action="#{mBhistoriaClinica.goHistoriaCrear()}"/>
+                            <p:commandButton id="viewButton2"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.goHistoriaVer()}" disabled="#{empty mBhistoriaClinica.paciente}"/>
+                            <p:commandButton id="editButton2"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.goHistoriaEditar()}" disabled="#{empty mBhistoriaClinica.paciente}"/>
                             <p:commandButton id="deleteButton2" icon="ui-icon-trash"  value="Eliminar" update=":frm_eliminar_pac"  oncomplete="PF('dlg_eliminar_pac').show();" disabled="#{empty mBhistoriaClinica.paciente}"/>
                         </f:facet>
                     </p:dataTable>

@@ -217,7 +217,9 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:outputLabel style="color: blueviolet; font-weight:bold" value="#{mBhistoriaClinica.fechaNacimiento}"/>
+                            <p:outputLabel style="color: blueviolet; font-weight:bold" value="#{mBhistoriaClinica.paciente.pacFechaNacimiento}">
+                                <f:convertDateTime pattern="dd MMMM yyyy" />
+                            </p:outputLabel>
                         </p:column>                        
                         <p:column>
                             <p:outputLabel style="color: blueviolet; font-weight:bold" value="#{mBhistoriaClinica.paciente.pacLugarNacimiento}"/>
@@ -260,7 +262,9 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:outputLabel style="color: blueviolet; font-weight:bold" value="#{mBhistoriaClinica.fechaAdmision}"/>
+                            <p:outputLabel style="color: blueviolet; font-weight:bold" value="#{mBhistoriaClinica.paciente.hclFechaAdmision}">
+                                <f:convertDateTime pattern="dd MMMM yyyy HH:mm:ss" />
+                            </p:outputLabel>
                         </p:column>
                         <p:column colspan="2">
                             <p:outputLabel style="color: blueviolet; font-weight:bold" value="#{mBhistoriaClinica.paciente.pacOcupacion}"/>
