@@ -283,29 +283,6 @@ public class TPaciente implements Serializable {
     }
 
     public String getPacGrupoCultural() {
-        if (pacGrupoCultural != null) {
-            switch (pacGrupoCultural) {
-                case "BL":
-                    pacGrupoCultural = "Blanco";
-                    break;
-                case "IN":
-                    pacGrupoCultural = "Indigena";
-                    break;
-                case "ME":
-                    pacGrupoCultural = "Mestizo";
-                    break;
-                case "MU":
-                    pacGrupoCultural = "Mulato";
-                    break;
-                case "NE":
-                    pacGrupoCultural = "Negro";
-                    break;
-                default:
-                    pacGrupoCultural = "No Registrado";
-                    break;
-            }
-            return pacGrupoCultural;
-        }
         return pacGrupoCultural;
     }
 
@@ -314,9 +291,6 @@ public class TPaciente implements Serializable {
     }
 
     public String getPacSexo() {
-        if (pacSexo != null) {
-            return pacSexo.equals("M") ? "Masculino" : "Femenino";
-        }
         return pacSexo;
     }
 
@@ -461,14 +435,13 @@ public class TPaciente implements Serializable {
     }
 
     public String getHclTipoPaciente() {
-        if (hclTipoPaciente != null) {
-            return hclTipoPaciente.equals("P") ? "Particular" : "Estudiante";
-        }
+
         return hclTipoPaciente;
     }
 
     public void setHclTipoPaciente(String hclTipoPaciente) {
         this.hclTipoPaciente = hclTipoPaciente;
+
     }
 
     public String getHclSemestre() {

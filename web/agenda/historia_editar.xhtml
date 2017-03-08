@@ -83,7 +83,7 @@
                             <p:selectOneRadio id="tipo" style="width:95%" columns="1" layout="grid" value="#{mBhistoriaClinica.paciente.hclTipoPaciente}">
                                 <f:selectItem itemLabel="Particular" itemValue="P"/>
                                 <f:selectItem   itemLabel="Estudiante" itemValue="E"/>
-                                <p:ajax listener="#{mBhistoriaClinica.tipoPaciente()}" update="facultad carrera semestre"/>
+                                <p:ajax listener="#{mBhistoriaClinica.tipoPacienteEditar()}" update="facultad carrera semestre"/>
                             </p:selectOneRadio>
                         </p:column>
                         <p:column colspan="2">
@@ -99,21 +99,21 @@
                     <p:row>
                         <p:column colspan="2">
                             <p:selectOneMenu id="facultad" value="#{mBhistoriaClinica.facultad.facSerial}" disabled="#{mBhistoriaClinica.tipo eq true}">
-                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
+                                <f:selectItem itemLabel="#{mBhistoriaClinica.paciente.facSerial.TFFacSerial.facNombre}" itemValue="#{mBhistoriaClinica.paciente.facSerial.TFFacSerial.facSerial}" noSelectionOption="true" />
                                 <f:selectItems value="#{mBhistoriaClinica.facultades}" var="fac" itemLabel="#{fac.facNombre}" itemValue="#{fac.facSerial}"/>
                                 <p:ajax event="valueChange" listener="#{mBhistoriaClinica.onChangeFacultades}" update="facultad carrera"/>
                             </p:selectOneMenu>
                         </p:column>
                         <p:column colspan="2">
                             <p:selectOneMenu id="carrera" value="#{mBhistoriaClinica.carrera.facSerial}" disabled="#{mBhistoriaClinica.tipo eq true}">
-                                <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
+                                <f:selectItem itemLabel="#{mBhistoriaClinica.paciente.facSerial.facNombre}" itemValue="#{mBhistoriaClinica.paciente.facSerial.facSerial}" noSelectionOption="true" />
                                 <f:selectItems value="#{mBhistoriaClinica.carreras}" var="car" itemLabel="#{car.facNombre}" itemValue="#{car.facSerial}"/>
                                 <p:ajax update="carrera"/>
                             </p:selectOneMenu>
                         </p:column>
                         <p:column colspan="2">
                             <p:selectOneMenu id="semestre" value="#{mBhistoriaClinica.paciente.hclSemestre}" disabled="#{mBhistoriaClinica.tipo eq true}">
-                                <f:selectItem itemLabel="Seleccionar" itemValue="" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="#{mBhistoriaClinica.paciente.hclSemestre}" noSelectionOption="true" />
                                 <f:selectItems value="#{mBhistoriaClinica.semestres}"/>
                                 <p:ajax update="semestre"/>
                             </p:selectOneMenu>
@@ -155,7 +155,7 @@
                             <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacSegundoNombre}"/>
                         </p:column>
                         <p:column colspan="2">
-                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacCedula}" required="true"/>
+                            <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacCedula}"/>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -188,21 +188,21 @@
                         </p:column>
                         <p:column>
                             <p:selectOneMenu id="provincia" value="#{mBhistoriaClinica.provincia.lgCodigo}">
-                                <f:selectItem itemLabel="Seleccionar" itemValue="" noSelectionOption="true" />
+                                <f:selectItem itemLabel="#{mBhistoriaClinica.paciente.lgCodigo.padreLgCodigo.padreLgCodigo.lgNombre}" itemValue="#{mBhistoriaClinica.paciente.lgCodigo.padreLgCodigo.padreLgCodigo.lgCodigo}" noSelectionOption="true" />
                                 <f:selectItems value="#{mBhistoriaClinica.provincias}" var="prov" itemLabel="#{prov.lgNombre}" itemValue="#{prov.lgCodigo}"/>
                                 <p:ajax event="valueChange" listener="#{mBhistoriaClinica.onChangeProvincias}" update="canton parroquia"/>
                             </p:selectOneMenu>
                         </p:column>
                         <p:column>
                             <p:selectOneMenu id="canton" value="#{mBhistoriaClinica.canton.lgCodigo}">
-                                <f:selectItem itemLabel="Seleccionar" itemValue="" noSelectionOption="true" />
+                                <f:selectItem itemLabel="#{mBhistoriaClinica.paciente.lgCodigo.padreLgCodigo.lgNombre}" itemValue="#{mBhistoriaClinica.paciente.lgCodigo.padreLgCodigo.lgCodigo}" noSelectionOption="true" />
                                 <f:selectItems value="#{mBhistoriaClinica.cantones}" var="can" itemLabel="#{can.lgNombre}" itemValue="#{can.lgCodigo}"/>
                                 <p:ajax event="valueChange" listener="#{mBhistoriaClinica.onChangeCantones}" update="parroquia"/>
                             </p:selectOneMenu>
                         </p:column>
                         <p:column>
                             <p:selectOneMenu id="parroquia" value="#{mBhistoriaClinica.parroquia.lgCodigo}">
-                                <f:selectItem itemLabel="Seleccionar" itemValue="" noSelectionOption="true" />
+                                <f:selectItem itemLabel="#{mBhistoriaClinica.paciente.lgCodigo.lgNombre}"  itemValue="#{mBhistoriaClinica.paciente.lgCodigo.lgCodigo}" noSelectionOption="true" />
                                 <f:selectItems value="#{mBhistoriaClinica.parroquias}" var="parr" itemLabel="#{parr.lgNombre}" itemValue="#{parr.lgCodigo}"/>
                                 <p:ajax update="@this"/>
                             </p:selectOneMenu>
@@ -249,7 +249,9 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:calendar  locale="es" navigator="true" value="#{mBhistoriaClinica.paciente.pacFechaNacimiento}" pattern="yyyy-MM-dd"/>
+                            <p:calendar  locale="es" navigator="true" value="#{mBhistoriaClinica.paciente.pacFechaNacimiento}" pattern="yyyy-MM-dd">
+                                <p:ajax event="dateSelect" listener="#{mBhistoriaClinica.calcularEdad}" update="lbl_edad"/>
+                            </p:calendar>
                         </p:column>                        
                         <p:column>
                             <p:inputText style="width:95%" value="#{mBhistoriaClinica.paciente.pacLugarNacimiento}"/>
@@ -271,7 +273,7 @@
                             </p:selectOneMenu>
                         </p:column>      
                         <p:column>
-                            <p:outputLabel />
+                            <p:outputLabel id="lbl_edad" value="#{mBhistoriaClinica.edad}"/>
                         </p:column>   
                         <p:column>
                             <p:selectOneMenu value="#{mBhistoriaClinica.paciente.pacSexo}">
@@ -368,8 +370,11 @@
                 <p:panelGrid  style="width: 100%">
                     <f:facet name="header">
                         <p:row>
+                            <p:column>
+                                <p:commandButton icon="ui-icon-arrowreturnthick-1-w" value="Regresar" action="#{mBhistoriaClinica.goPacientes()}"/>
+                            </p:column>  
                             <p:column style="align-content: center">
-                                <p:commandButton icon="ui-icon-plus" value="Guardar"  action="#{mBhistoriaClinica.editarHCU()}" update=":frm_hcu_editar"/>
+                                <p:commandButton icon="ui-icon-check" value="Guardar"  action="#{mBhistoriaClinica.editarHCU()}" update=":frm_hcu_editar"/>
                             </p:column>
                         </p:row>
                     </f:facet>

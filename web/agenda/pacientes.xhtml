@@ -49,7 +49,7 @@
                             <h:outputText value="#{item.pacDireccionResidencial}"/>
                         </p:column>                   
                         <p:column headerText="Turno">
-                            <p:commandLink id="createUserBtn" value="Registrar"  action="#{mBhistoriaClinica.crearTurno()}">
+                            <p:commandLink id="createUserBtn" value="Registrar" styleClass="ui-icon-person" action="#{mBhistoriaClinica.crearTurno()}">
                                 <f:setPropertyActionListener value="#{item}" target="#{mBturno.paciente}" />
                             </p:commandLink>
                         </p:column> 

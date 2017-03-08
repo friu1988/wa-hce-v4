@@ -9,6 +9,7 @@ import com.capa.datos.TUsuario;
 import com.capa.negocios.TFacultadFacade;
 import com.capa.negocios.TLugarGeograficoFacade;
 import com.capa.negocios.TPacienteFacade;
+import java.awt.BorderLayout;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -60,23 +61,38 @@ public class MBhistoriaClinica implements Serializable {
         return "turno_crear.xhtml";
     }
 
-    public void tipoPaciente() {
-        facultades = carreras = null;
-        semestres = null;
-        paciente.setHclSemestre(null);
+    public void tipoPacienteCrear() {
+        if (paciente.getHclTipoPaciente().equals("P")) {
+            tipo = true;
+            facultades = carreras = null;
+            semestres = null;
+
+            facultad = carrera = null;
+            paciente.setHclSemestre(null);
+        } else {
+            tipo = false;
+        }
+    }
+
+    public void calcularEdad() {
+        edad = Utilidades.calcularEdad(paciente);
+    }
+
+    public String goPacientes() {
+        paciente = null;
+        pacientes = null;
+        return "pacientes.xhtml";
+    }
+
+    public String goHistoriaCrear() {
+        paciente = new TPaciente();
+        paciente.setHclTipoPaciente("E");
 
         if (paciente.getHclTipoPaciente().equals("P")) {
             tipo = true;
         } else {
             tipo = false;
         }
-    }
-
-    public String goHistoriaCrear() {
-        paciente = new TPaciente();
-
-        paciente.setHclTipoPaciente("E");
-        tipo = false;
 
         facultades = carreras = null;
         provincias = cantones = parroquias = null;
@@ -86,12 +102,10 @@ public class MBhistoriaClinica implements Serializable {
         provincia = canton = parroquia = null;
 
         numeroHCU = null;
-//        fechaAdmision = Utilidades.getFechaHora();
         return "historia_crear.xhtml";
     }
 
     public String crearHCU() {
-        System.out.println("Crear paciente >>>>>>>>");
         try {
             //Personal
             TUsuario user = (TUsuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLogin");
@@ -137,18 +151,148 @@ public class MBhistoriaClinica implements Serializable {
 
     public String goHistoriaVer() {
         edad = Utilidades.calcularEdad(paciente);
+        paciente.setHclTipoPaciente(getTipoPaciente(paciente));
+        paciente.setPacInstruccion(getInstruccion(paciente));
+        paciente.setPacEstadoCivil(getEstadoCivil(paciente));
+        paciente.setPacSexo(getSexo(paciente));
+        paciente.setPacGrupoCultural(getGrupoCultural(paciente));
+        paciente.setPacZona(getZona(paciente));
         return "historia_ver.xhtml";
     }
 
+    public String getZona(TPaciente paciente) {
+        try {
+            return paciente.getPacZona().equals("U") ? "Urbano" : "Rural";
+        } catch (Exception e) {
+            return "";
+        }
+
+    }
+
+    public String getGrupoCultural(TPaciente paciente) {
+        try {
+            switch (paciente.getPacGrupoCultural()) {
+                case "BL":
+                    paciente.setPacGrupoCultural("Blanco");
+                    break;
+                case "IN":
+                    paciente.setPacGrupoCultural("Indigena");
+                    break;
+                case "ME":
+                    paciente.setPacGrupoCultural("Mestizo");
+                    break;
+                case "MU":
+                    paciente.setPacGrupoCultural("Mulato");
+                    break;
+                case "NE":
+                    paciente.setPacGrupoCultural("Negro");
+                    break;
+                default:
+                    paciente.setPacGrupoCultural("No Registrado");
+                    break;
+            }
+            return paciente.getPacGrupoCultural();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public String getSexo(TPaciente paciente) {
+        try {
+            return paciente.getPacSexo().equals("M") ? "Masculino" : "Femenino";
+
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public String getEstadoCivil(TPaciente paciente) {
+        try {
+            switch (paciente.getPacEstadoCivil()) {
+                case "CA":
+                    paciente.setPacEstadoCivil("Casado");
+                    break;
+                case "DI":
+                    paciente.setPacEstadoCivil("Divorciado");
+                    break;
+                case "SO":
+                    paciente.setPacEstadoCivil("Soltero");
+                    break;
+                case "UL":
+                    paciente.setPacEstadoCivil("Unión Libre");
+                    break;
+                case "VI":
+                    paciente.setPacEstadoCivil("Viudo");
+                    break;
+                default:
+                    paciente.setPacEstadoCivil("No Registrado");
+                    break;
+            }
+            return paciente.getPacEstadoCivil();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public String getInstruccion(TPaciente paciente) {
+        try {
+            switch (paciente.getPacInstruccion()) {
+                case "PN":
+                    paciente.setPacInstruccion("Primer Nivel");
+                    break;
+                case "SN":
+                    paciente.setPacInstruccion("Segundo Nivel");
+                    break;
+                case "TN":
+                    paciente.setPacInstruccion("Tercer Nivel");
+                    break;
+                case "CN":
+                    paciente.setPacInstruccion("Cuarto Nivel");
+                    break;
+                case "NN":
+                    paciente.setPacInstruccion("Ningun Nivel");
+                    break;
+                default:
+                    paciente.setPacInstruccion("No Registrado");
+                    break;
+            }
+            return paciente.getPacInstruccion();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    public String getTipoPaciente(TPaciente paciente) {
+        try {
+            return paciente.getHclTipoPaciente().equals("P") ? "Particular" : "Estudiante";
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
     public String goHistoriaEditar() {
-
-        paciente.getHclTipoPaciente();
-
+        if (paciente.getHclTipoPaciente().equals("P")) {
+            tipo = true;
+        } else {
+            tipo = false;
+        }
         return "historia_editar.xhtml";
     }
 
+    public void tipoPacienteEditar() {
+        if (paciente.getHclTipoPaciente().equals("P")) {
+            tipo = true;
+            facultades = carreras = null;
+            semestres = null;
+
+            facultad = carrera = null;
+            paciente.setHclSemestre(null);
+        } else {
+            tipo = false;
+        }
+    }
+
     public String editarHCU() {
-        System.out.println("Editar paciente >>>>>>>>");
         try {
             //Personal
             TUsuario user = (TUsuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLogin");
@@ -160,6 +304,8 @@ public class MBhistoriaClinica implements Serializable {
             if (paciente.getHclTipoPaciente().equals("P")) {
                 facultad.setFacSerial("na");
                 paciente.setFacSerial(facultad);
+                facultades = carreras = null;
+                carrera = null;
             } else {
                 paciente.setFacSerial(carrera);
             }
