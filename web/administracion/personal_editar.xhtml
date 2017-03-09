@@ -9,20 +9,20 @@
         <h:form id="TPersonalEditForm">
             <h:panelGroup id="display">
                 <p:panelGrid columns="2" rendered="#{mBpersonal.persona != null}">
-                    <p:outputLabel value="Nombres" for="per_nombres" />
-                    <p:inputText id="per_nombres" value="#{mBpersonal.persona.perNombres}" />
-                    <p:outputLabel value="Apellidos" for="per_apellidos" />
-                    <p:inputText id="per_apellidos" value="#{mBpersonal.persona.perApellidos}" />
-                    <p:outputLabel value="#Fecha de Nacimiento}" for="per_fecha_nacimiento" />
-                    <p:calendar id="per_fecha_nacimiento" pattern="dd/MMMM/yyyy" locale="es" value="#{mBpersonal.persona.perFechaNacimiento}" />
                     <p:outputLabel value="Cédula" for="per_cedula" />
                     <p:inputText id="per_cedula" value="#{mBpersonal.persona.perCedula}" />
-                    <p:outputLabel value="Dirección" for="per_direccion" />
-                    <p:inputText id="per_direccion" value="#{mBpersonal.persona.perDireccion}" />
+                    <p:outputLabel value="Apellidos" for="per_apellidos" />
+                    <p:inputText id="per_apellidos" value="#{mBpersonal.persona.perApellidos}" />
+                    <p:outputLabel value="Nombres" for="per_nombres" />
+                    <p:inputText id="per_nombres" value="#{mBpersonal.persona.perNombres}" />
+                    <p:outputLabel value="Fecha de Nacimiento" for="per_fecha_nacimiento" />
+                    <p:calendar id="per_fecha_nacimiento" pattern="yyyy MMMM dd" locale="es" value="#{mBpersonal.persona.perFechaNacimiento}" />
                     <p:outputLabel value="Teléfono" for="per_telefono" />
                     <p:inputText id="per_telefono" value="#{mBpersonal.persona.perTelefono}" />
                     <p:outputLabel value="E-mail" for="per_email" />
                     <p:inputText id="per_email" value="#{mBpersonal.persona.perEmail}" />
+                    <p:outputLabel value="Dirección" for="per_direccion" />
+                    <p:inputText id="per_direccion" value="#{mBpersonal.persona.perDireccion}" />
                     <p:outputLabel value="Tipo de Usuario" for="per_tipo" />
                     <p:selectOneMenu id="per_tipo" value="#{mBpersonal.persona.perTipo}" >
                         <f:selectItem itemLabel="#{mBpersonal.persona.perTipo}" />

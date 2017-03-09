@@ -9,21 +9,21 @@
         <h:form id="TPersonalCreateForm">
             <h:panelGroup id="display">
                 <p:panelGrid columns="2" rendered="#{mBpersonal.persona != null}">
-                    <p:outputLabel value="Nombres" for="per_nombres" />
-                    <p:inputText id="per_nombres" value="#{mBpersonal.persona.perNombres}" />
-                    <p:outputLabel value="Apellidos" for="per_apellidos" />
-                    <p:inputText id="per_apellidos" value="#{mBpersonal.persona.perApellidos}" />
-                    <p:outputLabel value="Fecha de Nacimiento" for="per_fecha_nacimiento" />
-                    <p:calendar id="per_fecha_nacimiento" pattern="dd-MMMM-yyyy"  locale="es" value="#{mBpersonal.persona.perFechaNacimiento}"/>
                     <p:outputLabel value="Cédula" for="per_cedula" />
                     <p:inputText id="per_cedula" value="#{mBpersonal.persona.perCedula}" />
-                    <p:outputLabel value="Direccion" for="per_direccion" />
-                    <p:inputText id="per_direccion" value="#{mBpersonal.persona.perDireccion}" />
+                    <p:outputLabel value="Apellidos" for="per_apellidos" />
+                    <p:inputText id="per_apellidos" value="#{mBpersonal.persona.perApellidos}" />
+                    <p:outputLabel value="Nombres" for="per_nombres" />
+                    <p:inputText id="per_nombres" value="#{mBpersonal.persona.perNombres}" />
+                    <p:outputLabel value="Fecha de Nacimiento" for="per_fecha_nacimiento" />
+                    <p:calendar id="per_fecha_nacimiento" locale="es" navigator="true" value="#{mBhistoriaClinica.paciente.pacFechaNacimiento}" pattern="yyyy MMMM dd"/>
                     <p:outputLabel value="Teléfono" for="per_telefono" />
                     <p:inputText id="per_telefono" value="#{mBpersonal.persona.perTelefono}" />
                     <p:outputLabel value="E-mail" for="per_email" />
                     <p:inputText id="per_email" value="#{mBpersonal.persona.perEmail}" />
-                    <p:outputLabel value="Tipo" />
+                    <p:outputLabel value="Dirección" for="per_direccion" />
+                    <p:inputTextarea id="per_direccion" style="width: 100%" value="#{mBpersonal.persona.perDireccion}" />
+                    <p:outputLabel value="Tipo de Usuario" />
                     <p:selectOneMenu value="#{mBpersonal.persona.perTipo}">
                         <f:selectItem itemLabel="-Seleccione-" itemValue=""/>
                         <f:selectItem itemLabel="Administrador" itemValue="A"/>

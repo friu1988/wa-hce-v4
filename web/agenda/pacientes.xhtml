@@ -1,89 +1,84 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition template="/template.xhtml">
+    <ui:define name="title">Pacientes</ui:define>
 
-        <ui:define name="title">
-            <h:outputText value="Pacientes"/>
-        </ui:define>
+    <ui:define name="body">
+        <h:form id="frm_pacientes">
+            <p:panel header="Pacientes Registrados">
+                <p:dataTable id="datalist" value="#{mBhistoriaClinica.pacientes}" var="item"
+                             selectionMode="single" selection="#{mBhistoriaClinica.paciente}"
+                             paginator="true"
+                             rowKey="#{item.pacCedula}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             >
 
-        <ui:define name="body">
-            <h:form id="frm_pacientes">
-                <p:panel header="Pacientes Registrados">
-                    <p:dataTable id="datalist" value="#{mBhistoriaClinica.pacientes}" var="item"
-                                 selectionMode="single" selection="#{mBhistoriaClinica.paciente}"
-                                 paginator="true"
-                                 rowKey="#{item.pacCedula}"
-                                 rows="10"
-                                 rowsPerPageTemplate="10,20,30,40,50"
-                                 >
+                    <p:ajax event="rowSelect"   update="createButton1 viewButton1 editButton1 deleteButton1 createButton2 viewButton2 editButton2 deleteButton2"/>
+                    <p:ajax event="rowUnselect" update="createButton1 viewButton1 editButton1 deleteButton1 createButton2 viewButton2 editButton2 deleteButton2"/>
 
-                        <p:ajax event="rowSelect"   update="createButton1 viewButton1 editButton1 deleteButton1 createButton2 viewButton2 editButton2 deleteButton2"/>
-                        <p:ajax event="rowUnselect" update="createButton1 viewButton1 editButton1 deleteButton1 createButton2 viewButton2 editButton2 deleteButton2"/>
+                    <f:facet name="header">
+                        <p:commandButton id="createButton1" icon="ui-icon-plus"   value="Registrar" action="#{mBhistoriaClinica.goHistoriaCrear()}"/>
+                        <p:commandButton id="viewButton1"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.goHistoriaVer()}" disabled="#{empty mBhistoriaClinica.paciente}" />
+                        <p:commandButton id="editButton1"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.goHistoriaEditar()}" disabled="#{empty mBhistoriaClinica.paciente}" />
+                        <p:commandButton id="deleteButton1" icon="ui-icon-trash"  value="Eliminar" update=":frm_eliminar_pac"  oncomplete="PF('dlg_eliminar_pac').show();" disabled="#{empty mBhistoriaClinica.paciente}"/>
+                    </f:facet>
 
-                        <f:facet name="header">
-                            <p:commandButton id="createButton1" icon="ui-icon-plus"   value="Registrar" action="#{mBhistoriaClinica.goHistoriaCrear()}"/>
-                            <p:commandButton id="viewButton1"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.goHistoriaVer()}" disabled="#{empty mBhistoriaClinica.paciente}" />
-                            <p:commandButton id="editButton1"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.goHistoriaEditar()}" disabled="#{empty mBhistoriaClinica.paciente}" />
-                            <p:commandButton id="deleteButton1" icon="ui-icon-trash"  value="Eliminar" update=":frm_eliminar_pac"  oncomplete="PF('dlg_eliminar_pac').show();" disabled="#{empty mBhistoriaClinica.paciente}"/>
-                        </f:facet>
-
-                        <p:column headerText="Cédula"  filterBy="#{item.pacCedula}" filterMatchMode="exact">
-                            <h:outputText value="#{item.pacCedula}"/>
+                    <p:column headerText="Cédula"  filterBy="#{item.pacCedula}" filterMatchMode="exact">
+                        <h:outputText value="#{item.pacCedula}"/>
+                    </p:column>
+                    <p:column headerText="HCU" filterBy="#{item.hclNumeroHistoria}" filterMatchMode="contains" sortBy="#{item.hclNumeroHistoria}">
+                        <h:outputText value="#{item.hclNumeroHistoria}"/>
+                    </p:column>
+                    <p:column headerText="Apellidos" filterBy="#{item.pacApellidoPaterno}" filterMatchMode="contains">
+                        <h:outputText value="#{item.pacApellidoPaterno} #{item.pacApellidoMaterno}"/>
+                    </p:column>
+                    <p:column headerText="Nombres">
+                        <h:outputText value="#{item.pacPrimerNombre} #{item.pacSegundoNombre}"/>
+                    </p:column>
+                    <p:column headerText="Última atención">
+                        <h:outputText value="#{item.pacDireccionResidencial}"/>
+                    </p:column>                   
+                    <p:column headerText="Turno">
+                        <p:commandLink id="createUserBtn" value="Registrar" styleClass="ui-icon-person" action="#{mBhistoriaClinica.crearTurno()}">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBturno.paciente}" />
+                        </p:commandLink>
+                    </p:column> 
+                    <f:facet name="footer">
+                        <p:commandButton id="createButton2" icon="ui-icon-plus"   value="Registrar" action="#{mBhistoriaClinica.goHistoriaCrear()}"/>
+                        <p:commandButton id="viewButton2"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.goHistoriaVer()}" disabled="#{empty mBhistoriaClinica.paciente}"/>
+                        <p:commandButton id="editButton2"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.goHistoriaEditar()}" disabled="#{empty mBhistoriaClinica.paciente}"/>
+                        <p:commandButton id="deleteButton2" icon="ui-icon-trash"  value="Eliminar" update=":frm_eliminar_pac"  oncomplete="PF('dlg_eliminar_pac').show();" disabled="#{empty mBhistoriaClinica.paciente}"/>
+                    </f:facet>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+        <h:form id="frm_eliminar_pac">
+            <p:dialog id="dlgEliminarPaciente" header="Eliminar Registro!" widgetVar="dlg_eliminar_pac" resizable="false" 
+                      showEffect="explode" hideEffect="explode" modal="true">
+                <p:panelGrid style="width: 100%" >
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="¿Está seguro de eliminar este paciente?"/>
                         </p:column>
-                        <p:column headerText="HCU" filterBy="#{item.hclNumeroHistoria}" filterMatchMode="contains" sortBy="#{item.hclNumeroHistoria}">
-                            <h:outputText value="#{item.hclNumeroHistoria}"/>
-                        </p:column>
-                        <p:column headerText="Apellidos" filterBy="#{item.pacApellidoPaterno}" filterMatchMode="contains">
-                            <h:outputText value="#{item.pacApellidoPaterno} #{item.pacApellidoMaterno}"/>
-                        </p:column>
-                        <p:column headerText="Nombres">
-                            <h:outputText value="#{item.pacPrimerNombre} #{item.pacSegundoNombre}"/>
-                        </p:column>
-                        <p:column headerText="Última atención">
-                            <h:outputText value="#{item.pacDireccionResidencial}"/>
-                        </p:column>                   
-                        <p:column headerText="Turno">
-                            <p:commandLink id="createUserBtn" value="Registrar" styleClass="ui-icon-person" action="#{mBhistoriaClinica.crearTurno()}">
-                                <f:setPropertyActionListener value="#{item}" target="#{mBturno.paciente}" />
-                            </p:commandLink>
-                        </p:column> 
-                        <f:facet name="footer">
-                            <p:commandButton id="createButton2" icon="ui-icon-plus"   value="Registrar" action="#{mBhistoriaClinica.goHistoriaCrear()}"/>
-                            <p:commandButton id="viewButton2"   icon="ui-icon-search" value="Visualizar" action="#{mBhistoriaClinica.goHistoriaVer()}" disabled="#{empty mBhistoriaClinica.paciente}"/>
-                            <p:commandButton id="editButton2"   icon="ui-icon-pencil" value="Actualizar" action="#{mBhistoriaClinica.goHistoriaEditar()}" disabled="#{empty mBhistoriaClinica.paciente}"/>
-                            <p:commandButton id="deleteButton2" icon="ui-icon-trash"  value="Eliminar" update=":frm_eliminar_pac"  oncomplete="PF('dlg_eliminar_pac').show();" disabled="#{empty mBhistoriaClinica.paciente}"/>
-                        </f:facet>
-                    </p:dataTable>
-                </p:panel>
-            </h:form>
-            <h:form id="frm_eliminar_pac">
-                <p:dialog id="dlgEliminarPaciente" header="Eliminar Registro!" widgetVar="dlg_eliminar_pac" resizable="false" 
-                          showEffect="explode" hideEffect="explode" modal="true">
-                    <p:panelGrid style="width: 100%" >
+                    </p:row>
+                    <f:facet name="footer">
                         <p:row>
                             <p:column>
-                                <h:outputText value="¿Está seguro de eliminar este paciente?"/>
+                                <p:commandButton value="Si" actionListener="#{mBhistoriaClinica.eliminarHCU()}"
+                                                 update=":frm_pacientes :growl" 
+                                                 oncomplete="PF('dlg_eliminar_pac').hide();"/>
+                                <p:commandButton value="No" oncomplete="PF('dlg_eliminar_pac').hide();"/>
                             </p:column>
                         </p:row>
-                        <f:facet name="footer">
-                            <p:row>
-                                <p:column>
-                                    <p:commandButton value="Si" actionListener="#{mBhistoriaClinica.eliminarHCU()}"
-                                                     update=":frm_pacientes :growl" 
-                                                     oncomplete="PF('dlg_eliminar_pac').hide();"/>
-                                    <p:commandButton value="No" oncomplete="PF('dlg_eliminar_pac').hide();"/>
-                                </p:column>
-                            </p:row>
-                        </f:facet>
-                    </p:panelGrid>
-                </p:dialog>
-            </h:form>
-        </ui:define>
-    </ui:composition>
-</html>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -253,7 +253,7 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:calendar  locale="es" navigator="true" value="#{mBhistoriaClinica.paciente.pacFechaNacimiento}" pattern="yyyy-MM-dd">
+                            <p:calendar  locale="es" navigator="true" value="#{mBhistoriaClinica.paciente.pacFechaNacimiento}" pattern="yyyy-MMMM-dd">
                                 <p:ajax event="dateSelect" listener="#{mBhistoriaClinica.calcularEdad}" update="lbl_edad"/>
                             </p:calendar>
                         </p:column>                        

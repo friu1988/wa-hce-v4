@@ -5,32 +5,32 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-        <p:dialog id="TPersonalViewDlg" widgetVar="TPersonalViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Profesional">
-            <h:form id="TPersonalViewForm">
-                <h:panelGroup id="display">
-                    <p:panelGrid columns="2" rendered="#{mBpersonal.persona != null}">
-                        <h:outputText value="Serial"/>
-                        <h:outputText value="#{mBpersonal.persona.perSerial}"/>
-                        <h:outputText value="Nombres"/>
-                        <h:outputText value="#{mBpersonal.persona.perNombres}"/>
-                        <h:outputText value="Apellidos"/>
-                        <h:outputText value="#{mBpersonal.persona.perApellidos}"/>
-                        <h:outputText value="Fecha de Nacimiento"/>
-                        <h:outputText value="#{mBpersonal.persona.perFechaNacimiento}">
-                            <f:convertDateTime pattern="dd-MMMM-yyyy" />
-                        </h:outputText>
-                        <h:outputText value="Cédula"/>
-                        <h:outputText value="#{mBpersonal.persona.perCedula}" />
-                        <h:outputText value="Dirección"/>
-                        <h:outputText value="#{mBpersonal.persona.perDireccion}" />
-                        <h:outputText value="Teléfono"/>
-                        <h:outputText value="#{mBpersonal.persona.perTelefono}" />
-                        <h:outputText value="E-mail"/>
-                        <h:outputText value="#{mBpersonal.persona.perEmail}" />
-                        <h:outputText value="Tipo"/>
-                        <h:outputText value="#{mBpersonal.persona.perTipo}" />
-                    </p:panelGrid>
-                </h:panelGroup>
-            </h:form>
-        </p:dialog>
+    <p:dialog id="TPersonalViewDlg" widgetVar="TPersonalViewDialog" modal="true" resizable="false" appendTo="@(body)" header="Profesional">
+        <h:form id="TPersonalViewForm">
+            <h:panelGroup id="display">
+                <p:panelGrid columns="2" rendered="#{mBpersonal.persona != null}">
+                    <h:outputText value="Serial"/>
+                    <h:outputText value="#{mBpersonal.persona.perSerial}"/>
+                    <h:outputText value="Tipo de Usuario"/>
+                    <h:outputText value="#{mBpersonal.persona.perTipo}" />
+                    <h:outputText value="Cédula"/>
+                    <h:outputText value="#{mBpersonal.persona.perCedula}" />
+                    <h:outputText value="Apellidos"/>
+                    <h:outputText value="#{mBpersonal.persona.perApellidos}"/>
+                    <h:outputText value="Nombres"/>
+                    <h:outputText value="#{mBpersonal.persona.perNombres}"/>
+                    <h:outputText value="Fecha de Nacimiento"/>
+                    <h:outputText value="#{mBpersonal.persona.perFechaNacimiento}">
+                        <f:convertDateTime pattern="yyyy MMMM dd" />
+                    </h:outputText>
+                    <h:outputText value="Teléfono"/>
+                    <h:outputText value="#{mBpersonal.persona.perTelefono}" />
+                    <h:outputText value="E-mail"/>
+                    <h:outputText value="#{mBpersonal.persona.perEmail}" />
+                    <h:outputText value="Dirección"/>
+                    <h:outputText value="#{mBpersonal.persona.perDireccion}" />
+                </p:panelGrid>
+            </h:panelGroup>
+        </h:form>
+    </p:dialog>
 </ui:composition>

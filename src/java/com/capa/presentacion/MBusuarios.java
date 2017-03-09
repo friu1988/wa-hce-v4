@@ -24,10 +24,6 @@ public class MBusuarios implements Serializable {
     public MBusuarios() {
     }
 
-    public void actualizar() {
-
-    }
-
     public void eliminarUser() {
         try {
             servicioUsuarios.remove(usuario);
@@ -40,17 +36,24 @@ public class MBusuarios implements Serializable {
     }
 
     public String activarUsuario() {
-        usuario.setPerSerial(personal);
-        usuario.setUEstado(Boolean.TRUE);
-        try {
-            servicioUsuarios.create(usuario);
-            usuario = null;
-            usuarios = null;
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Accesos autorizados! " + usuario, null));
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al ingresar" + e.getMessage(), null));
+
+        if (servicioUsuarios.buscarEstado(personal)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Este usuario ya tiene una Cuenta Asignada!", null));
+            return "personal.xhtml";
+        } else {
+            usuario.setPerSerial(personal);
+            usuario.setUEstado(Boolean.TRUE);
+            try {
+                servicioUsuarios.create(usuario);
+                usuario = null;
+                usuarios = null;
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Accesos autorizados! " + usuario, null));
+            } catch (Exception e) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al ingresar" + e.getMessage(), null));
+            }
+            return "accesos.xhtml";
         }
-        return "accesos.xhtml";
+
     }
 
     public TPersonal getPersonal() {

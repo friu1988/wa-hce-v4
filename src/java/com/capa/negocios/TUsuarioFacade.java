@@ -5,6 +5,7 @@
  */
 package com.capa.negocios;
 
+import com.capa.datos.TPersonal;
 import com.capa.datos.TUsuario;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -44,4 +45,18 @@ public class TUsuarioFacade extends AbstractFacade<TUsuario> {
         }
 
     }
+
+    public boolean buscarEstado(TPersonal persona) {
+        Query sql = em.createNamedQuery("TUsuario.findByPerSerial");
+        sql.setParameter("perSerial", persona.getPerSerial());
+        try {
+            TUsuario usuario = (TUsuario) sql.getSingleResult();
+            System.out.println("Usuario : " + usuario + " Persona " + persona);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
 }

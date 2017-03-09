@@ -20,8 +20,15 @@
                              rowsPerPageTemplate="10,20,30,40,50"
                              >
 
-                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton createUserBtn"/>
-                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton createUserBtn"/>
+                    <p:ajax event="rowSelect"   update="createButton viewButton editButton deleteButton createUserBtn createButton1 viewButton1 editButton1 deleteButton1"/>
+                    <p:ajax event="rowUnselect" update="createButton viewButton editButton deleteButton createUserBtn createButton1 viewButton1 editButton1 deleteButton1"/>
+
+                    <f:facet name="header">
+                        <p:commandButton id="createButton1" icon="ui-icon-plus"   value="Registrar" actionListener="#{mBpersonal.prepararCreate()}" update=":TPersonalCreateForm" oncomplete="PF('TPersonalCreateDialog').show()"/>
+                        <p:commandButton id="viewButton1"   icon="ui-icon-search" value="Visualizar" update=":TPersonalViewForm" oncomplete="PF('TPersonalViewDialog').show()" disabled="#{empty mBpersonal.persona}"/>
+                        <p:commandButton id="editButton1"   icon="ui-icon-pencil" value="Actualizar" update=":TPersonalEditForm" oncomplete="PF('TPersonalEditDialog').show()" disabled="#{empty mBpersonal.persona}"/>
+                        <p:commandButton id="deleteButton1" icon="ui-icon-trash"  value="Eliminar"  update=":frm_eliminar_per" oncomplete="PF('dlg_eliminar_per').show();" disabled="#{empty mBpersonal.persona}"/>
+                    </f:facet>
 
                     <p:column headerText="Cédula">
                         <h:outputText value="#{item.perCedula}"/>
@@ -39,7 +46,7 @@
                         <h:outputText value="#{item.perEmail}"/>
                     </p:column>
                     <p:column headerText="Cuentas">
-                        <p:commandLink id="createUserBtn" title="Permisos" styleClass="ui-icon-plus" value="Activar" update=":frm_usuario_crear" oncomplete="PF('wv_crear_user').show();">
+                        <p:commandLink id="createUserBtn" title="Permisos" value="Activar" update=":frm_usuario_crear" oncomplete="PF('wv_crear_user').show();">
                             <f:setPropertyActionListener value="#{item}" target="#{mBusuarios.personal}" />
                         </p:commandLink>
                     </p:column>

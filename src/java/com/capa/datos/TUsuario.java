@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TUsuario.findAll", query = "SELECT t FROM TUsuario t"),
     @NamedQuery(name = "TUsuario.findByUSerial", query = "SELECT t FROM TUsuario t WHERE t.uSerial = :uSerial"),
+    @NamedQuery(name = "TUsuario.findByPerSerial", query = "SELECT t FROM TUsuario t WHERE t.perSerial.perSerial = :perSerial"),
     @NamedQuery(name = "TUsuario.findByUNick", query = "SELECT t FROM TUsuario t WHERE t.uNick = :uNick"),
     @NamedQuery(name = "TUsuario.findByUClave", query = "SELECT t FROM TUsuario t WHERE t.uClave = :uClave"),
     @NamedQuery(name = "TUsuario.findByUEstado", query = "SELECT t FROM TUsuario t WHERE t.uEstado = :uEstado")})
