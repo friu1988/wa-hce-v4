@@ -58,6 +58,15 @@ public class TMedico implements Serializable {
     public TMedico() {
     }
 
+    public TMedico(Integer perSerial, List<TEspecialidad> tEspecialidadList, TPersonal tPersonal, TConsultorio coSerial, List<TTurno> tTurnoList, List<THorario> tHorarioList) {
+        this.perSerial = perSerial;
+        this.tEspecialidadList = tEspecialidadList;
+        this.tPersonal = tPersonal;
+        this.coSerial = coSerial;
+        this.tTurnoList = tTurnoList;
+        this.tHorarioList = tHorarioList;
+    }
+
     public TMedico(Integer perSerial) {
         this.perSerial = perSerial;
     }

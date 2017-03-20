@@ -6,6 +6,8 @@
 package com.capa.datos;
 
 import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -13,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -25,21 +29,26 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "THorario.findAll", query = "SELECT t FROM THorario t"),
     @NamedQuery(name = "THorario.findByPerSerial", query = "SELECT t FROM THorario t WHERE t.tHorarioPK.perSerial = :perSerial"),
-    @NamedQuery(name = "THorario.findByDSerial", query = "SELECT t FROM THorario t WHERE t.tHorarioPK.dSerial = :dSerial")})
+    @NamedQuery(name = "THorario.findByDSerial", query = "SELECT t FROM THorario t WHERE t.tHorarioPK.dSerial = :dSerial"),
+    @NamedQuery(name = "THorario.findByHoraInicio", query = "SELECT t FROM THorario t WHERE t.horaInicio = :horaInicio"),
+    @NamedQuery(name = "THorario.findByHoraFin", query = "SELECT t FROM THorario t WHERE t.horaFin = :horaFin")})
 public class THorario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected THorarioPK tHorarioPK;
-    @JoinColumn(name = "per_serial", referencedColumnName = "per_serial", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private TMedico tMedico;
+    @Column(name = "hora_inicio")
+    @Temporal(TemporalType.TIME)
+    private Date horaInicio;
+    @Column(name = "hora_fin")
+    @Temporal(TemporalType.TIME)
+    private Date horaFin;
     @JoinColumn(name = "d_serial", referencedColumnName = "d_serial", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private TDias tDias;
-    @JoinColumn(name = "h_serial", referencedColumnName = "h_serial", nullable = false)
+    @JoinColumn(name = "per_serial", referencedColumnName = "per_serial", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private THoras hSerial;
+    private TMedico tMedico;
 
     public THorario() {
     }
@@ -60,12 +69,20 @@ public class THorario implements Serializable {
         this.tHorarioPK = tHorarioPK;
     }
 
-    public TMedico getTMedico() {
-        return tMedico;
+    public Date getHoraInicio() {
+        return horaInicio;
     }
 
-    public void setTMedico(TMedico tMedico) {
-        this.tMedico = tMedico;
+    public void setHoraInicio(Date horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public Date getHoraFin() {
+        return horaFin;
+    }
+
+    public void setHoraFin(Date horaFin) {
+        this.horaFin = horaFin;
     }
 
     public TDias getTDias() {
@@ -76,12 +93,12 @@ public class THorario implements Serializable {
         this.tDias = tDias;
     }
 
-    public THoras getHSerial() {
-        return hSerial;
+    public TMedico getTMedico() {
+        return tMedico;
     }
 
-    public void setHSerial(THoras hSerial) {
-        this.hSerial = hSerial;
+    public void setTMedico(TMedico tMedico) {
+        this.tMedico = tMedico;
     }
 
     @Override

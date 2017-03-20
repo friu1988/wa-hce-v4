@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">Registro de Médicos</ui:define>
+
+    <ui:define name="body">
+        <h:form id="frm_medicos">
+            <p:panel header="Personal de Salud">
+                <p:dataTable id="datalist" value="#{mBmedicos.medicos}" var="item"
+                             selectionMode="single" selection="#{mBmedicos.medico}"
+                             paginator="true"
+                             rowKey="#{item.perSerial}"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             >
+
+                    <p:column headerText="Cédula">
+                        <h:outputText value="#{item.TPersonal.perCedula}"/>
+                    </p:column>
+                    <p:column headerText="Apellidos">
+                        <h:outputText value="#{item.TPersonal.perApellidos}"/>
+                    </p:column>
+                    <p:column headerText="Nombres">
+                        <h:outputText value="#{item.TPersonal.perNombres}"/>
+                    </p:column>
+                    <p:column headerText="Teléfono">
+                        <h:outputText value="#{item.TPersonal.perTelefono}"/>
+                    </p:column>
+                    <p:column headerText="E-mail">
+                        <h:outputText value="#{item.TPersonal.perEmail}"/>
+                    </p:column>
+                    <p:column headerText="Consultorio">
+                        <p:commandLink id="createUserBtn" title="Activar" value="Permisos" />
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

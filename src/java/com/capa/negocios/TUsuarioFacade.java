@@ -51,10 +51,21 @@ public class TUsuarioFacade extends AbstractFacade<TUsuario> {
         sql.setParameter("perSerial", persona.getPerSerial());
         try {
             TUsuario usuario = (TUsuario) sql.getSingleResult();
-            System.out.println("Usuario : " + usuario + " Persona " + persona);
             return true;
         } catch (Exception e) {
             return false;
+        }
+
+    }
+
+    public TUsuario buscarUser(TPersonal persona) {
+        Query sql = em.createNamedQuery("TUsuario.findByPerSerial");
+        sql.setParameter("perSerial", persona.getPerSerial());
+        try {
+            TUsuario usuario = (TUsuario) sql.getSingleResult();
+            return usuario;
+        } catch (Exception e) {
+            return new TUsuario();
         }
 
     }

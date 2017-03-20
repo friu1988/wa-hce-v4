@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TMenu.findByMenSerial", query = "SELECT t FROM TMenu t WHERE t.menSerial = :menSerial"),
     @NamedQuery(name = "TMenu.findByMenNombre", query = "SELECT t FROM TMenu t WHERE t.menNombre = :menNombre"),
     @NamedQuery(name = "TMenu.findByMenUrl", query = "SELECT t FROM TMenu t WHERE t.menUrl = :menUrl"),
-    @NamedQuery(name = "TMenu.findByMenNivel", query = "SELECT t FROM TMenu t WHERE t.menNivel = :menNivel"),
+    @NamedQuery(name = "TMenu.findByMenTipo", query = "SELECT t FROM TMenu t WHERE t.menTipo = :menTipo"),
     @NamedQuery(name = "TMenu.findByMenOrden", query = "SELECT t FROM TMenu t WHERE t.menOrden = :menOrden")})
 public class TMenu implements Serializable {
 
@@ -52,8 +52,9 @@ public class TMenu implements Serializable {
     @Size(max = 100)
     @Column(name = "men_url", length = 100)
     private String menUrl;
-    @Column(name = "men_nivel")
-    private Integer menNivel;
+    @Size(max = 1)
+    @Column(name = "men_tipo", length = 1)
+    private String menTipo;
     @Column(name = "men_orden")
     private Integer menOrden;
     @OneToMany(mappedBy = "padreMenSerial")
@@ -95,12 +96,12 @@ public class TMenu implements Serializable {
         this.menUrl = menUrl;
     }
 
-    public Integer getMenNivel() {
-        return menNivel;
+    public String getMenTipo() {
+        return menTipo;
     }
 
-    public void setMenNivel(Integer menNivel) {
-        this.menNivel = menNivel;
+    public void setMenTipo(String menTipo) {
+        this.menTipo = menTipo;
     }
 
     public Integer getMenOrden() {
@@ -159,7 +160,7 @@ public class TMenu implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TMenu[ menSerial=" + menSerial + " ]";
+        return "TMenu{" + "menSerial=" + menSerial + ", menNombre=" + menNombre + ", menUrl=" + menUrl + ", menTipo=" + menTipo + ", menOrden=" + menOrden + '}';
     }
-    
+
 }

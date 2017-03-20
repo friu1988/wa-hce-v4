@@ -30,7 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TAccesos.findByAcCreate", query = "SELECT t FROM TAccesos t WHERE t.acCreate = :acCreate"),
     @NamedQuery(name = "TAccesos.findByAcRead", query = "SELECT t FROM TAccesos t WHERE t.acRead = :acRead"),
     @NamedQuery(name = "TAccesos.findByAcUpdate", query = "SELECT t FROM TAccesos t WHERE t.acUpdate = :acUpdate"),
-    @NamedQuery(name = "TAccesos.findByAcDelete", query = "SELECT t FROM TAccesos t WHERE t.acDelete = :acDelete")})
+    @NamedQuery(name = "TAccesos.findByAcDelete", query = "SELECT t FROM TAccesos t WHERE t.acDelete = :acDelete"),
+    @NamedQuery(name = "TAccesos.findByAcPagina", query = "SELECT t FROM TAccesos t WHERE t.acPagina = :acPagina")})
+
 public class TAccesos implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,6 +46,8 @@ public class TAccesos implements Serializable {
     private Boolean acUpdate;
     @Column(name = "ac_delete")
     private Boolean acDelete;
+    @Column(name = "ac_pagina")
+    private Boolean acPagina;
     @JoinColumn(name = "u_serial", referencedColumnName = "u_serial", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private TUsuario tUsuario;
@@ -52,10 +56,20 @@ public class TAccesos implements Serializable {
     private TMenu tMenu;
 
     public TAccesos() {
+        this.acCreate = false;
+        this.acRead = false;
+        this.acUpdate = false;
+        this.acDelete = false;
+        this.acPagina = false;
     }
 
     public TAccesos(TAccesosPK tAccesosPK) {
         this.tAccesosPK = tAccesosPK;
+        this.acCreate = false;
+        this.acRead = false;
+        this.acUpdate = false;
+        this.acDelete = false;
+        this.acPagina = false;
     }
 
     public TAccesos(int menSerial, int uSerial) {
@@ -102,6 +116,14 @@ public class TAccesos implements Serializable {
         this.acDelete = acDelete;
     }
 
+    public Boolean getAcPagina() {
+        return acPagina;
+    }
+
+    public void setAcPagina(Boolean acPagina) {
+        this.acPagina = acPagina;
+    }
+
     public TUsuario getTUsuario() {
         return tUsuario;
     }
@@ -140,7 +162,7 @@ public class TAccesos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TAccesos[ tAccesosPK=" + tAccesosPK + " ]";
+        return "TAccesos{" + "tAccesosPK=" + tAccesosPK + ", acCreate=" + acCreate + ", acRead=" + acRead + ", acUpdate=" + acUpdate + ", acDelete=" + acDelete + ", acPagina=" + acPagina + ", tUsuario=" + tUsuario + ", tMenu=" + tMenu + '}';
     }
-    
+
 }

@@ -6,6 +6,7 @@
 package com.capa.datos;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -38,8 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TUsuario.findByUSerial", query = "SELECT t FROM TUsuario t WHERE t.uSerial = :uSerial"),
     @NamedQuery(name = "TUsuario.findByPerSerial", query = "SELECT t FROM TUsuario t WHERE t.perSerial.perSerial = :perSerial"),
     @NamedQuery(name = "TUsuario.findByUNick", query = "SELECT t FROM TUsuario t WHERE t.uNick = :uNick"),
-    @NamedQuery(name = "TUsuario.findByUClave", query = "SELECT t FROM TUsuario t WHERE t.uClave = :uClave"),
-    @NamedQuery(name = "TUsuario.findByUEstado", query = "SELECT t FROM TUsuario t WHERE t.uEstado = :uEstado")})
+    @NamedQuery(name = "TUsuario.findByUClave", query = "SELECT t FROM TUsuario t WHERE t.uClave = :uClave")})
+
 public class TUsuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,15 +55,23 @@ public class TUsuario implements Serializable {
     @Size(max = 32)
     @Column(name = "u_clave", length = 32)
     private String uClave;
-    @Column(name = "u_estado")
-    private Boolean uEstado;
+//    @Column(name = "u_estado")
+//    private Boolean uEstado;
     @JoinColumn(name = "per_serial", referencedColumnName = "per_serial", nullable = false)
     @ManyToOne(optional = false)
     private TPersonal perSerial;
+//@OneToMany(cascade = CascadeType.ALL, mappedBy = "tUsuario", fetch = FetchType.EAGER)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tUsuario")
     private List<TAccesos> tAccesosList;
 
     public TUsuario() {
+        tAccesosList = new LinkedList<>();
+    }
+
+    public TUsuario(String uNick, String uClave, Boolean uEstado, TPersonal perSerial) {
+        this.uNick = uNick;
+        this.uClave = uClave;
+        this.perSerial = perSerial;
     }
 
     public TUsuario(Integer uSerial) {
@@ -91,14 +100,6 @@ public class TUsuario implements Serializable {
 
     public void setUClave(String uClave) {
         this.uClave = uClave;
-    }
-
-    public Boolean getUEstado() {
-        return uEstado;
-    }
-
-    public void setUEstado(Boolean uEstado) {
-        this.uEstado = uEstado;
     }
 
     public TPersonal getPerSerial() {
@@ -140,7 +141,7 @@ public class TUsuario implements Serializable {
 
     @Override
     public String toString() {
-        return "TUsuario{" + "uSerial=" + uSerial + ", uNick=" + uNick + ", uClave=" + uClave + ", uEstado=" + uEstado + ", perSerial=" + perSerial + '}';
+        return "TUsuario{" + "uSerial=" + uSerial + ", uNick=" + uNick + ", uClave=" + uClave + ", perSerial=" + perSerial + ", tAccesosList=" + tAccesosList + '}';
     }
 
 }

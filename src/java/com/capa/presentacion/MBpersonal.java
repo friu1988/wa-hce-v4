@@ -36,7 +36,6 @@ public class MBpersonal implements Serializable {
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al ingresar" + e.getMessage(), null));
         }
-
     }
 
     public void editarEmpleado() {
@@ -79,5 +78,4 @@ public class MBpersonal implements Serializable {
     public void setPersonas(List<TPersonal> personas) {
         this.empleados = personas;
     }
-
 }

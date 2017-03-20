@@ -5,9 +5,8 @@
  */
 package com.capa.negocios;
 
-import com.capa.datos.TEspecialidad;
 import com.capa.datos.TMedico;
-import java.util.List;
+import com.capa.datos.TPersonal;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -43,5 +42,16 @@ public class TMedicoFacade extends AbstractFacade<TMedico> {
 //        }
 //        return null;
 //    }
+    public boolean buscarMedico(TPersonal personal) {
+        Query sql = em.createNamedQuery("TMedico.findByPerSerial");
+        sql.setParameter("perSerial", personal.getPerSerial());
+        try {
+            TMedico medico = (TMedico) sql.getSingleResult();
+            System.out.println(" Persona " + medico);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 }

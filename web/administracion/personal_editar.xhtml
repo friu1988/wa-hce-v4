@@ -9,6 +9,8 @@
         <h:form id="TPersonalEditForm">
             <h:panelGroup id="display">
                 <p:panelGrid columns="2" rendered="#{mBpersonal.persona != null}">
+                    <h:outputText value="Estado"/>
+                    <p:selectBooleanCheckbox value="#{mBpersonal.persona.perEstado}" />
                     <p:outputLabel value="Cédula" for="per_cedula" />
                     <p:inputText id="per_cedula" value="#{mBpersonal.persona.perCedula}" />
                     <p:outputLabel value="Apellidos" for="per_apellidos" />

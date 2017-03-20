@@ -79,5 +79,5 @@ public class TAccesosPK implements Serializable {
     public String toString() {
         return "com.capa.datos.TAccesosPK[ menSerial=" + menSerial + ", uSerial=" + uSerial + " ]";
     }
-    
+
 }

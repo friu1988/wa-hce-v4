@@ -42,7 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TPersonal.findByPerCedula", query = "SELECT t FROM TPersonal t WHERE t.perCedula = :perCedula"),
     @NamedQuery(name = "TPersonal.findByPerDireccion", query = "SELECT t FROM TPersonal t WHERE t.perDireccion = :perDireccion"),
     @NamedQuery(name = "TPersonal.findByPerTelefono", query = "SELECT t FROM TPersonal t WHERE t.perTelefono = :perTelefono"),
-    @NamedQuery(name = "TPersonal.findByPerEmail", query = "SELECT t FROM TPersonal t WHERE t.perEmail = :perEmail")})
+    @NamedQuery(name = "TPersonal.findByPerEmail", query = "SELECT t FROM TPersonal t WHERE t.perEmail = :perEmail"),
+    @NamedQuery(name = "TPersonal.findByPerEstado", query = "SELECT t FROM TPersonal t WHERE t.perEstado = :perEstado")})
+
 public class TPersonal implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -75,6 +77,8 @@ public class TPersonal implements Serializable {
     @Size(max = 1)
     @Column(name = "per_tipo", length = 1)
     private String perTipo;
+    @Column(name = "per_estado")
+    private Boolean perEstado;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "tPersonal")
     private TMedico tMedico;
@@ -168,6 +172,14 @@ public class TPersonal implements Serializable {
 
     public void setPerTipo(String perTipo) {
         this.perTipo = perTipo;
+    }
+
+    public Boolean getPerEstado() {
+        return perEstado;
+    }
+
+    public void setPerEstado(Boolean perEstado) {
+        this.perEstado = perEstado;
     }
 
     @XmlTransient

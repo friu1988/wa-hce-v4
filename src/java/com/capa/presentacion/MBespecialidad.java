@@ -94,6 +94,9 @@ public class MBespecialidad implements Serializable {
     }
 
     public List<TEspecialidad> getEspecialidades() {
+        if (especialidades == null) {
+            especialidades = servicioEspecialidad.findAll();
+        }
         return especialidades;
     }
 
