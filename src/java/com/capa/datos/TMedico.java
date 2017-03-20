@@ -13,8 +13,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -42,29 +40,15 @@ public class TMedico implements Serializable {
     @NotNull
     @Column(name = "per_serial", nullable = false)
     private Integer perSerial;
-    @ManyToMany(mappedBy = "tMedicoList")
-    private List<TEspecialidad> tEspecialidadList;
     @JoinColumn(name = "per_serial", referencedColumnName = "per_serial", nullable = false, insertable = false, updatable = false)
     @OneToOne(optional = false)
     private TPersonal tPersonal;
-    @JoinColumn(name = "co_serial", referencedColumnName = "co_serial", nullable = false)
-    @ManyToOne(optional = false)
-    private TConsultorio coSerial;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tMPerSerial")
     private List<TTurno> tTurnoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tMedico")
-    private List<THorario> tHorarioList;
+    private List<TPersonalSalud> tPersonalSaludList;
 
     public TMedico() {
-    }
-
-    public TMedico(Integer perSerial, List<TEspecialidad> tEspecialidadList, TPersonal tPersonal, TConsultorio coSerial, List<TTurno> tTurnoList, List<THorario> tHorarioList) {
-        this.perSerial = perSerial;
-        this.tEspecialidadList = tEspecialidadList;
-        this.tPersonal = tPersonal;
-        this.coSerial = coSerial;
-        this.tTurnoList = tTurnoList;
-        this.tHorarioList = tHorarioList;
     }
 
     public TMedico(Integer perSerial) {
@@ -79,29 +63,12 @@ public class TMedico implements Serializable {
         this.perSerial = perSerial;
     }
 
-    @XmlTransient
-    public List<TEspecialidad> getTEspecialidadList() {
-        return tEspecialidadList;
-    }
-
-    public void setTEspecialidadList(List<TEspecialidad> tEspecialidadList) {
-        this.tEspecialidadList = tEspecialidadList;
-    }
-
     public TPersonal getTPersonal() {
         return tPersonal;
     }
 
     public void setTPersonal(TPersonal tPersonal) {
         this.tPersonal = tPersonal;
-    }
-
-    public TConsultorio getCoSerial() {
-        return coSerial;
-    }
-
-    public void setCoSerial(TConsultorio coSerial) {
-        this.coSerial = coSerial;
     }
 
     @XmlTransient
@@ -114,12 +81,12 @@ public class TMedico implements Serializable {
     }
 
     @XmlTransient
-    public List<THorario> getTHorarioList() {
-        return tHorarioList;
+    public List<TPersonalSalud> getTPersonalSaludList() {
+        return tPersonalSaludList;
     }
 
-    public void setTHorarioList(List<THorario> tHorarioList) {
-        this.tHorarioList = tHorarioList;
+    public void setTPersonalSaludList(List<TPersonalSalud> tPersonalSaludList) {
+        this.tPersonalSaludList = tPersonalSaludList;
     }
 
     @Override
@@ -146,5 +113,5 @@ public class TMedico implements Serializable {
     public String toString() {
         return "com.capa.datos.TMedico[ perSerial=" + perSerial + " ]";
     }
-    
+
 }

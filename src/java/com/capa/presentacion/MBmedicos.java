@@ -37,19 +37,23 @@ public class MBmedicos implements Serializable {
     @PostConstruct
     public void init() {
 
+        medicos = null;
         for (TPersonal p : servicioPersonal.findAll()) {
             if (p.getPerTipo().equals("M")) {
                 if (servicioMedicos.buscarMedico(p)) {
                     /*Nada*/
                 } else {
                     TMedico m = new TMedico(p.getPerSerial());
+                    m.setTPersonal(p);
                     servicioMedicos.create(m);
-
                 }
-
             }
         }
         medicos = servicioMedicos.findAll();
+    }
+
+    public String goAsignaciones() {
+    return "medicos_asignar.xhtml";
     }
 
     public TMedico getMedico() {
@@ -88,8 +92,7 @@ public class MBmedicos implements Serializable {
         horarios.add(horario1);
         horarios.add(horario2);
 
-        TMedico medico = new TMedico(2, especialidades, null, new TConsultorio(3), null/*turnos*/, horarios);
-
+//        TMedico medico = new TMedico(2, especialidades, null, new TConsultorio(3), null/*turnos*/, horarios);
         int nTurnos = generarTurnos(medico, new TDias(2), 30);
 
         TTurno[] turnos = new TTurno[nTurnos];
@@ -104,15 +107,13 @@ public class MBmedicos implements Serializable {
         horario.setHoraFin(new Date(2017, 5, 3, 18, 30, 0));
         horario.setTDias(new TDias(2));
 
-        if (medico.getTHorarioList().contains(dia)) {//verificar metodo booleano
-            //calculamos tiempo en minutos
-            int tiempo = (horario.getHoraFin().getHours() - horario.getHoraInicio().getHours()) * 60 + Math.abs(horario.getHoraFin().getMinutes() - horario.getHoraInicio().getMinutes());
-            return (tiempo / intervalo);//retornamos el numero de turnos
-        } else {
-            System.out.println("No hay turnos disponiblos cn tal doctor para tal dia");
-            return 0;
-        }
-
+//        if (medico.getTHorarioList().contains(dia)) {//verificar metodo booleano
+//            //calculamos tiempo en minutos
+//            int tiempo = (horario.getHoraFin().getHours() - horario.getHoraInicio().getHours()) * 60 + Math.abs(horario.getHoraFin().getMinutes() - horario.getHoraInicio().getMinutes());
+//            return (tiempo / intervalo);//retornamos el numero de turnos
+//        } else {
+//            System.out.println("No hay turnos disponiblos cn tal doctor para tal dia");
+        return 0;
+//        }
     }
-
 }

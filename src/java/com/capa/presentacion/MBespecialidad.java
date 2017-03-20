@@ -54,15 +54,15 @@ public class MBespecialidad implements Serializable {
     }
 
     public void cargarNodo(TEspecialidad it, TreeNode raiz) {
-        try {
-            medicos = it.getTMedicoList();
-            for (TMedico it1 : medicos) {
-                TreeNode nodo = new DefaultTreeNode(it1, raiz);
-                System.out.println("Medico>>" + raiz.getChildren().toString());
-            }
-        } catch (Exception e) {
-            System.out.println("Error al cargar nodos" + e.getMessage());
-        }
+//        try {
+//            medicos = it.getTMedicoList();
+//            for (TMedico it1 : medicos) {
+//                TreeNode nodo = new DefaultTreeNode(it1, raiz);
+//                System.out.println("Medico>>" + raiz.getChildren().toString());
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Error al cargar nodos" + e.getMessage());
+//        }
     }
 
     public TreeNode getRoot() {

@@ -7,17 +7,23 @@ package com.capa.datos;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -28,45 +34,42 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "THorario.findAll", query = "SELECT t FROM THorario t"),
-    @NamedQuery(name = "THorario.findByPerSerial", query = "SELECT t FROM THorario t WHERE t.tHorarioPK.perSerial = :perSerial"),
-    @NamedQuery(name = "THorario.findByDSerial", query = "SELECT t FROM THorario t WHERE t.tHorarioPK.dSerial = :dSerial"),
+    @NamedQuery(name = "THorario.findByDSerial", query = "SELECT t FROM THorario t WHERE t.dSerial = :dSerial"),
     @NamedQuery(name = "THorario.findByHoraInicio", query = "SELECT t FROM THorario t WHERE t.horaInicio = :horaInicio"),
     @NamedQuery(name = "THorario.findByHoraFin", query = "SELECT t FROM THorario t WHERE t.horaFin = :horaFin")})
 public class THorario implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected THorarioPK tHorarioPK;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "d_serial", nullable = false)
+    private Integer dSerial;
     @Column(name = "hora_inicio")
     @Temporal(TemporalType.TIME)
     private Date horaInicio;
     @Column(name = "hora_fin")
     @Temporal(TemporalType.TIME)
     private Date horaFin;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tHorario")
+    private List<TPersonalSalud> tPersonalSaludList;
     @JoinColumn(name = "d_serial", referencedColumnName = "d_serial", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private TDias tDias;
-    @JoinColumn(name = "per_serial", referencedColumnName = "per_serial", nullable = false, insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private TMedico tMedico;
 
     public THorario() {
     }
 
-    public THorario(THorarioPK tHorarioPK) {
-        this.tHorarioPK = tHorarioPK;
+    public THorario(Integer dSerial) {
+        this.dSerial = dSerial;
     }
 
-    public THorario(int perSerial, int dSerial) {
-        this.tHorarioPK = new THorarioPK(perSerial, dSerial);
+    public Integer getDSerial() {
+        return dSerial;
     }
 
-    public THorarioPK getTHorarioPK() {
-        return tHorarioPK;
-    }
-
-    public void setTHorarioPK(THorarioPK tHorarioPK) {
-        this.tHorarioPK = tHorarioPK;
+    public void setDSerial(Integer dSerial) {
+        this.dSerial = dSerial;
     }
 
     public Date getHoraInicio() {
@@ -85,6 +88,15 @@ public class THorario implements Serializable {
         this.horaFin = horaFin;
     }
 
+    @XmlTransient
+    public List<TPersonalSalud> getTPersonalSaludList() {
+        return tPersonalSaludList;
+    }
+
+    public void setTPersonalSaludList(List<TPersonalSalud> tPersonalSaludList) {
+        this.tPersonalSaludList = tPersonalSaludList;
+    }
+
     public TDias getTDias() {
         return tDias;
     }
@@ -93,18 +105,10 @@ public class THorario implements Serializable {
         this.tDias = tDias;
     }
 
-    public TMedico getTMedico() {
-        return tMedico;
-    }
-
-    public void setTMedico(TMedico tMedico) {
-        this.tMedico = tMedico;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (tHorarioPK != null ? tHorarioPK.hashCode() : 0);
+        hash += (dSerial != null ? dSerial.hashCode() : 0);
         return hash;
     }
 
@@ -115,7 +119,7 @@ public class THorario implements Serializable {
             return false;
         }
         THorario other = (THorario) object;
-        if ((this.tHorarioPK == null && other.tHorarioPK != null) || (this.tHorarioPK != null && !this.tHorarioPK.equals(other.tHorarioPK))) {
+        if ((this.dSerial == null && other.dSerial != null) || (this.dSerial != null && !this.dSerial.equals(other.dSerial))) {
             return false;
         }
         return true;
@@ -123,7 +127,7 @@ public class THorario implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.THorario[ tHorarioPK=" + tHorarioPK + " ]";
+        return "com.capa.datos.THorario[ dSerial=" + dSerial + " ]";
     }
     
 }

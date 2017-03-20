@@ -35,7 +35,9 @@
                         <h:outputText value="#{item.TPersonal.perEmail}"/>
                     </p:column>
                     <p:column headerText="Consultorio">
-                        <p:commandLink id="createUserBtn" title="Activar" value="Permisos" />
+                        <p:commandLink id="createUserBtn" title="Activar" value="Permisos" action="#{mBmedicos.goAsignaciones()}">
+                            <f:setPropertyActionListener value="#{item}" target="#{mBmedicos.medico}" />
+                        </p:commandLink>
                     </p:column>
 
                 </p:dataTable>

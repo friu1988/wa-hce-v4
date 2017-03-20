@@ -8,16 +8,15 @@ package com.capa.datos;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -45,11 +44,8 @@ public class TEspecialidad implements Serializable {
     @Size(max = 100)
     @Column(name = "esp_nombre", length = 100)
     private String espNombre;
-    @JoinTable(name = "t_personal_salud", joinColumns = {
-        @JoinColumn(name = "esp_serial", referencedColumnName = "esp_serial", nullable = false)}, inverseJoinColumns = {
-        @JoinColumn(name = "per_serial", referencedColumnName = "per_serial", nullable = false)})
-    @ManyToMany
-    private List<TMedico> tMedicoList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "espSerial")
+    private List<TPersonalSalud> tPersonalSaludList;
 
     public TEspecialidad() {
     }
@@ -75,12 +71,12 @@ public class TEspecialidad implements Serializable {
     }
 
     @XmlTransient
-    public List<TMedico> getTMedicoList() {
-        return tMedicoList;
+    public List<TPersonalSalud> getTPersonalSaludList() {
+        return tPersonalSaludList;
     }
 
-    public void setTMedicoList(List<TMedico> tMedicoList) {
-        this.tMedicoList = tMedicoList;
+    public void setTPersonalSaludList(List<TPersonalSalud> tPersonalSaludList) {
+        this.tPersonalSaludList = tPersonalSaludList;
     }
 
     @Override

@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
  * @author FREDDY
  */
 @Embeddable
-public class THorarioPK implements Serializable {
+public class TPersonalSaludPK implements Serializable {
 
     @Basic(optional = false)
     @NotNull
@@ -27,10 +27,10 @@ public class THorarioPK implements Serializable {
     @Column(name = "d_serial", nullable = false)
     private int dSerial;
 
-    public THorarioPK() {
+    public TPersonalSaludPK() {
     }
 
-    public THorarioPK(int perSerial, int dSerial) {
+    public TPersonalSaludPK(int perSerial, int dSerial) {
         this.perSerial = perSerial;
         this.dSerial = dSerial;
     }
@@ -62,10 +62,10 @@ public class THorarioPK implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof THorarioPK)) {
+        if (!(object instanceof TPersonalSaludPK)) {
             return false;
         }
-        THorarioPK other = (THorarioPK) object;
+        TPersonalSaludPK other = (TPersonalSaludPK) object;
         if (this.perSerial != other.perSerial) {
             return false;
         }
@@ -77,7 +77,7 @@ public class THorarioPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.THorarioPK[ perSerial=" + perSerial + ", dSerial=" + dSerial + " ]";
+        return "com.capa.datos.TPersonalSaludPK[ perSerial=" + perSerial + ", dSerial=" + dSerial + " ]";
     }
     
 }

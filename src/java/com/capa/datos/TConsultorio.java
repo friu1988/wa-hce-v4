@@ -8,7 +8,6 @@ package com.capa.datos;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,8 +46,8 @@ public class TConsultorio implements Serializable {
     private String coUbicacion;
     @Column(name = "co_numero")
     private Integer coNumero;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "coSerial")
-    private List<TMedico> tMedicoList;
+    @OneToMany(mappedBy = "coSerial")
+    private List<TPersonalSalud> tPersonalSaludList;
 
     public TConsultorio() {
     }
@@ -82,12 +81,12 @@ public class TConsultorio implements Serializable {
     }
 
     @XmlTransient
-    public List<TMedico> getTMedicoList() {
-        return tMedicoList;
+    public List<TPersonalSalud> getTPersonalSaludList() {
+        return tPersonalSaludList;
     }
 
-    public void setTMedicoList(List<TMedico> tMedicoList) {
-        this.tMedicoList = tMedicoList;
+    public void setTPersonalSaludList(List<TPersonalSalud> tPersonalSaludList) {
+        this.tPersonalSaludList = tPersonalSaludList;
     }
 
     @Override
