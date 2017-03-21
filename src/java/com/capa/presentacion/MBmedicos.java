@@ -6,9 +6,12 @@ import com.capa.datos.TEspecialidad;
 import com.capa.datos.THorario;
 import com.capa.datos.TMedico;
 import com.capa.datos.TPersonal;
+import com.capa.datos.TPersonalSalud;
+import com.capa.datos.TPersonalSaludPK;
 import com.capa.datos.TTurno;
 import com.capa.negocios.TMedicoFacade;
 import com.capa.negocios.TPersonalFacade;
+import com.capa.negocios.TPersonalSaludFacade;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -25,11 +28,19 @@ public class MBmedicos implements Serializable {
     @EJB
     private TMedicoFacade servicioMedicos;
     @EJB
-    private TPersonalFacade servicioPersonal;
+    private TPersonalFacade servicioEmpleados;
+    @EJB
+    private TPersonalSaludFacade servicioPersonalSalud;
 
+    private TPersonalSalud personalSalud;
+    private THorario horario;
+    private TEspecialidad especialidad;
+    private TConsultorio consultorio;
     private TMedico medico;
 
     private List<TMedico> medicos;
+    private List<TPersonalSalud> listaPersonalSalud;
+    private Integer[] diasSeleccionados;
 
     public MBmedicos() {
     }
@@ -38,7 +49,7 @@ public class MBmedicos implements Serializable {
     public void init() {
 
         medicos = null;
-        for (TPersonal p : servicioPersonal.findAll()) {
+        for (TPersonal p : servicioEmpleados.findAll()) {
             if (p.getPerTipo().equals("M")) {
                 if (servicioMedicos.buscarMedico(p)) {
                     /*Nada*/
@@ -52,16 +63,57 @@ public class MBmedicos implements Serializable {
         medicos = servicioMedicos.findAll();
     }
 
+    public void generarCargaHoraria() {
+
+//        personalSalud.setTMedico(medico);
+//        personalSalud.setTHorario(horario);
+//        personalSalud.setEspSerial(especialidad);
+//        personalSalud.setCoSerial(consultorio);
+//        TMedico medico = new TMedico(2/*pkPersonal*/, new TPersonal(), null/*tTurnoList*/, listaPersonalSalud);
+        for (int i = 0; i < this.diasSeleccionados.length; i++) {
+            THorario ho = new THorario(this.horario.getHoraInicio(), this.horario.getHoraFin(), new TDias(diasSeleccionados[i]));
+            listaPersonalSalud.add(new TPersonalSalud(new TPersonalSaludPK(), ho, this.consultorio, this.especialidad, medico));
+            System.out.println("Personal de salud: " + listaPersonalSalud.get(i));
+        }
+        diasSeleccionados = null;
+        /*
+        int intervalo = 30;
+        List<TTurno[]> turnos = generarTurnos(medico, intervalo);
+         */
+    }
+
+    //verificar q los tiempos sean exactos(para que retorner valores enteros exactos)
+    private List<TTurno[]> generarTurnos(TMedico medico, int intervalo/*minutos*/) {
+        //supongamos q tal dia es este(se debe buscar segun el dia)
+        THorario horario = new THorario();
+        horario.setHoraInicio(new Date(2016, 5, 3, 13, 30, 0));
+        horario.setHoraFin(new Date(2017, 5, 3, 18, 30, 0));
+        horario.setDSerial(new TDias(2));
+        return null;
+        /*      
+        if (medico.getTHorarioList().contains(dia)) {//verificar metodo booleano
+            //calculamos tiempo en minutos
+            int tiempo = (horario.getHoraFin().getHours() - horario.getHoraInicio().getHours()) * 60 + Math.abs(horario.getHoraFin().getMinutes() - horario.getHoraInicio().getMinutes());
+            int nTurnos = tiempo / intervalo;
+
+            return new TTurno[nTurnos];
+
+        } else {
+            System.out.println("No hay turnos disponiblos cn tal doctor para tal dia");
+            return null;
+        }
+         */
+    }
+
+    public void seleccionados() {
+        for (Integer select : getDiasSeleccionados()) {
+            System.out.println("Seleccionado: " + select);
+        }
+    }
+
     public String goAsignaciones() {
-    return "medicos_asignar.xhtml";
-    }
-
-    public TMedico getMedico() {
-        return medico;
-    }
-
-    public void setMedico(TMedico medico) {
-        this.medico = medico;
+        System.out.println("Medico Seleccionado>>>" + medico);
+        return "medicos_asignar.xhtml";
     }
 
     public List<TMedico> getMedicos() {
@@ -72,48 +124,75 @@ public class MBmedicos implements Serializable {
         this.medicos = medicos;
     }
 
-    public void estHorarios() {
-        List<TEspecialidad> especialidades = new LinkedList<>();
-        TEspecialidad especialidad1 = new TEspecialidad();
-        especialidad1.setEspNombre("Pediatria");
-        especialidades.add(especialidad1);
-
-        List<THorario> horarios = new LinkedList<>();
-        THorario horario1 = new THorario();
-        horario1.setHoraInicio(new Date(2016, 5, 3, 8, 30, 0));
-        horario1.setHoraFin(new Date(2017, 5, 3, 12, 30, 0));
-        horario1.setTDias(new TDias(1));
-
-        THorario horario2 = new THorario();
-        horario2.setHoraInicio(new Date(2016, 5, 3, 13, 30, 0));
-        horario2.setHoraFin(new Date(2017, 5, 3, 18, 30, 0));
-        horario2.setTDias(new TDias(2));
-
-        horarios.add(horario1);
-        horarios.add(horario2);
-
-//        TMedico medico = new TMedico(2, especialidades, null, new TConsultorio(3), null/*turnos*/, horarios);
-        int nTurnos = generarTurnos(medico, new TDias(2), 30);
-
-        TTurno[] turnos = new TTurno[nTurnos];
-
+    public List<TPersonalSalud> getListaPersonalSalud() {
+        if (listaPersonalSalud == null) {
+            listaPersonalSalud = new LinkedList<>();
+        }
+        return listaPersonalSalud;
     }
 
-    //verificar q los tiempos sean exactos(para que retorner valores enteros exactos)
-    private int generarTurnos(TMedico medico, TDias dia, int intervalo/*minutos*/) {
-        //supongamos q tal dia es este(se debe buscar segun el dia)
-        THorario horario = new THorario();
-        horario.setHoraInicio(new Date(2016, 5, 3, 13, 30, 0));
-        horario.setHoraFin(new Date(2017, 5, 3, 18, 30, 0));
-        horario.setTDias(new TDias(2));
-
-//        if (medico.getTHorarioList().contains(dia)) {//verificar metodo booleano
-//            //calculamos tiempo en minutos
-//            int tiempo = (horario.getHoraFin().getHours() - horario.getHoraInicio().getHours()) * 60 + Math.abs(horario.getHoraFin().getMinutes() - horario.getHoraInicio().getMinutes());
-//            return (tiempo / intervalo);//retornamos el numero de turnos
-//        } else {
-//            System.out.println("No hay turnos disponiblos cn tal doctor para tal dia");
-        return 0;
-//        }
+    public void setListaPersonalSalud(List<TPersonalSalud> listaPersonalSalud) {
+        this.listaPersonalSalud = listaPersonalSalud;
     }
+
+    public Integer[] getDiasSeleccionados() {
+        return diasSeleccionados;
+    }
+
+    public void setDiasSeleccionados(Integer[] diasSeleccionados) {
+        this.diasSeleccionados = diasSeleccionados;
+    }
+
+    public TPersonalSalud getPersonalSalud() {
+        return personalSalud;
+    }
+
+    public void setPersonalSalud(TPersonalSalud personalSalud) {
+        this.personalSalud = personalSalud;
+    }
+
+    public THorario getHorario() {
+        if (horario == null) {
+            horario = new THorario();
+        }
+        return horario;
+    }
+
+    public void setHorario(THorario horario) {
+        this.horario = horario;
+    }
+
+    public TEspecialidad getEspecialidad() {
+        if (especialidad == null) {
+            especialidad = new TEspecialidad();
+        }
+        return especialidad;
+    }
+
+    public void setEspecialidad(TEspecialidad especialidad) {
+        this.especialidad = especialidad;
+    }
+
+    public TConsultorio getConsultorio() {
+        if (consultorio == null) {
+            consultorio = new TConsultorio();
+        }
+        return consultorio;
+    }
+
+    public void setConsultorio(TConsultorio consultorio) {
+        this.consultorio = consultorio;
+    }
+
+    public TMedico getMedico() {
+        if (medico == null) {
+            medico = new TMedico();
+        }
+        return medico;
+    }
+
+    public void setMedico(TMedico medico) {
+        this.medico = medico;
+    }
+
 }

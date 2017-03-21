@@ -24,15 +24,15 @@ public class TPersonalSaludPK implements Serializable {
     private int perSerial;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "d_serial", nullable = false)
-    private int dSerial;
+    @Column(name = "h_serial", nullable = false)
+    private int hSerial;
 
     public TPersonalSaludPK() {
     }
 
-    public TPersonalSaludPK(int perSerial, int dSerial) {
+    public TPersonalSaludPK(int perSerial, int hSerial) {
         this.perSerial = perSerial;
-        this.dSerial = dSerial;
+        this.hSerial = hSerial;
     }
 
     public int getPerSerial() {
@@ -43,19 +43,19 @@ public class TPersonalSaludPK implements Serializable {
         this.perSerial = perSerial;
     }
 
-    public int getDSerial() {
-        return dSerial;
+    public int getHSerial() {
+        return hSerial;
     }
 
-    public void setDSerial(int dSerial) {
-        this.dSerial = dSerial;
+    public void setHSerial(int hSerial) {
+        this.hSerial = hSerial;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) perSerial;
-        hash += (int) dSerial;
+        hash += (int) hSerial;
         return hash;
     }
 
@@ -69,7 +69,7 @@ public class TPersonalSaludPK implements Serializable {
         if (this.perSerial != other.perSerial) {
             return false;
         }
-        if (this.dSerial != other.dSerial) {
+        if (this.hSerial != other.hSerial) {
             return false;
         }
         return true;
@@ -77,7 +77,7 @@ public class TPersonalSaludPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TPersonalSaludPK[ perSerial=" + perSerial + ", dSerial=" + dSerial + " ]";
+        return "com.capa.datos.TPersonalSaludPK[ perSerial=" + perSerial + ", hSerial=" + hSerial + " ]";
     }
-    
+
 }

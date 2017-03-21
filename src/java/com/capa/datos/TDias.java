@@ -6,6 +6,7 @@
 package com.capa.datos;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,10 +16,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -42,8 +44,8 @@ public class TDias implements Serializable {
     @Size(max = 150)
     @Column(name = "d_descripcion", length = 150)
     private String dDescripcion;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tDias")
-    private THorario tHorario;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "dSerial")
+    private List<THorario> tHorarioList;
 
     public TDias() {
     }
@@ -68,12 +70,13 @@ public class TDias implements Serializable {
         this.dDescripcion = dDescripcion;
     }
 
-    public THorario getTHorario() {
-        return tHorario;
+    @XmlTransient
+    public List<THorario> getTHorarioList() {
+        return tHorarioList;
     }
 
-    public void setTHorario(THorario tHorario) {
-        this.tHorario = tHorario;
+    public void setTHorarioList(List<THorario> tHorarioList) {
+        this.tHorarioList = tHorarioList;
     }
 
     @Override
@@ -100,5 +103,5 @@ public class TDias implements Serializable {
     public String toString() {
         return "com.capa.datos.TDias[ dSerial=" + dSerial + " ]";
     }
-    
+
 }

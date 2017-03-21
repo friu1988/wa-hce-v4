@@ -25,13 +25,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TPersonalSalud.findAll", query = "SELECT t FROM TPersonalSalud t"),
     @NamedQuery(name = "TPersonalSalud.findByPerSerial", query = "SELECT t FROM TPersonalSalud t WHERE t.tPersonalSaludPK.perSerial = :perSerial"),
-    @NamedQuery(name = "TPersonalSalud.findByDSerial", query = "SELECT t FROM TPersonalSalud t WHERE t.tPersonalSaludPK.dSerial = :dSerial")})
+    @NamedQuery(name = "TPersonalSalud.findByHSerial", query = "SELECT t FROM TPersonalSalud t WHERE t.tPersonalSaludPK.hSerial = :hSerial")})
 public class TPersonalSalud implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected TPersonalSaludPK tPersonalSaludPK;
-    @JoinColumn(name = "d_serial", referencedColumnName = "d_serial", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "h_serial", referencedColumnName = "h_serial", nullable = false, insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private THorario tHorario;
     @JoinColumn(name = "co_serial", referencedColumnName = "co_serial")
@@ -51,8 +51,24 @@ public class TPersonalSalud implements Serializable {
         this.tPersonalSaludPK = tPersonalSaludPK;
     }
 
-    public TPersonalSalud(int perSerial, int dSerial) {
-        this.tPersonalSaludPK = new TPersonalSaludPK(perSerial, dSerial);
+    public TPersonalSalud(TPersonalSaludPK tPersonalSaludPK, TConsultorio coSerial, TEspecialidad espSerial) {
+        this.tPersonalSaludPK = tPersonalSaludPK;
+        this.coSerial = coSerial;
+        this.espSerial = espSerial;
+    }
+
+    public TPersonalSalud(TPersonalSaludPK tPersonalSaludPK, THorario tHorario, TConsultorio coSerial, TEspecialidad espSerial, TMedico tMedico) {
+        this.tPersonalSaludPK = tPersonalSaludPK;
+        this.tHorario = tHorario;
+        this.coSerial = coSerial;
+        this.espSerial = espSerial;
+        this.tMedico = tMedico;
+    }
+    
+    
+
+    public TPersonalSalud(int perSerial, int hSerial) {
+        this.tPersonalSaludPK = new TPersonalSaludPK(perSerial, hSerial);
     }
 
     public TPersonalSaludPK getTPersonalSaludPK() {
@@ -117,7 +133,7 @@ public class TPersonalSalud implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TPersonalSalud[ tPersonalSaludPK=" + tPersonalSaludPK + " ]";
+        return "TPersonalSalud{" + "tPersonalSaludPK=" + tPersonalSaludPK + ", tHorario=" + tHorario + ", coSerial=" + coSerial + ", espSerial=" + espSerial + ", tMedico=" + tMedico + '}';
     }
-    
+
 }

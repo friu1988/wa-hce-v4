@@ -12,27 +12,56 @@
         <h:form id="frm_medico_crear">
             <p:panel header="Definición de Funciones">
                 <p:panelGrid columns="6" style="width: 100%">
+
                     <p:outputLabel value="Días"/>
-                    <p:outputLabel value="Entrada"/>
-                    <p:outputLabel value="Salida"/>
                     <p:outputLabel value="Especialidad"/>
                     <p:outputLabel value="Consultorio"/>
+                    <p:outputLabel value="Entrada"/>
+                    <p:outputLabel value="Salida"/>
                     <p:outputLabel value="Agregar"/>
 
-                    <p:selectManyCheckbox id="grid" layout="grid" columns="7">
-                        <f:selectItems value="#{mBdias.dias}" var="item" itemLabel="#{item.DDescripcion}" itemValue="#{item.DSerial}" />
+                    <p:selectManyCheckbox id="grid" layout="grid" columns="7" value="#{mBmedicos.diasSeleccionados}">
+                        <f:selectItems value="#{mBdias.dias}" var="it1" itemLabel="#{it1.DDescripcion}" itemValue="#{it1.DSerial}" />
                     </p:selectManyCheckbox>
-
-                    <p:calendar pattern="HH:mm" timeOnly="true"/>
-                    <p:calendar pattern="HH:mm" timeOnly="true"/>
-                    <p:selectOneMenu>
-                        <f:selectItems value="#{mBespecialidad.especialidades}" var="item" itemLabel="#{item.espNombre}" itemValue="#{item.espSerial}"/>
+                    <p:selectOneMenu value="#{mBmedicos.especialidad.espSerial}">
+                        <f:selectItems value="#{mBespecialidad.especialidades}" var="it2" itemLabel="#{it2.espNombre}" itemValue="#{it2.espSerial}"/>
                     </p:selectOneMenu>   
-                    <p:selectOneMenu>
-                        <f:selectItems value="#{mBconsultorios.consultorios}" var="item" itemLabel="#{item.coNumero}" itemValue="#{item.coSerial}"/>
-                    </p:selectOneMenu> 
-                    <p:commandLink value="Agregar"/>
+                    <p:selectOneMenu value="#{mBmedicos.consultorio.coSerial}">
+                        <f:selectItems value="#{mBconsultorios.consultorios}" var="it3" itemLabel="#{it3.coNumero}" itemValue="#{it3.coSerial}"/>
+                    </p:selectOneMenu>                     
+                    <p:calendar value="#{mBmedicos.horario.horaInicio}" pattern="HH:mm" timeOnly="true"/>
+                    <p:calendar value="#{mBmedicos.horario.horaFin}" pattern="HH:mm" timeOnly="true"/>
+                    <p:commandLink value="Agregar" actionListener="#{mBmedicos.generarCargaHoraria()}" update=":frm_medico_crear:datalist :growl"/>
+
                 </p:panelGrid>
+
+                <p:separator/>
+
+                <p:dataTable id="datalist" value="#{mBmedicos.listaPersonalSalud}" var="item">
+
+                    <f:facet name="header">
+                        <p:outputLabel value="Carga Horaria"/>
+                    </f:facet>
+                    <p:column headerText="Día">
+                        <p:outputLabel value="#{item.THorario.DSerial.DDescripcion}"/>
+                    </p:column>
+                    <p:column headerText="Especialidad">
+                        <p:outputLabel value="#{item.espSerial.espNombre}"/>
+                    </p:column>
+                    <p:column headerText="Consultorio">
+                        <p:outputLabel value="#{item.coSerial.coNumero}"/>
+                    </p:column>
+                    <p:column headerText="Entrada">
+                        <p:outputLabel value="#{item.THorario.horaInicio}"/>
+                    </p:column>
+                    <p:column headerText="Salida">
+                        <p:outputLabel value="#{item.THorario.horaFin}"/>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton id="createButton"   icon="ui-icon-pencil" value="Guardar" actionListener="#{mBmedicos.seleccionados()}" update=":frm_medico_crear :growl" />
+                    </f:facet>
+                </p:dataTable>
             </p:panel>  
         </h:form>
     </ui:define>

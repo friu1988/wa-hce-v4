@@ -14,7 +14,6 @@ public class MBdias implements Serializable {
 
     @EJB
     private TDiasFacade servicioDias;
-
     private List<TDias> dias;
 
     public MBdias() {
@@ -23,6 +22,9 @@ public class MBdias implements Serializable {
     public List<TDias> getDias() {
         if (dias == null) {
             dias = servicioDias.findAll();
+            for (TDias dia : dias) {
+                System.out.println("dias: " + dia);
+            }
         }
         return dias;
     }

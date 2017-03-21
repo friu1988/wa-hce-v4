@@ -55,6 +55,13 @@ public class TMedico implements Serializable {
         this.perSerial = perSerial;
     }
 
+    public TMedico(Integer perSerial, TPersonal tPersonal, List<TTurno> tTurnoList, List<TPersonalSalud> tPersonalSaludList) {
+        this.perSerial = perSerial;
+        this.tPersonal = tPersonal;
+        this.tTurnoList = tTurnoList;
+        this.tPersonalSaludList = tPersonalSaludList;
+    }
+
     public Integer getPerSerial() {
         return perSerial;
     }
@@ -111,7 +118,7 @@ public class TMedico implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TMedico[ perSerial=" + perSerial + " ]";
+        return "TMedico{" + "perSerial=" + perSerial + ", tPersonal=" + tPersonal + '}';
     }
 
 }
