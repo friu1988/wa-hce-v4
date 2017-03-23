@@ -16,23 +16,31 @@ import javax.validation.constraints.NotNull;
  * @author FREDDY
  */
 @Embeddable
-public class TPersonalSaludPK implements Serializable {
+public class THorarioPK implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "d_serial", nullable = false)
+    private int dSerial;
     @Basic(optional = false)
     @NotNull
     @Column(name = "per_serial", nullable = false)
     private int perSerial;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "h_serial", nullable = false)
-    private int hSerial;
 
-    public TPersonalSaludPK() {
+    public THorarioPK() {
     }
 
-    public TPersonalSaludPK(int perSerial, int hSerial) {
+    public THorarioPK(int dSerial, int perSerial) {
+        this.dSerial = dSerial;
         this.perSerial = perSerial;
-        this.hSerial = hSerial;
+    }
+
+    public int getDSerial() {
+        return dSerial;
+    }
+
+    public void setDSerial(int dSerial) {
+        this.dSerial = dSerial;
     }
 
     public int getPerSerial() {
@@ -43,33 +51,25 @@ public class TPersonalSaludPK implements Serializable {
         this.perSerial = perSerial;
     }
 
-    public int getHSerial() {
-        return hSerial;
-    }
-
-    public void setHSerial(int hSerial) {
-        this.hSerial = hSerial;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
+        hash += (int) dSerial;
         hash += (int) perSerial;
-        hash += (int) hSerial;
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TPersonalSaludPK)) {
+        if (!(object instanceof THorarioPK)) {
             return false;
         }
-        TPersonalSaludPK other = (TPersonalSaludPK) object;
+        THorarioPK other = (THorarioPK) object;
+        if (this.dSerial != other.dSerial) {
+            return false;
+        }
         if (this.perSerial != other.perSerial) {
-            return false;
-        }
-        if (this.hSerial != other.hSerial) {
             return false;
         }
         return true;
@@ -77,7 +77,7 @@ public class TPersonalSaludPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TPersonalSaludPK[ perSerial=" + perSerial + ", hSerial=" + hSerial + " ]";
+        return "com.capa.datos.THorarioPK[ dSerial=" + dSerial + ", perSerial=" + perSerial + " ]";
     }
-
+    
 }

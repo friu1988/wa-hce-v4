@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author FREDDY
  */
 @Entity
-@Table(name = "t_dias", catalog = "db_hospital_dia_v4", schema = "")
+@Table(name = "t_dias", catalog = "db_hdd_test_1", schema = "")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "TDias.findAll", query = "SELECT t FROM TDias t"),
@@ -44,7 +44,7 @@ public class TDias implements Serializable {
     @Size(max = 150)
     @Column(name = "d_descripcion", length = 150)
     private String dDescripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "dSerial")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tDias")
     private List<THorario> tHorarioList;
 
     public TDias() {
@@ -103,5 +103,5 @@ public class TDias implements Serializable {
     public String toString() {
         return "com.capa.datos.TDias[ dSerial=" + dSerial + " ]";
     }
-
+    
 }

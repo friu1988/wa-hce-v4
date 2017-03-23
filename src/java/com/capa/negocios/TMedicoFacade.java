@@ -31,25 +31,14 @@ public class TMedicoFacade extends AbstractFacade<TMedico> {
         super(TMedico.class);
     }
 
-//    public List<TMedico> buscarMedico(TEspecialidad especialidad) {
-//        Query sql = em.createNamedQuery("TMedico.findByPerSerial");
-//        try {
-//            sql.setParameter("perSerial", especialidad.getTMedicoList());
-//            List<TMedico> lista = sql.getResultList();
-//            return lista;
-//        } catch (Exception e) {
-//            System.out.println("Error Buscar detalle >>>>>" + e.getMessage());
-//        }
-//        return null;
-//    }
     public boolean buscarMedico(TPersonal personal) {
         Query sql = em.createNamedQuery("TMedico.findByPerSerial");
         sql.setParameter("perSerial", personal.getPerSerial());
         try {
             TMedico medico = (TMedico) sql.getSingleResult();
-            System.out.println(" Persona " + medico);
             return true;
         } catch (Exception e) {
+            System.out.println("Error MF: " + e.getMessage());
             return false;
         }
     }

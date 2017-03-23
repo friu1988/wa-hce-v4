@@ -46,20 +46,15 @@ public class TMedico implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tMPerSerial")
     private List<TTurno> tTurnoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tMedico")
-    private List<TPersonalSalud> tPersonalSaludList;
+    private List<THorario> tHorarioList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tMedico")
+    private TPersonalSalud tPersonalSalud;
 
     public TMedico() {
     }
 
     public TMedico(Integer perSerial) {
         this.perSerial = perSerial;
-    }
-
-    public TMedico(Integer perSerial, TPersonal tPersonal, List<TTurno> tTurnoList, List<TPersonalSalud> tPersonalSaludList) {
-        this.perSerial = perSerial;
-        this.tPersonal = tPersonal;
-        this.tTurnoList = tTurnoList;
-        this.tPersonalSaludList = tPersonalSaludList;
     }
 
     public Integer getPerSerial() {
@@ -88,12 +83,20 @@ public class TMedico implements Serializable {
     }
 
     @XmlTransient
-    public List<TPersonalSalud> getTPersonalSaludList() {
-        return tPersonalSaludList;
+    public List<THorario> getTHorarioList() {
+        return tHorarioList;
     }
 
-    public void setTPersonalSaludList(List<TPersonalSalud> tPersonalSaludList) {
-        this.tPersonalSaludList = tPersonalSaludList;
+    public void setTHorarioList(List<THorario> tHorarioList) {
+        this.tHorarioList = tHorarioList;
+    }
+
+    public TPersonalSalud getTPersonalSalud() {
+        return tPersonalSalud;
+    }
+
+    public void setTPersonalSalud(TPersonalSalud tPersonalSalud) {
+        this.tPersonalSalud = tPersonalSalud;
     }
 
     @Override
@@ -118,7 +121,7 @@ public class TMedico implements Serializable {
 
     @Override
     public String toString() {
-        return "TMedico{" + "perSerial=" + perSerial + ", tPersonal=" + tPersonal + '}';
+        return "com.capa.datos.TMedico[ perSerial=" + perSerial + " ]";
     }
 
 }

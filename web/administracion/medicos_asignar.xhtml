@@ -21,7 +21,7 @@
                     <p:outputLabel value="Agregar"/>
 
                     <p:selectManyCheckbox id="grid" layout="grid" columns="7" value="#{mBmedicos.diasSeleccionados}">
-                        <f:selectItems value="#{mBdias.dias}" var="it1" itemLabel="#{it1.DDescripcion}" itemValue="#{it1.DSerial}" />
+                        <f:selectItems value="#{mBmedicos.dias}" var="it1" itemLabel="#{it1.DDescripcion}" itemValue="#{it1.DSerial}" />
                     </p:selectManyCheckbox>
                     <p:selectOneMenu value="#{mBmedicos.especialidad.espSerial}">
                         <f:selectItems value="#{mBespecialidad.especialidades}" var="it2" itemLabel="#{it2.espNombre}" itemValue="#{it2.espSerial}"/>
@@ -29,8 +29,8 @@
                     <p:selectOneMenu value="#{mBmedicos.consultorio.coSerial}">
                         <f:selectItems value="#{mBconsultorios.consultorios}" var="it3" itemLabel="#{it3.coNumero}" itemValue="#{it3.coSerial}"/>
                     </p:selectOneMenu>                     
-                    <p:calendar value="#{mBmedicos.horario.horaInicio}" pattern="HH:mm" timeOnly="true"/>
-                    <p:calendar value="#{mBmedicos.horario.horaFin}" pattern="HH:mm" timeOnly="true"/>
+                    <p:calendar value="#{mBmedicos.horario.horaInicio}" pattern="HH:mm" timeOnly="true" locale="es"/>
+                    <p:calendar value="#{mBmedicos.horario.horaFin}" pattern="HH:mm" timeOnly="true" locale="es"/>
                     <p:commandLink value="Agregar" actionListener="#{mBmedicos.generarCargaHoraria()}" update=":frm_medico_crear:datalist :growl"/>
 
                 </p:panelGrid>
@@ -43,19 +43,23 @@
                         <p:outputLabel value="Carga Horaria"/>
                     </f:facet>
                     <p:column headerText="Día">
-                        <p:outputLabel value="#{item.THorario.DSerial.DDescripcion}"/>
+                        <p:outputLabel value="#{item.THorario.DSerial}"/>
                     </p:column>
                     <p:column headerText="Especialidad">
-                        <p:outputLabel value="#{item.espSerial.espNombre}"/>
+                        <p:outputLabel value="#{item.espSerial.espSerial}"/>
                     </p:column>
                     <p:column headerText="Consultorio">
-                        <p:outputLabel value="#{item.coSerial.coNumero}"/>
+                        <p:outputLabel value="#{item.coSerial.coSerial}"/>
                     </p:column>
                     <p:column headerText="Entrada">
-                        <p:outputLabel value="#{item.THorario.horaInicio}"/>
+                        <p:outputLabel value="#{item.THorario.horaInicio}">
+                            <!--<f:convertDateTime pattern="HH:mm" locale="es" />-->
+                        </p:outputLabel>
                     </p:column>
                     <p:column headerText="Salida">
-                        <p:outputLabel value="#{item.THorario.horaFin}"/>
+                        <p:outputLabel value="#{item.THorario.horaFin}">
+                            <f:convertDateTime pattern="HH:mm" locale="es"/>
+                        </p:outputLabel>
                     </p:column>
 
                     <f:facet name="footer">

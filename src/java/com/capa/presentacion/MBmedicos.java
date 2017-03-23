@@ -4,11 +4,12 @@ import com.capa.datos.TConsultorio;
 import com.capa.datos.TDias;
 import com.capa.datos.TEspecialidad;
 import com.capa.datos.THorario;
+import com.capa.datos.THorarioPK;
 import com.capa.datos.TMedico;
 import com.capa.datos.TPersonal;
 import com.capa.datos.TPersonalSalud;
-import com.capa.datos.TPersonalSaludPK;
 import com.capa.datos.TTurno;
+import com.capa.negocios.TDiasFacade;
 import com.capa.negocios.TMedicoFacade;
 import com.capa.negocios.TPersonalFacade;
 import com.capa.negocios.TPersonalSaludFacade;
@@ -20,6 +21,8 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 @Named(value = "mBmedicos")
 @SessionScoped
@@ -31,6 +34,8 @@ public class MBmedicos implements Serializable {
     private TPersonalFacade servicioEmpleados;
     @EJB
     private TPersonalSaludFacade servicioPersonalSalud;
+    @EJB
+    private TDiasFacade servicioDias;
 
     private TPersonalSalud personalSalud;
     private THorario horario;
@@ -40,6 +45,8 @@ public class MBmedicos implements Serializable {
 
     private List<TMedico> medicos;
     private List<TPersonalSalud> listaPersonalSalud;
+    private List<TDias> dias;
+
     private Integer[] diasSeleccionados;
 
     public MBmedicos() {
@@ -65,21 +72,35 @@ public class MBmedicos implements Serializable {
 
     public void generarCargaHoraria() {
 
-//        personalSalud.setTMedico(medico);
-//        personalSalud.setTHorario(horario);
-//        personalSalud.setEspSerial(especialidad);
-//        personalSalud.setCoSerial(consultorio);
-//        TMedico medico = new TMedico(2/*pkPersonal*/, new TPersonal(), null/*tTurnoList*/, listaPersonalSalud);
-        for (int i = 0; i < this.diasSeleccionados.length; i++) {
-            THorario ho = new THorario(this.horario.getHoraInicio(), this.horario.getHoraFin(), new TDias(diasSeleccionados[i]));
-            listaPersonalSalud.add(new TPersonalSalud(new TPersonalSaludPK(), ho, this.consultorio, this.especialidad, medico));
-            System.out.println("Personal de salud: " + listaPersonalSalud.get(i));
+        if (!diasSolapados()) {
+            for (int i = 0; i < this.diasSeleccionados.length; i++) {
+                THorario ho = new THorario(new THorarioPK(diasSeleccionados[i], medico.getPerSerial()), this.horario.getHoraInicio(), this.horario.getHoraFin(), new TDias(diasSeleccionados[i]), medico);
+
+                listaPersonalSalud.add(new TPersonalSalud(this.especialidad, this.consultorio, medico));
+                System.out.println("Carga horaria: " + listaPersonalSalud.get(i));
+            }
+            diasSeleccionados = null;
+            consultorio = null;
+            especialidad = null;
+            dias = null;
+            horario = null;
+
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR: Día ya ingresado!", null));
         }
-        diasSeleccionados = null;
-        /*
-        int intervalo = 30;
-        List<TTurno[]> turnos = generarTurnos(medico, intervalo);
-         */
+    }
+
+    private boolean diasSolapados() {
+        for (int i = 0; i < this.diasSeleccionados.length; i++) {
+
+            for (TPersonalSalud item : listaPersonalSalud) {
+//                if (item.getTMedico().getTHorarioList().getDSerial().getDSerial() == diasSeleccionados[i]) {
+                return true;
+//                }
+            }
+
+        }
+        return false;
     }
 
     //verificar q los tiempos sean exactos(para que retorner valores enteros exactos)
@@ -88,7 +109,6 @@ public class MBmedicos implements Serializable {
         THorario horario = new THorario();
         horario.setHoraInicio(new Date(2016, 5, 3, 13, 30, 0));
         horario.setHoraFin(new Date(2017, 5, 3, 18, 30, 0));
-        horario.setDSerial(new TDias(2));
         return null;
         /*      
         if (medico.getTHorarioList().contains(dia)) {//verificar metodo booleano
@@ -195,4 +215,14 @@ public class MBmedicos implements Serializable {
         this.medico = medico;
     }
 
+    public List<TDias> getDias() {
+        if (dias == null) {
+            dias = servicioDias.findAll();
+        }
+        return dias;
+    }
+
+    public void setDias(List<TDias> dias) {
+        this.dias = dias;
+    }
 }
