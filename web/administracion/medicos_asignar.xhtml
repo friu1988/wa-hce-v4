@@ -20,50 +20,52 @@
                     <p:outputLabel value="Salida"/>
                     <p:outputLabel value="Agregar"/>
 
-                    <p:selectManyCheckbox id="grid" layout="grid" columns="7" value="#{mBmedicos.diasSeleccionados}">
-                        <f:selectItems value="#{mBmedicos.dias}" var="it1" itemLabel="#{it1.DDescripcion}" itemValue="#{it1.DSerial}" />
+                    <p:selectManyCheckbox value="#{mBmedicos.diasSeleccionados}">
+                        <f:selectItems value="#{mBmedicos.listaDias}"/>
                     </p:selectManyCheckbox>
                     <p:selectOneMenu value="#{mBmedicos.especialidad.espSerial}">
-                        <f:selectItems value="#{mBespecialidad.especialidades}" var="it2" itemLabel="#{it2.espNombre}" itemValue="#{it2.espSerial}"/>
+                        <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{mBmedicos.especialidades}" var="esp" itemLabel="#{esp.espNombre}" itemValue="#{esp.espSerial}"/>
                     </p:selectOneMenu>   
                     <p:selectOneMenu value="#{mBmedicos.consultorio.coSerial}">
+                        <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
                         <f:selectItems value="#{mBconsultorios.consultorios}" var="it3" itemLabel="#{it3.coNumero}" itemValue="#{it3.coSerial}"/>
                     </p:selectOneMenu>                     
                     <p:calendar value="#{mBmedicos.horario.horaInicio}" pattern="HH:mm" timeOnly="true" locale="es"/>
                     <p:calendar value="#{mBmedicos.horario.horaFin}" pattern="HH:mm" timeOnly="true" locale="es"/>
-                    <p:commandLink value="Agregar" actionListener="#{mBmedicos.generarCargaHoraria()}" update=":frm_medico_crear:datalist :growl"/>
+                    <p:commandLink value="Agregar" actionListener="#{mBmedicos.generarCargaHoraria()}" update=":frm_medico_crear :growl"/>
 
                 </p:panelGrid>
 
                 <p:separator/>
 
-                <p:dataTable id="datalist" value="#{mBmedicos.listaPersonalSalud}" var="item">
+                <p:dataTable id="datalist" value="#{mBmedicos.listasCH}" var="item">
 
                     <f:facet name="header">
                         <p:outputLabel value="Carga Horaria"/>
                     </f:facet>
                     <p:column headerText="Día">
-                        <p:outputLabel value="#{item.THorario.DSerial}"/>
+                        <p:outputLabel value="#{item.dia}"/>
                     </p:column>
                     <p:column headerText="Especialidad">
-                        <p:outputLabel value="#{item.espSerial.espSerial}"/>
+                        <p:outputLabel value="#{item.especialidad}"/>
                     </p:column>
                     <p:column headerText="Consultorio">
-                        <p:outputLabel value="#{item.coSerial.coSerial}"/>
+                        <p:outputLabel value="#{item.consultorio}"/>
                     </p:column>
                     <p:column headerText="Entrada">
-                        <p:outputLabel value="#{item.THorario.horaInicio}">
-                            <!--<f:convertDateTime pattern="HH:mm" locale="es" />-->
+                        <p:outputLabel value="#{item.horaInicio}">
+                            <f:convertDateTime pattern="HH:mm" timeZone="America/Guayaquil"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column headerText="Salida">
-                        <p:outputLabel value="#{item.THorario.horaFin}">
-                            <f:convertDateTime pattern="HH:mm" locale="es"/>
+                        <p:outputLabel value="#{item.horaFin}">
+                            <f:convertDateTime pattern="HH:mm" timeZone="America/Guayaquil"/>
                         </p:outputLabel>
                     </p:column>
 
                     <f:facet name="footer">
-                        <p:commandButton id="createButton"   icon="ui-icon-pencil" value="Guardar" actionListener="#{mBmedicos.seleccionados()}" update=":frm_medico_crear :growl" />
+                        <p:commandButton id="createButton"   icon="ui-icon-pencil" value="Guardar" actionListener="#{mBmedicos.guardarCH()}" update=":frm_medico_crear :growl" />
                     </f:facet>
                 </p:dataTable>
             </p:panel>  

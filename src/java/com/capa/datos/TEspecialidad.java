@@ -101,7 +101,7 @@ public class TEspecialidad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TEspecialidad[ espSerial=" + espSerial + " ]";
+        return "TEspecialidad{" + "espSerial=" + espSerial + ", espNombre=" + espNombre + '}';
     }
-    
+
 }

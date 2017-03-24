@@ -1,5 +1,6 @@
 package com.capa.presentacion;
 
+import com.capa.datos.CargaHoraria;
 import com.capa.datos.TConsultorio;
 import com.capa.datos.TDias;
 import com.capa.datos.TEspecialidad;
@@ -10,11 +11,11 @@ import com.capa.datos.TPersonal;
 import com.capa.datos.TPersonalSalud;
 import com.capa.datos.TTurno;
 import com.capa.negocios.TDiasFacade;
+import com.capa.negocios.TEspecialidadFacade;
 import com.capa.negocios.TMedicoFacade;
 import com.capa.negocios.TPersonalFacade;
 import com.capa.negocios.TPersonalSaludFacade;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
@@ -23,9 +24,11 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import javax.faces.view.ViewScoped;
 
 @Named(value = "mBmedicos")
-@SessionScoped
+@ViewScoped
 public class MBmedicos implements Serializable {
 
     @EJB
@@ -36,6 +39,8 @@ public class MBmedicos implements Serializable {
     private TPersonalSaludFacade servicioPersonalSalud;
     @EJB
     private TDiasFacade servicioDias;
+    @EJB
+    private TEspecialidadFacade servicioEspecialidad;
 
     private TPersonalSalud personalSalud;
     private THorario horario;
@@ -44,8 +49,9 @@ public class MBmedicos implements Serializable {
     private TMedico medico;
 
     private List<TMedico> medicos;
-    private List<TPersonalSalud> listaPersonalSalud;
-    private List<TDias> dias;
+    private List<SelectItem> listaDias;
+    private List<CargaHoraria> listasCH;
+    private List<TEspecialidad> especialidades;
 
     private Integer[] diasSeleccionados;
 
@@ -72,17 +78,19 @@ public class MBmedicos implements Serializable {
 
     public void generarCargaHoraria() {
 
+        System.out.println("Especialidad: " + especialidad);
+        System.out.println("Consultorio: " + consultorio);
+        System.out.println("Horario: " + horario);
+
         if (!diasSolapados()) {
             for (int i = 0; i < this.diasSeleccionados.length; i++) {
-                THorario ho = new THorario(new THorarioPK(diasSeleccionados[i], medico.getPerSerial()), this.horario.getHoraInicio(), this.horario.getHoraFin(), new TDias(diasSeleccionados[i]), medico);
-
-                listaPersonalSalud.add(new TPersonalSalud(this.especialidad, this.consultorio, medico));
-                System.out.println("Carga horaria: " + listaPersonalSalud.get(i));
+                CargaHoraria cargaHoraria = new CargaHoraria(Integer.toString(diasSeleccionados[i]), Integer.toString(especialidad.getEspSerial()), Integer.toString(consultorio.getCoSerial()), this.horario.getHoraInicio(), this.horario.getHoraFin());
+                listasCH.add(cargaHoraria);
+                System.out.println("CARGA HORARIA DIA " + diasSeleccionados[i] + ": " + cargaHoraria);
+                listaDias.get(diasSeleccionados[i] - 1).setDisabled(true);
             }
-            diasSeleccionados = null;
             consultorio = null;
             especialidad = null;
-            dias = null;
             horario = null;
 
         } else {
@@ -92,13 +100,12 @@ public class MBmedicos implements Serializable {
 
     private boolean diasSolapados() {
         for (int i = 0; i < this.diasSeleccionados.length; i++) {
-
-            for (TPersonalSalud item : listaPersonalSalud) {
-//                if (item.getTMedico().getTHorarioList().getDSerial().getDSerial() == diasSeleccionados[i]) {
-                return true;
-//                }
+            for (CargaHoraria item : listasCH) {
+                if (Integer.parseInt(item.getDia()) == diasSeleccionados[i]) {
+                    listaDias.get(i).setDisabled(true);
+                    return true;
+                }
             }
-
         }
         return false;
     }
@@ -125,14 +132,20 @@ public class MBmedicos implements Serializable {
          */
     }
 
-    public void seleccionados() {
-        for (Integer select : getDiasSeleccionados()) {
-            System.out.println("Seleccionado: " + select);
+    public void guardarCH() {
+        for (CargaHoraria item : listasCH) {
+            THorario horario = new THorario(new THorarioPK(Integer.parseInt(item.getDia()), medico.getPerSerial()), item.getHoraInicio(), item.getHoraFin(), medico);
+//            TPersonalSalud personalSalud = new TPersonalSalud(item.getEspecialidad(), item.getConsultorio(), medico);
         }
     }
 
     public String goAsignaciones() {
         System.out.println("Medico Seleccionado>>>" + medico);
+        diasSeleccionados = null;
+        consultorio = null;
+        especialidad = null;
+        horario = null;
+        listasCH = null;
         return "medicos_asignar.xhtml";
     }
 
@@ -142,17 +155,6 @@ public class MBmedicos implements Serializable {
 
     public void setMedicos(List<TMedico> medicos) {
         this.medicos = medicos;
-    }
-
-    public List<TPersonalSalud> getListaPersonalSalud() {
-        if (listaPersonalSalud == null) {
-            listaPersonalSalud = new LinkedList<>();
-        }
-        return listaPersonalSalud;
-    }
-
-    public void setListaPersonalSalud(List<TPersonalSalud> listaPersonalSalud) {
-        this.listaPersonalSalud = listaPersonalSalud;
     }
 
     public Integer[] getDiasSeleccionados() {
@@ -215,14 +217,43 @@ public class MBmedicos implements Serializable {
         this.medico = medico;
     }
 
-    public List<TDias> getDias() {
-        if (dias == null) {
-            dias = servicioDias.findAll();
+    public List<CargaHoraria> getListasCH() {
+        if (listasCH == null) {
+            listasCH = new LinkedList<>();
         }
-        return dias;
+        return listasCH;
     }
 
-    public void setDias(List<TDias> dias) {
-        this.dias = dias;
+    public void setListasCH(List<CargaHoraria> listasCH) {
+        this.listasCH = listasCH;
     }
+
+    public List<SelectItem> getListaDias() {
+        if (listaDias == null) {
+            listaDias = new LinkedList<>();
+            this.listaDias.add(new SelectItem(1, "Lunes"));
+            this.listaDias.add(new SelectItem(2, "Martes"));
+            this.listaDias.add(new SelectItem(3, "Miercoles"));
+            this.listaDias.add(new SelectItem(4, "Jueves"));
+            this.listaDias.add(new SelectItem(5, "Viernes"));
+            this.listaDias.add(new SelectItem(6, "Sábado"));
+        }
+        return listaDias;
+    }
+
+    public void setListaDias(List<SelectItem> listaDias) {
+        this.listaDias = listaDias;
+    }
+
+    public List<TEspecialidad> getEspecialidades() {
+        if (especialidades == null) {
+            especialidades = servicioEspecialidad.findAll();
+        }
+        return especialidades;
+    }
+
+    public void setEspecialidades(List<TEspecialidad> especialidades) {
+        this.especialidades = especialidades;
+    }
+
 }

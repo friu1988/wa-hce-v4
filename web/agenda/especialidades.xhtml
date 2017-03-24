@@ -13,15 +13,15 @@
 
         <h:form id="frm_especialidades">
             <p:panel header="Especialidades">
-                <p:treeTable id="datalist" value="#{mBespecialidad.root}" var="item"
+                <p:treeTable id="datalist" var="item"
                              selectionMode="single" scrollable="true" scrollHeight="500"  style="margin-top:0"
                              resizableColumns="true">
 
                     <p:column headerText="Servicio">
-                        <h:outputText value="#{item.espNombre}"/>
+                        <h:outputText />
                     </p:column>
                     <p:column headerText="Especialista">
-                        <h:outputText value="#{item}"/>
+                        <h:outputText/>
                     </p:column>
                     <p:column headerText="Detalles">
                         <p:commandLink value="Ver"/>

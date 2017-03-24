@@ -53,14 +53,12 @@ public class THorario implements Serializable {
     public THorario() {
     }
 
-    public THorario(THorarioPK tHorarioPK, Date horaInicio, Date horaFin, TDias tDias, TMedico tMedico) {
+    public THorario(THorarioPK tHorarioPK, Date horaInicio, Date horaFin, TMedico tMedico) {
         this.tHorarioPK = tHorarioPK;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
-        this.tDias = tDias;
         this.tMedico = tMedico;
     }
-    
 
     public THorario(THorarioPK tHorarioPK) {
         this.tHorarioPK = tHorarioPK;
@@ -132,7 +130,7 @@ public class THorario implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.THorario[ tHorarioPK=" + tHorarioPK + " ]";
+        return "THorario{" + "tHorarioPK=" + tHorarioPK + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + ", tDias=" + tDias + ", tMedico=" + tMedico + '}';
     }
-    
+
 }

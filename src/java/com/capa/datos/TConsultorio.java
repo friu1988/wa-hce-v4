@@ -111,7 +111,8 @@ public class TConsultorio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TConsultorio[ coSerial=" + coSerial + " ]";
+        return "TConsultorio{" + "coSerial=" + coSerial + ", coUbicacion=" + coUbicacion + ", coNumero=" + coNumero + '}';
     }
+
     
 }

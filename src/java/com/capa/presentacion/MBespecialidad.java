@@ -27,70 +27,10 @@ public class MBespecialidad implements Serializable {
 
     @EJB
     private TEspecialidadFacade servicioEspecialidad;
-    @EJB
-    private TMedicoFacade servicioMedico;
-
-    private TEspecialidad especialidad;
-    private TreeNode root = null;
 
     private List<TEspecialidad> especialidades;
-    private List<TMedico> medicos;
 
     public MBespecialidad() {
-    }
-
-    public void cargarRaiz() {
-        try {
-            especialidades = servicioEspecialidad.findAll();
-            for (TEspecialidad it : especialidades) {
-                TreeNode raiz = new DefaultTreeNode(it, this.root);
-//                raiz.setExpanded(true);
-                cargarNodo(it, raiz);
-                System.out.println("Especialidad>>" + root.getChildren().toString());
-            }
-        } catch (Exception e) {
-            System.out.println("Error al cargar raíz" + e.getMessage());
-        }
-    }
-
-    public void cargarNodo(TEspecialidad it, TreeNode raiz) {
-//        try {
-//            medicos = it.getTMedicoList();
-//            for (TMedico it1 : medicos) {
-//                TreeNode nodo = new DefaultTreeNode(it1, raiz);
-//                System.out.println("Medico>>" + raiz.getChildren().toString());
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Error al cargar nodos" + e.getMessage());
-//        }
-    }
-
-    public TreeNode getRoot() {
-        if (root == null) {
-            root = new DefaultTreeNode();
-            cargarRaiz();
-        }
-        return root;
-    }
-
-    public void setRoot(TreeNode root) {
-        this.root = root;
-    }
-
-    public List<TMedico> getMedicos() {
-        return medicos;
-    }
-
-    public void setMedicos(List<TMedico> medicos) {
-        this.medicos = medicos;
-    }
-
-    public TEspecialidad getEspecialidad() {
-        return especialidad;
-    }
-
-    public void setEspecialidad(TEspecialidad especialidad) {
-        this.especialidad = especialidad;
     }
 
     public List<TEspecialidad> getEspecialidades() {

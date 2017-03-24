@@ -3,22 +3,33 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <h:outputStylesheet name="./css/jsfcrud.css"/>
+        <h:outputScript library="js" name="jsfcrud.js"/>
+        <h:outputScript library="js" name="calendar_es.js" />
+        <title>Test</title>
+    </h:head>
+    <h:body>
+        <h:form id="TTurnoListForm">
+            <h:form id="form">
+                <p:panel>
 
+                    <p:panelGrid columns="1" style="width: 100%">
+                        <p:outputLabel value="Días"/> 
+                        <p:selectManyCheckbox value="#{test.elejidos}" >
+                            <f:selectItems value="#{test.listaDias}"/>
+                            <f:selectItem itemLabel="Seleccionar"/>
+                        </p:selectManyCheckbox>
+                    </p:panelGrid>
+                </p:panel>
 
-    <ui:composition template="/template.xhtml">
-
-        <ui:define name="title">
-            <h:outputText value="Turnos"/>
-        </ui:define>
-
-        <ui:define name="body">
-            <h:form id="TTurnoListForm">
-                <h:form>
-                    <p:commandButton value="Test" action="#{mBusuarios.crearAccesos2()}"/>
-                </h:form>
+                <p:commandButton value="Test" actionListener="#{test.seleccionar()}" update="@this"/>
             </h:form>
-        </ui:define>
-    </ui:composition>
+        </h:form>
+    </h:body>
 </html>
 
