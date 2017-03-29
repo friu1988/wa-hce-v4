@@ -18,18 +18,18 @@
                     <p:outputLabel value="Consultorio"/>
                     <p:outputLabel value="Entrada"/>
                     <p:outputLabel value="Salida"/>
-                    <p:outputLabel value="Agregar"/>
+                    <p:outputLabel value="Carga Horaria"/>
 
                     <p:selectManyCheckbox value="#{mBmedicos.diasSeleccionados}">
                         <f:selectItems value="#{mBmedicos.listaDias}"/>
                     </p:selectManyCheckbox>
-                    <p:selectOneMenu value="#{mBmedicos.especialidad.espSerial}">
+                    <p:selectOneMenu value="#{mBmedicos.personalSalud.espSerial.espSerial}">
                         <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true"/>
                         <f:selectItems value="#{mBmedicos.especialidades}" var="esp" itemLabel="#{esp.espNombre}" itemValue="#{esp.espSerial}"/>
                     </p:selectOneMenu>   
-                    <p:selectOneMenu value="#{mBmedicos.consultorio.coSerial}">
+                    <p:selectOneMenu value="#{mBmedicos.personalSalud.coSerial.coSerial}">
                         <f:selectItem itemLabel="Selecionar" itemValue="" noSelectionOption="true" />
-                        <f:selectItems value="#{mBconsultorios.consultorios}" var="it3" itemLabel="#{it3.coNumero}" itemValue="#{it3.coSerial}"/>
+                        <f:selectItems value="#{mBmedicos.consultorios}" var="it3" itemLabel="#{it3.coNumero}" itemValue="#{it3.coSerial}"/>
                     </p:selectOneMenu>                     
                     <p:calendar value="#{mBmedicos.horario.horaInicio}" pattern="HH:mm" timeOnly="true" locale="es"/>
                     <p:calendar value="#{mBmedicos.horario.horaFin}" pattern="HH:mm" timeOnly="true" locale="es"/>
@@ -45,13 +45,13 @@
                         <p:outputLabel value="Carga Horaria"/>
                     </f:facet>
                     <p:column headerText="Día">
-                        <p:outputLabel value="#{item.dia}"/>
+                        <p:outputLabel value="#{item.dias.DDescripcion}"/>
                     </p:column>
                     <p:column headerText="Especialidad">
-                        <p:outputLabel value="#{item.especialidad}"/>
+                        <p:outputLabel value="#{item.especialidad1.espNombre}"/>
                     </p:column>
                     <p:column headerText="Consultorio">
-                        <p:outputLabel value="#{item.consultorio}"/>
+                        <p:outputLabel value="#{item.consultorio1.coNumero}"/>
                     </p:column>
                     <p:column headerText="Entrada">
                         <p:outputLabel value="#{item.horaInicio}">
@@ -65,10 +65,33 @@
                     </p:column>
 
                     <f:facet name="footer">
-                        <p:commandButton id="createButton"   icon="ui-icon-pencil" value="Guardar" actionListener="#{mBmedicos.guardarCH()}" update=":frm_medico_crear :growl" />
+                        <p:commandButton id="createButton"   icon="ui-icon-pencil" value="Guardar" action="#{mBmedicos.guardarCargaHoraria()}" update=":frm_medico_crear :growl" />
+                        <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="Eliminar"  update=":frm_eliminar_ch" oncomplete="PF('dlg_eliminar_ch').show();"/>
                     </f:facet>
                 </p:dataTable>
             </p:panel>  
+        </h:form>
+        <h:form id="frm_eliminar_ch">
+            <p:dialog id="dlgEliminarUsuario" header="Carga Horaria!" widgetVar="dlg_eliminar_ch" resizable="false" 
+                      showEffect="explode" hideEffect="explode" modal="true">
+                <p:panelGrid style="width: 100%" >
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="¿Está seguro de eliminar la Carga Horaria de este Usuario?"/>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="Si" actionListener="#{mBmedicos.eliminarCargaHoraria()}"
+                                                 update=":frm_medico_crear :growl" 
+                                                 oncomplete="PF('dlg_eliminar_ch').hide();"/>
+                                <p:commandButton value="No" oncomplete="PF('dlg_eliminar_ch').hide();"/>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>

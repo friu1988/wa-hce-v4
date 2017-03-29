@@ -47,8 +47,8 @@ public class TMedico implements Serializable {
     private List<TTurno> tTurnoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tMedico")
     private List<THorario> tHorarioList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "tMedico")
-    private TPersonalSalud tPersonalSalud;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perSerial")
+    private List<TPersonalSalud> tPersonalSaludList;
 
     public TMedico() {
     }
@@ -91,12 +91,13 @@ public class TMedico implements Serializable {
         this.tHorarioList = tHorarioList;
     }
 
-    public TPersonalSalud getTPersonalSalud() {
-        return tPersonalSalud;
+    @XmlTransient
+    public List<TPersonalSalud> getTPersonalSaludList() {
+        return tPersonalSaludList;
     }
 
-    public void setTPersonalSalud(TPersonalSalud tPersonalSalud) {
-        this.tPersonalSalud = tPersonalSalud;
+    public void setTPersonalSaludList(List<TPersonalSalud> tPersonalSaludList) {
+        this.tPersonalSaludList = tPersonalSaludList;
     }
 
     @Override

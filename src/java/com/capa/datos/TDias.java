@@ -101,7 +101,7 @@ public class TDias implements Serializable {
 
     @Override
     public String toString() {
-        return "com.capa.datos.TDias[ dSerial=" + dSerial + " ]";
+        return "TDias{" + "dSerial=" + dSerial + ", dDescripcion=" + dDescripcion + '}';
     }
 
 }

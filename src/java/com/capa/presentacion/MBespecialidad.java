@@ -6,16 +6,12 @@
 package com.capa.presentacion;
 
 import com.capa.datos.TEspecialidad;
-import com.capa.datos.TMedico;
 import com.capa.negocios.TEspecialidadFacade;
-import com.capa.negocios.TMedicoFacade;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
-import org.primefaces.model.DefaultTreeNode;
-import org.primefaces.model.TreeNode;
 
 /**
  *

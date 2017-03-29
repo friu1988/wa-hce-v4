@@ -6,9 +6,12 @@
 package com.capa.negocios;
 
 import com.capa.datos.THorario;
+import com.capa.datos.TMedico;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +31,11 @@ public class THorarioFacade extends AbstractFacade<THorario> {
     public THorarioFacade() {
         super(THorario.class);
     }
-    
+
+    public List<THorario> findHo(TMedico medico) {
+        Query sql = em.createNamedQuery("THorario.findByPerSerial");
+        sql.setParameter("perSerial", medico.getPerSerial());
+        List<THorario> horarios = sql.getResultList();
+        return horarios;
+    }
 }

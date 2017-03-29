@@ -14,45 +14,21 @@ import java.util.Date;
  */
 public class CargaHoraria implements Serializable {
 
-    private String dia;
-    private String especialidad;
-    private String consultorio;
+    private TDias dias;
+    private TEspecialidad especialidad1;
+    private TConsultorio consultorio1;
     private Date horaInicio;
     private Date horaFin;
 
     public CargaHoraria() {
     }
 
-    public CargaHoraria(String dia, String especialidad, String consultorio, Date horaInicio, Date horaFin) {
-        this.dia = dia;
-        this.especialidad = especialidad;
-        this.consultorio = consultorio;
+    public CargaHoraria(TDias dias, TEspecialidad especialidad1, TConsultorio consultorio1, Date horaInicio, Date horaFin) {
+        this.dias = dias;
+        this.especialidad1 = especialidad1;
+        this.consultorio1 = consultorio1;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
-    }
-
-    public String getDia() {
-        return this.dia;
-    }
-
-    public void setDia(String dia) {
-        this.dia = dia;
-    }
-
-    public String getEspecialidad() {
-        return especialidad;
-    }
-
-    public void setEspecialidad(String especialidad) {
-        this.especialidad = especialidad;
-    }
-
-    public String getConsultorio() {
-        return consultorio;
-    }
-
-    public void setConsultorio(String consultorio) {
-        this.consultorio = consultorio;
     }
 
     public Date getHoraInicio() {
@@ -71,9 +47,33 @@ public class CargaHoraria implements Serializable {
         this.horaFin = horaFin;
     }
 
+    public TDias getDias() {
+        return dias;
+    }
+
+    public void setDias(TDias dias) {
+        this.dias = dias;
+    }
+
+    public TEspecialidad getEspecialidad1() {
+        return especialidad1;
+    }
+
+    public void setEspecialidad1(TEspecialidad especialidad1) {
+        this.especialidad1 = especialidad1;
+    }
+
+    public TConsultorio getConsultorio1() {
+        return consultorio1;
+    }
+
+    public void setConsultorio1(TConsultorio consultorio1) {
+        this.consultorio1 = consultorio1;
+    }
+
     @Override
     public String toString() {
-        return "CargaHoraria{" + "dia=" + dia + ", especialidad=" + especialidad + ", consultorio=" + consultorio + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + '}';
+        return "CargaHoraria{" + "dias=" + dias + ", especialidad1=" + especialidad1 + ", consultorio1=" + consultorio1 + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + '}';
     }
 
 }

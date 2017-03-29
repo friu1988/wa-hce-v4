@@ -10,8 +10,10 @@ import com.capa.datos.TMedico;
 import com.capa.datos.TPersonal;
 import com.capa.datos.TPersonalSalud;
 import com.capa.datos.TTurno;
+import com.capa.negocios.TConsultorioFacade;
 import com.capa.negocios.TDiasFacade;
 import com.capa.negocios.TEspecialidadFacade;
+import com.capa.negocios.THorarioFacade;
 import com.capa.negocios.TMedicoFacade;
 import com.capa.negocios.TPersonalFacade;
 import com.capa.negocios.TPersonalSaludFacade;
@@ -22,13 +24,15 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.faces.view.ViewScoped;
+//import javax.faces.view.ViewScoped;
 
 @Named(value = "mBmedicos")
-@ViewScoped
+@SessionScoped
+//@ViewScoped
 public class MBmedicos implements Serializable {
 
     @EJB
@@ -41,17 +45,20 @@ public class MBmedicos implements Serializable {
     private TDiasFacade servicioDias;
     @EJB
     private TEspecialidadFacade servicioEspecialidad;
+    @EJB
+    private TConsultorioFacade servicioConsultorio;
+    @EJB
+    private THorarioFacade servicioHorario;
 
     private TPersonalSalud personalSalud;
     private THorario horario;
-    private TEspecialidad especialidad;
-    private TConsultorio consultorio;
     private TMedico medico;
 
     private List<TMedico> medicos;
     private List<SelectItem> listaDias;
-    private List<CargaHoraria> listasCH;
+    private List<CargaHoraria> listasCargaHoraria;
     private List<TEspecialidad> especialidades;
+    private List<TConsultorio> consultorios;
 
     private Integer[] diasSeleccionados;
 
@@ -76,38 +83,49 @@ public class MBmedicos implements Serializable {
         medicos = servicioMedicos.findAll();
     }
 
-    public void generarCargaHoraria() {
-
-        System.out.println("Especialidad: " + especialidad);
-        System.out.println("Consultorio: " + consultorio);
-        System.out.println("Horario: " + horario);
-
-        if (!diasSolapados()) {
-            for (int i = 0; i < this.diasSeleccionados.length; i++) {
-                CargaHoraria cargaHoraria = new CargaHoraria(Integer.toString(diasSeleccionados[i]), Integer.toString(especialidad.getEspSerial()), Integer.toString(consultorio.getCoSerial()), this.horario.getHoraInicio(), this.horario.getHoraFin());
-                listasCH.add(cargaHoraria);
-                System.out.println("CARGA HORARIA DIA " + diasSeleccionados[i] + ": " + cargaHoraria);
-                listaDias.get(diasSeleccionados[i] - 1).setDisabled(true);
+    public String eliminarCargaHoraria() {
+        try {
+            if (tieneCargaHoraria()) {
+                List<THorario> ho = servicioHorario.findHo(medico);
+                List<TPersonalSalud> pS = servicioPersonalSalud.findPS(medico);
+                for (int i = 0; i < listasCargaHoraria.size(); i++) {
+                    servicioPersonalSalud.remove(pS.get(i));
+                    servicioHorario.remove(ho.get(i));
+                }
+                listasCargaHoraria = null;
+            } else {
+                listasCargaHoraria = null;
+                listaDias = null;
             }
-            consultorio = null;
-            especialidad = null;
-            horario = null;
-
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR: Día ya ingresado!", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carga Horaria Eliminada! ", null));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al Eliminar" + e.getMessage(), null));
         }
+        return "medicos_asignar.xhtml";
     }
 
-    private boolean diasSolapados() {
-        for (int i = 0; i < this.diasSeleccionados.length; i++) {
-            for (CargaHoraria item : listasCH) {
-                if (Integer.parseInt(item.getDia()) == diasSeleccionados[i]) {
-                    listaDias.get(i).setDisabled(true);
-                    return true;
-                }
+    public String guardarCargaHoraria() {
+        for (CargaHoraria item : listasCargaHoraria) {
+            THorario ho = new THorario(new THorarioPK(item.getDias().getDSerial(), medico.getPerSerial()), item.getHoraInicio(), item.getHoraFin(), medico, item.getDias());
+            TPersonalSalud pS = new TPersonalSalud(item.getEspecialidad1(), item.getConsultorio1(), medico);
+            try {
+                servicioPersonalSalud.create(pS);
+                servicioHorario.create(ho);
+                setDefaultValues();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carga Horaria Asignada! ", null));
+            } catch (Exception e) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al Guardar" + e.getMessage(), null));
             }
         }
-        return false;
+        return "medicos.xhtml";
+    }
+
+    private void setDefaultValues() {
+        diasSeleccionados = null;
+        personalSalud = null;
+        horario = null;
+        listaDias = null;
+        listasCargaHoraria = null;
     }
 
     //verificar q los tiempos sean exactos(para que retorner valores enteros exactos)
@@ -132,21 +150,64 @@ public class MBmedicos implements Serializable {
          */
     }
 
-    public void guardarCH() {
-        for (CargaHoraria item : listasCH) {
-            THorario horario = new THorario(new THorarioPK(Integer.parseInt(item.getDia()), medico.getPerSerial()), item.getHoraInicio(), item.getHoraFin(), medico);
-//            TPersonalSalud personalSalud = new TPersonalSalud(item.getEspecialidad(), item.getConsultorio(), medico);
+    public void generarCargaHoraria() {
+
+        if (!diasSolapados()) {
+            for (int i = 0; i < this.diasSeleccionados.length; i++) {
+                TDias dia = servicioDias.find((new TDias(diasSeleccionados[i])).getDSerial());
+                TEspecialidad esp = servicioEspecialidad.find(personalSalud.getEspSerial().getEspSerial());
+                TConsultorio co = servicioConsultorio.find(personalSalud.getCoSerial().getCoSerial());
+
+                CargaHoraria cargaHoraria = new CargaHoraria(dia, esp, co, this.horario.getHoraInicio(), this.horario.getHoraFin());
+                listasCargaHoraria.add(cargaHoraria);
+                listaDias.get(diasSeleccionados[i] - 1).setDisabled(true);
+            }
+            horario = null;
+            personalSalud = null;
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "ERROR: Día ya ingresado!", null));
         }
     }
 
+    private boolean diasSolapados() {
+        for (int i = 0; i < this.diasSeleccionados.length; i++) {
+            for (CargaHoraria item : listasCargaHoraria) {
+                if (item.getDias().getDSerial() == diasSeleccionados[i]) {
+                    listaDias.get(i).setDisabled(true);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public String goAsignaciones() {
-        System.out.println("Medico Seleccionado>>>" + medico);
-        diasSeleccionados = null;
-        consultorio = null;
-        especialidad = null;
-        horario = null;
-        listasCH = null;
+        if (tieneCargaHoraria()) {
+            listasCargaHoraria = llenarCargaHorario();
+        } else {
+            setDefaultValues();
+        }
         return "medicos_asignar.xhtml";
+    }
+
+    private boolean tieneCargaHoraria() {
+        return (servicioHorario.findHo(medico)) != null;
+    }
+
+    private List<CargaHoraria> llenarCargaHorario() {
+        List<CargaHoraria> cargaHorarias = new LinkedList<>();
+        List<THorario> horarios = servicioHorario.findHo(medico);
+        List<TPersonalSalud> personalSaluds = servicioPersonalSalud.findPS(medico);
+
+        for (int i = 0; i < horarios.size(); i++) {
+            System.out.println("Horario..." + horarios
+            );
+            CargaHoraria cargaHo = new CargaHoraria(horarios.get(i).getTDias(), personalSaluds.get(i).getEspSerial(), personalSaluds.get(i).getCoSerial(), horarios.get(i).getHoraInicio(), horarios.get(i).getHoraFin());
+            System.out.println(">>>>" + cargaHo);
+            cargaHorarias.add(cargaHo);
+        }
+
+        return cargaHorarias;
     }
 
     public List<TMedico> getMedicos() {
@@ -166,6 +227,9 @@ public class MBmedicos implements Serializable {
     }
 
     public TPersonalSalud getPersonalSalud() {
+        if (personalSalud == null) {
+            personalSalud = new TPersonalSalud(new TEspecialidad(), new TConsultorio(), medico);
+        }
         return personalSalud;
     }
 
@@ -184,28 +248,6 @@ public class MBmedicos implements Serializable {
         this.horario = horario;
     }
 
-    public TEspecialidad getEspecialidad() {
-        if (especialidad == null) {
-            especialidad = new TEspecialidad();
-        }
-        return especialidad;
-    }
-
-    public void setEspecialidad(TEspecialidad especialidad) {
-        this.especialidad = especialidad;
-    }
-
-    public TConsultorio getConsultorio() {
-        if (consultorio == null) {
-            consultorio = new TConsultorio();
-        }
-        return consultorio;
-    }
-
-    public void setConsultorio(TConsultorio consultorio) {
-        this.consultorio = consultorio;
-    }
-
     public TMedico getMedico() {
         if (medico == null) {
             medico = new TMedico();
@@ -218,14 +260,14 @@ public class MBmedicos implements Serializable {
     }
 
     public List<CargaHoraria> getListasCH() {
-        if (listasCH == null) {
-            listasCH = new LinkedList<>();
+        if (listasCargaHoraria == null) {
+            listasCargaHoraria = new LinkedList<>();
         }
-        return listasCH;
+        return listasCargaHoraria;
     }
 
     public void setListasCH(List<CargaHoraria> listasCH) {
-        this.listasCH = listasCH;
+        this.listasCargaHoraria = listasCH;
     }
 
     public List<SelectItem> getListaDias() {
@@ -254,6 +296,17 @@ public class MBmedicos implements Serializable {
 
     public void setEspecialidades(List<TEspecialidad> especialidades) {
         this.especialidades = especialidades;
+    }
+
+    public List<TConsultorio> getConsultorios() {
+        if (consultorios == null) {
+            consultorios = servicioConsultorio.findAll();
+        }
+        return consultorios;
+    }
+
+    public void setConsultorios(List<TConsultorio> consultorios) {
+        this.consultorios = consultorios;
     }
 
 }

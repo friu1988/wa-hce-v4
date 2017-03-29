@@ -53,11 +53,12 @@ public class THorario implements Serializable {
     public THorario() {
     }
 
-    public THorario(THorarioPK tHorarioPK, Date horaInicio, Date horaFin, TMedico tMedico) {
+    public THorario(THorarioPK tHorarioPK, Date horaInicio, Date horaFin, TMedico tMedico, TDias dia) {
         this.tHorarioPK = tHorarioPK;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.tMedico = tMedico;
+        this.tDias = dia;
     }
 
     public THorario(THorarioPK tHorarioPK) {

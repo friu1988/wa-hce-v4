@@ -15,31 +15,62 @@
         <h:form id="frm_turno_crear">
 
             <p:panel header="Asignar turno">
-                <p:panelGrid columns="2" style="width: 100%" columnClasses="label,value">
-                    <p:outputLabel value="Fecha" for="tur_fecha" />
-                    <p:calendar id="tur_fecha" locale="es" pattern="MM-dd-yyyy" value="#{mBturno.turno.turFecha}"/>
+                <h:panelGrid id="confirmation" style="width: 100%" columns="3" columnClasses="grid,grid,grid">
 
-                    <p:outputLabel value="Hora" for="tur_hora" />
-                    <p:calendar id="tur_hora" locale="es" pattern="HH:mm" timeOnly="true"  value="#{mBturno.turno.turHora}"/>
+                    <p:panelGrid columns="2" style="width: 100%" columnClasses="label,value">
+                        <f:facet name="header">
+                            <p:outputLabel value="MÉDICO - ESPECIALIDAD"/>
+                        </f:facet>
 
-                    <p:outputLabel value="Estado" />
-                    <p:outputLabel value="#{mBturno.turno.turEstado}" />
+                        <p:outputLabel value="Especialidad"/>
+                        <p:selectOneMenu>
+                            <f:selectItem itemLabel="Seleccionar" itemValue=""  noSelectionOption="true"/>
+                            <f:selectItems value="#{mBespecialidad.especialidades}"  var="esp" itemLabel="#{esp.espNombre}" itemValue="#{esp.espSerial}"/>
+                        </p:selectOneMenu>
 
-                    <p:outputLabel value="Médico" for="tur_medico" />
-                    <p:selectOneMenu id="tur_medico" value="#{mBturno.medico.perSerial}">
-                        <f:selectItems value="#{mBmedico.medicos}" var="med" itemValue="#{med.perSerial}" itemLabel="#{med.TPersonal.perApellidos} #{med.TPersonal.perNombres}"/>
-                    </p:selectOneMenu>
+                        <p:outputLabel value="Médico"/>
+                        <p:selectOneMenu>
+                            <f:selectItem itemLabel="Seleccionar" itemValue=""  noSelectionOption="true"/>
+                            <f:selectItems value="#{mBespecialidad.especialidades}"  var="esp" itemLabel="#{esp.espNombre}" itemValue="#{esp.espSerial}"/>
+                        </p:selectOneMenu>
 
-                    <p:outputLabel value="Admisionista"/>
-                    <p:outputLabel value="#{mBturno.admisionista.perSerial}"/>
+                        <p:outputLabel value="Horario"/>                        
+                        <p:outputLabel value=""/>                            
+                    </p:panelGrid>
 
-                    <p:outputLabel value="Cédula"/>
-                    <p:outputLabel value="#{mBturno.paciente.pacCedula}"/>
+                    <p:panelGrid columns="2" style="width: 100%" columnClasses="label,value">
+                        <f:facet name="header">
+                            <p:outputLabel value="PACIENTE"/>
+                        </f:facet>
 
-                    <f:facet name="footer">
-                        <p:commandButton value="Generar" action="#{mBturno.crearTurno()}" />
-                    </f:facet>
-                </p:panelGrid>
+                        <p:outputLabel value="Cédula"/>
+                        <p:outputLabel value="#{mBturno.paciente.pacCedula}"/>
+
+                        <p:outputLabel value="Apellidos"/>
+                        <p:outputLabel value="#{mBturno.paciente.pacApellidoPaterno}" />
+
+                        <p:outputLabel value="Nombres"/>                        
+                        <p:outputLabel value="#{mBturno.paciente.pacPrimerNombre}"/>                            
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2" style="width: 100%" columnClasses="label,value">
+                        <f:facet name="header">
+                            <p:outputLabel value="TURNO"/>
+                        </f:facet>
+
+                        <p:outputLabel value="Fecha" for="tur_fecha" />
+                        <p:calendar id="tur_fecha" locale="es" pattern="yyyy-MMM-dd" value="#{mBturno.turno.turFecha}"/>
+
+                        <p:outputLabel value="Hora" for="tur_hora" />
+                        <p:calendar id="tur_hora" locale="es" pattern="HH:mm" timeOnly="true"  value="#{mBturno.turno.turHora}"/>
+
+                        <p:outputLabel value="Estado" />
+                        <p:outputLabel value="#{mBturno.turno.turEstado}" />
+                    </p:panelGrid>
+                </h:panelGrid>
+                <f:facet name="footer">
+                    <p:commandButton value="Generar" action="#{mBturno.crearTurno()}" />
+                </f:facet>
             </p:panel>
         </h:form>
     </ui:define>

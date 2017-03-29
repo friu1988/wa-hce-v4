@@ -5,6 +5,7 @@ import com.capa.datos.TMedico;
 import com.capa.datos.TPaciente;
 import com.capa.datos.TTurno;
 import com.capa.datos.TUsuario;
+import com.capa.negocios.TAdmisionistaFacade;
 import com.capa.negocios.TTurnoFacade;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -21,6 +22,9 @@ public class MBturno implements Serializable {
 
     @EJB
     private TTurnoFacade servicioTurno;
+    @EJB
+    private TAdmisionistaFacade servicioAdmision;
+    
     private List<TTurno> turnos;
     private TTurno turno;
 
@@ -37,6 +41,9 @@ public class MBturno implements Serializable {
         //Admisionista
         TUsuario user = (TUsuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLogin");
         admisionista.setPerSerial(user.getPerSerial().getPerSerial());
+        
+//        servicioAdmision.find(user.getPerSerial().getPerSerial());
+        
         System.out.println("Admisionista: " + admisionista);
     }
 
