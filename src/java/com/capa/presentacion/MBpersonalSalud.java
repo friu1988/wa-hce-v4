@@ -17,9 +17,7 @@ import java.io.Serializable;
 @SessionScoped
 public class MBpersonalSalud implements Serializable {
 
-    /**
-     * Creates a new instance of MBpersonalSalud
-     */
+
     public MBpersonalSalud() {
     }
     
