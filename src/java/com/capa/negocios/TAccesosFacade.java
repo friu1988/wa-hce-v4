@@ -36,7 +36,6 @@ public class TAccesosFacade extends AbstractFacade<TAccesos> {
         Query sql = em.createNamedQuery("TAccesos.findByUSerial");
         sql.setParameter("uSerial", rol.getUSerial());
         List<TAccesos> menus = sql.getResultList();
-        System.out.println("Lista>>>>>>" + menus);
         return menus;
     }
 }

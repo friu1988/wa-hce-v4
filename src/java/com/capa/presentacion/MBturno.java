@@ -1,11 +1,13 @@
 package com.capa.presentacion;
 
 import com.capa.datos.TAdmisionista;
+import com.capa.datos.TEspecialidad;
 import com.capa.datos.TMedico;
 import com.capa.datos.TPaciente;
 import com.capa.datos.TTurno;
 import com.capa.datos.TUsuario;
 import com.capa.negocios.TAdmisionistaFacade;
+import com.capa.negocios.TPersonalSaludFacade;
 import com.capa.negocios.TTurnoFacade;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -24,13 +26,17 @@ public class MBturno implements Serializable {
     private TTurnoFacade servicioTurno;
     @EJB
     private TAdmisionistaFacade servicioAdmision;
-    
+    @EJB
+    private TPersonalSaludFacade servicioPSalud;
+
     private List<TTurno> turnos;
     private TTurno turno;
 
     private TAdmisionista admisionista;
     private TPaciente paciente;
     private TMedico medico;
+    
+    private TEspecialidad especialidad;
 
     public MBturno() {
         admisionista = new TAdmisionista();
@@ -41,17 +47,16 @@ public class MBturno implements Serializable {
         //Admisionista
         TUsuario user = (TUsuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("userLogin");
         admisionista.setPerSerial(user.getPerSerial().getPerSerial());
-        
+
 //        servicioAdmision.find(user.getPerSerial().getPerSerial());
-        
         System.out.println("Admisionista: " + admisionista);
     }
 
-    public String crearT() {
+    public String goCrearTurno() {
 
         return "turno_crear.xhtml";
     }
-
+    
     public String crearTurno() {
         turno.setPerSerial(admisionista);
         turno.setPacCedula(paciente);
@@ -60,9 +65,11 @@ public class MBturno implements Serializable {
         servicioTurno.create(turno);
 
         turnos = null;
-        System.out.println("Crear Turno>>>" + turno);
+
         return "turnos.xhml";
     }
+
+    
 
     public String verT() {
         System.out.println("Ver>>>");

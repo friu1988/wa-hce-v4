@@ -23,7 +23,7 @@
                     <p:ajax event="rowUnselect" update="createButton1 viewButton1 editButton1 deleteButton1 createButton2 viewButton2 editButton2 deleteButton2"/>
 
                     <f:facet name="header">
-                        <p:commandButton id="createButton1" icon="ui-icon-plus"   value="Registrar" action="#{mBturno.crearT}" />
+                        <p:commandButton id="createButton1" icon="ui-icon-plus"   value="Registrar" action="#{mBturno.goCrearTurno}" />
                         <p:commandButton id="viewButton1"   icon="ui-icon-search" value="Visualizar" action="#{mBturno.verT}"  disabled="#{empty mBturno.turno}"/>
                         <p:commandButton id="editButton1"   icon="ui-icon-pencil" value="Editar"  action="#{mBturno.editarT}" disabled="#{empty mBturno.turno}"/>
                         <p:commandButton id="deleteButton1" icon="ui-icon-trash"  value="Eliminar" update=":frm_eliminar_tur"  oncomplete="PF('dlg_eliminar_tur').show();" disabled="#{empty mBturno.turno}"/>
@@ -52,7 +52,7 @@
                         <p:selectBooleanCheckbox value="#{item.turEstado}" disabled="true"/>
                     </p:column>
                     <f:facet name="footer">
-                        <p:commandButton id="createButton2" icon="ui-icon-plus"   value="Registrar" action="#{mBturno.crearT}" />
+                        <p:commandButton id="createButton2" icon="ui-icon-plus"   value="Registrar" action="#{mBturno.goCrearTurno}" />
                         <p:commandButton id="viewButton2"   icon="ui-icon-search" value="Visualizar" action="#{mBturno.verT}"  disabled="#{empty mBturno.turno}"/>
                         <p:commandButton id="editButton2"   icon="ui-icon-pencil" value="Editar"  action="#{mBturno.editarT}" disabled="#{empty mBturno.turno}"/>
                         <p:commandButton id="deleteButton2" icon="ui-icon-trash"  value="Eliminar" update=":frm_eliminar_tur"  oncomplete="PF('dlg_eliminar_tur').show();" disabled="#{empty mBturno.turno}"/>

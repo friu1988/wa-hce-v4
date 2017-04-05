@@ -33,7 +33,7 @@
                     </p:selectOneMenu>                     
                     <p:calendar value="#{mBmedicos.horario.horaInicio}" pattern="HH:mm" timeOnly="true" locale="es"/>
                     <p:calendar value="#{mBmedicos.horario.horaFin}" pattern="HH:mm" timeOnly="true" locale="es"/>
-                    <p:commandLink value="Agregar" actionListener="#{mBmedicos.generarCargaHoraria()}" update=":frm_medico_crear :growl"/>
+                    <p:commandLink value="Agregar" actionListener="#{mBmedicos.agregarCargaHoraria()}" update=":frm_medico_crear :growl"/>
 
                 </p:panelGrid>
 

@@ -15,7 +15,7 @@
         <h:form id="frm_turno_crear">
 
             <p:panel header="Asignar turno">
-                <p:panelGrid id="confirmation" style="width: 100%" columns="3" columnClasses="grid,grid,grid">
+                <h:panelGrid id="confirmation" style="width: 100%" columns="3" columnClasses="grid,grid,grid">
 
                     <p:panelGrid columns="2" style="width: 100%" columnClasses="label,value">
                         <f:facet name="header">
@@ -26,7 +26,6 @@
                         <p:selectOneMenu>
                             <f:selectItem itemLabel="Seleccionar" itemValue=""  noSelectionOption="true"/>
                             <f:selectItems value="#{mBespecialidad.especialidades}"  var="esp" itemLabel="#{esp.espNombre}" itemValue="#{esp.espSerial}"/>
-                            <p:ajax event="valueChange" listener="#{mBhistoriaClinica.onChangeFacultades}" update="facultad carrera"/> 
                         </p:selectOneMenu>
 
                         <p:outputLabel value="Médico"/>
@@ -70,17 +69,10 @@
                         <p:outputLabel value="Estado" />
                         <p:outputLabel value="#{mBturno.turno.turEstado ? 'Atendido':'En espera'}" />
                     </p:panelGrid>
-                    </h:panelGrid>
-                    <f:facet name="footer">
-                        <p:commandButton value="Generar" action="#{mBturno.crearTurno()}" />
-                    </f:facet>
-
-            </p:panel>
-            <p:panel>
-                <p:dataTable>
-
-
-                </p:dataTable>
+                </h:panelGrid>
+                <f:facet name="footer">
+                    <p:commandButton value="Generar" action="#{mBturno.crearTurno()}" />
+                </f:facet>
             </p:panel>
         </h:form>
     </ui:define>

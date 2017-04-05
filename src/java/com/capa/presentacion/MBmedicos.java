@@ -59,6 +59,7 @@ public class MBmedicos implements Serializable {
     private List<CargaHoraria> listasCargaHoraria;
     private List<TEspecialidad> especialidades;
     private List<TConsultorio> consultorios;
+    private List<CargaHoraria> cargaHorariaDB;
 
     private Integer[] diasSeleccionados;
 
@@ -92,11 +93,10 @@ public class MBmedicos implements Serializable {
                     servicioPersonalSalud.remove(pS.get(i));
                     servicioHorario.remove(ho.get(i));
                 }
-                listasCargaHoraria = null;
-            } else {
-                listasCargaHoraria = null;
-                listaDias = null;
+
             }
+            listasCargaHoraria = null;
+            listaDias = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carga Horaria Eliminada! ", null));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al Eliminar" + e.getMessage(), null));
@@ -105,14 +105,25 @@ public class MBmedicos implements Serializable {
     }
 
     public String guardarCargaHoraria() {
+
         for (CargaHoraria item : listasCargaHoraria) {
             THorario ho = new THorario(new THorarioPK(item.getDias().getDSerial(), medico.getPerSerial()), item.getHoraInicio(), item.getHoraFin(), medico, item.getDias());
             TPersonalSalud pS = new TPersonalSalud(item.getEspecialidad1(), item.getConsultorio1(), medico);
             try {
-                servicioPersonalSalud.create(pS);
-                servicioHorario.create(ho);
-                setDefaultValues();
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carga Horaria Asignada! ", null));
+                if (cargaHorariaDB != null) {
+                    if (!cargaHorariaDB.contains(item)) {
+                        servicioPersonalSalud.create(pS);
+                        servicioHorario.create(ho);
+                        setDefaultValues();
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carga Horaria Asignada! ", null));
+                    }
+                } else {
+                    servicioPersonalSalud.create(pS);
+                    servicioHorario.create(ho);
+                    setDefaultValues();
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Carga Horaria Asignada! ", null));
+                }
+
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al Guardar" + e.getMessage(), null));
             }
@@ -128,29 +139,7 @@ public class MBmedicos implements Serializable {
         listasCargaHoraria = null;
     }
 
-    //verificar q los tiempos sean exactos(para que retorner valores enteros exactos)
-    private List<TTurno[]> generarTurnos(TMedico medico, int intervalo/*minutos*/) {
-        //supongamos q tal dia es este(se debe buscar segun el dia)
-        THorario horario = new THorario();
-        horario.setHoraInicio(new Date(2016, 5, 3, 13, 30, 0));
-        horario.setHoraFin(new Date(2017, 5, 3, 18, 30, 0));
-        return null;
-        /*      
-        if (medico.getTHorarioList().contains(dia)) {//verificar metodo booleano
-            //calculamos tiempo en minutos
-            int tiempo = (horario.getHoraFin().getHours() - horario.getHoraInicio().getHours()) * 60 + Math.abs(horario.getHoraFin().getMinutes() - horario.getHoraInicio().getMinutes());
-            int nTurnos = tiempo / intervalo;
-
-            return new TTurno[nTurnos];
-
-        } else {
-            System.out.println("No hay turnos disponiblos cn tal doctor para tal dia");
-            return null;
-        }
-         */
-    }
-
-    public void generarCargaHoraria() {
+    public void agregarCargaHoraria() {
 
         if (!diasSolapados()) {
             for (int i = 0; i < this.diasSeleccionados.length; i++) {
@@ -195,16 +184,18 @@ public class MBmedicos implements Serializable {
     }
 
     private List<CargaHoraria> llenarCargaHorario() {
+        this.listaDias = null;
+        this.getListaDias();
         List<CargaHoraria> cargaHorarias = new LinkedList<>();
+        cargaHorariaDB = new LinkedList<>();
+
         List<THorario> horarios = servicioHorario.findHo(medico);
         List<TPersonalSalud> personalSaluds = servicioPersonalSalud.findPS(medico);
-
         for (int i = 0; i < horarios.size(); i++) {
-            System.out.println("Horario..." + horarios
-            );
             CargaHoraria cargaHo = new CargaHoraria(horarios.get(i).getTDias(), personalSaluds.get(i).getEspSerial(), personalSaluds.get(i).getCoSerial(), horarios.get(i).getHoraInicio(), horarios.get(i).getHoraFin());
-            System.out.println(">>>>" + cargaHo);
             cargaHorarias.add(cargaHo);
+            cargaHorariaDB.add(cargaHo);
+            listaDias.get(horarios.get(i).getTDias().getDSerial() - 1).setDisabled(true);
         }
 
         return cargaHorarias;
@@ -307,6 +298,28 @@ public class MBmedicos implements Serializable {
 
     public void setConsultorios(List<TConsultorio> consultorios) {
         this.consultorios = consultorios;
+    }
+
+    //verificar q los tiempos sean exactos(para que retorner valores enteros exactos)
+    private List<TTurno[]> generarTurnos(TMedico medico, int intervalo/*minutos*/) {
+        //supongamos q tal dia es este(se debe buscar segun el dia)
+        THorario horario = new THorario();
+        horario.setHoraInicio(new Date(2016, 5, 3, 13, 30, 0));
+        horario.setHoraFin(new Date(2017, 5, 3, 18, 30, 0));
+        return null;
+        /*      
+        if (medico.getTHorarioList().contains(dia)) {//verificar metodo booleanom
+            //calculamos tiempo en minutos
+            int tiempo = (horario.getHoraFin().getHours() - horario.getHoraInicio().getHours()) * 60 + Math.abs(horario.getHoraFin().getMinutes() - horario.getHoraInicio().getMinutes());
+            int nTurnos = tiempo / intervalo;
+
+            return new TTurno[nTurnos];
+
+        } else {
+            System.out.println("No hay turnos disponiblos cn tal doctor para tal dia");
+            return null;
+        }
+         */
     }
 
 }
